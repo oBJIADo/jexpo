@@ -1,0 +1,17 @@
+package ru.tsystems.divider.entity
+
+import java.util.*
+import javax.persistence.Column
+import javax.persistence.Entity
+
+@Entity(name = "Dates")
+class Dates(
+        @Column(name = "updated")
+        var updated: Date? = null,
+        @Column(name = "resolved")
+        var resolved: Date? = null,
+        @Column(name = "due_date")
+        var dueDate: Date? = null,
+        @Column(name = "last_viewed")
+        var lastViewed: Date? = null
+) : GeneralEntity()

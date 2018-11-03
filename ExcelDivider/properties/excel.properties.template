@@ -1,0 +1,69 @@
+#Modificator
+modificator.keys.pre=CR-
+
+#Divide symbols
+symbol.divideSymbol.employee=\u0020
+symbol.divideSymbol.anotherTasks=;#
+symbol.divideSymbol.another=AbsolutleNone
+symbol.divideSymbol.comments=;
+
+#Indexes of columns
+column.index.keys=0
+column.index.summary=15
+column.index.issueType=9
+column.index.status=4
+column.index.priority=14
+column.index.resolution=
+column.index.assignee=3
+column.index.reporter=
+column.index.creater=2
+column.index.created=8
+column.index.lastViewed=
+column.index.updated=
+column.index.resolved=
+column.index.affectsVersion=17
+column.index.fixVersion=18
+column.index.components=6
+column.index.dueDate=
+column.index.originalEstimate=
+column.index.remainingEstimate=
+column.index.timeSpent=
+column.index.workRatio=
+column.index.description=16
+column.index.progress=
+column.index.sumProgress=
+column.index.sumTimeSpent=
+column.index.sumRemainingEstimate=
+column.index.sumOriginalEstimate=
+column.index.labels=
+column.index.teams=
+column.index.epicName=
+column.index.epicStatus=
+column.index.epicColor=
+column.index.sprint=
+column.index.epicLink=
+column.index.orderNumber=11
+column.index.deliveredVersion=19
+column.index.drcNumber=10
+column.index.keyword=5
+column.index.fixPriority=7
+column.index.commentStart=
+
+#SubTasks and another tasks for links
+column.index.subTasks=
+column.index.relationTasks=20
+column.index.duplicateTasks=21
+
+#2011-02-28 08:27:03.000
+format.read.date=yyyy-MM-dd HH:mm:ss.SSS
+#format.read.date=
+
+#Special comment props
+column.index.commentMode.commentStart=0
+#
+#Only for comment reading
+#Using this keywords: id,not,author,date. For divide this words, use ",". Field should not contains any spaces.
+#Exmaple for comment file with structure: comment number, task id, some field, some field, author, date, some field, comment
+#format.read.comment=not,id,not,not,author,date,not
+#Comment text always last
+format.read.comment=id

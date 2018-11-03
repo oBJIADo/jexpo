@@ -1,0 +1,7 @@
+# Datasource
+jdbc.url=jdbc:h2:tcp://<url>:<port>/<path>
+jdbc.username=<username>
+jdbc.password=<password>
+
+#Excel properties path
+properties.path.excel=<excel file full name with path>
