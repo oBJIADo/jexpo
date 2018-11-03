@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+    <import resource="spring-data.xml"/>
+    <import resource="spring-mvc.xml"/>
+
+
+    <context:component-scan base-package="ru.tsystems.jirexpo.*"/>
+
+    <context:property-placeholder location="file:./properties/main.properties"/>
+
+    <context:annotation-config/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>file:./properties/main</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

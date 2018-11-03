@@ -1,0 +1,58 @@
+.paginator {
+  display: inline-block;
+  padding: 10px;
+  margin: 30px auto;
+  white-space: nowrap;
+  background: #333333;
+  border-radius: 10px;
+}
+
+.paginator a {
+  display: inline-block;
+  min-width: 20px;
+  height: 40px;
+  padding: 0 10px;
+  line-height: 40px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  background: #3d4551;
+  color: #aaa;
+}
+
+.paginator .prev {
+  margin-right: 20px;
+  background-image: url("/img/arrows.png");
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+.paginator .next {
+  margin-left: 20px;
+  background-image: url("/img/arrows.png");
+  background-repeat: no-repeat;
+  background-position: 0px -40px;
+}
+
+.paginator .dots {
+  background: #333;
+}
+
+.paginator .current {
+  background: #314236;
+}
+
+.paginator .current:hover {
+  cursor: default;
+}
+
+.paginator .inactive {
+  background: #333333;
+}
+
+.paginator .active:hover {
+  background: #4fb9a7;
+  color: #1c1d22;
+  cursor: pointer;
+}

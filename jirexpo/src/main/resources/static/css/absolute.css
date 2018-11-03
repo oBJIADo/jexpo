@@ -1,0 +1,19 @@
+.clickable {
+  background: #3d4551;
+}
+
+.clickable:hover {
+  cursor: pointer;
+  background: #4fb9a7;
+  color: #1c1d22;
+}
+
+.text {
+  word-wrap: break-word;
+  max-width: 950px;
+  /*display: inline-block;*/
+}
+
+.text a, .text div, .text li, .text ul, .text p, .text span, .text pre, .text font .text {
+  white-space: pre-wrap;
+}

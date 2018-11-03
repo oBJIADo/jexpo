@@ -1,0 +1,12 @@
+#Database properties
+jdbc.url=jdbc:h2:tcp://<Url>:<Port>/<PathToDB>
+jdbc.username=<User Name>
+jdbc.password=<User Password>
+#Application port
+application.server.port=<Application port>
+#Path to attachments
+files.folder.attachments=<Path to attachments>
+
+#Log4j properties
+#File path
+#log4j.pathToFile=org.apache.log4j.FileAppender !!!NOT YET READY!!!
