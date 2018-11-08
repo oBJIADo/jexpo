@@ -1,5 +1,5 @@
 <template>
-  <h1>Welcome to my mini Jira</h1>
+  <h1>Welcome to JiraTool</h1>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="paginator" id="pageButtons">
+    <div class="paginator noselect__wrapper" id="pageButtons">
         <a class="prev" v-bind:class="prevNext[0]" v-on:click="setNeiboPage(1, prevNext[0])"></a>
         <a v-for="page in pages" v-bind:class="page.classes" v-on:click="setCurPage(page)">
             {{page.count}}

@@ -93,21 +93,21 @@
                     <h3>Amounts</h3>
                     <task-element :title="'Σ progress'" :field="task.sumProgress + '%'"
                                   v-if="task.sumProgress"></task-element>
-                    <task-element :title="'Σ time spent, hour'" :field="task.sumTimeSpant/60"
+                    <task-element :title="'Σ time spent, hour'" :field="getHours(task.sumTimeSpant)"
                                   v-if="task.sumTimeSpant"></task-element>
-                    <task-element :title="'Σ remaining estimate, hour'" :field="task.sumRemainingEstimate/60"
+                    <task-element :title="'Σ remaining estimate, hour'" :field="getHours(task.sumRemainingEstimate)"
                                   v-if="task.sumRemainingEstimate"></task-element>
-                    <task-element :title="'Σ original estimate, hour'" :field="task.sumOriginalEstimate/60"
+                    <task-element :title="'Σ original estimate, hour'" :field="getHours(task.sumOriginalEstimate)"
                                   v-if="task.sumOriginalEstimate"></task-element>
                 </div>
 
                 <div class="details__wrapper">
                     <h3>Characteristics</h3>
-                    <task-element :title="'Original estimate, hour'" :field="task.originalEstimate/60"
+                    <task-element :title="'Original estimate, hour'" :field="getHours(task.originalEstimate)"
                                   v-if="task.originalEstimate"></task-element>
-                    <task-element :title="'Remaining estimate, hour'" :field="task.remainingEstimate/60"
+                    <task-element :title="'Remaining estimate, hour'" :field="getHours(task.remainingEstimate)"
                                   v-if="task.remainingEstimate"></task-element>
-                    <task-element :title="'Time spent, hour'" :field="task.timeSpent/60"
+                    <task-element :title="'Time spent, hour'" :field="getHours(task.timeSpent)"
                                   v-if="task.timeSpent"></task-element>
                     <task-element :title="'Work ratio'" :field="task.workRation + '%'"
                                   v-if="task.workRation"></task-element>
@@ -207,6 +207,9 @@
 
 
             },
+            getHours(seconds){
+                return seconds/60/60
+            }
         },
 
 

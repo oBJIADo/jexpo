@@ -1,6 +1,9 @@
 <template>
     <div class="tasks__wrapper">
-        <searching-line :placeHolder="'tasks'" v-model="searchText" @submit="pageTasksChangeAction()"/>
+        <searching-line :placeHolder="'tasks'"
+                        v-model="searchText"
+                        :default-value="searchParam"
+                        @submit="pageTasksChangeAction()"/>
         <tasks-table :tasks="tasks" v-model="keys" @click="clickToTask(keys)"/>
         <navigation-buttons v-if="pageNum>0"
                             :num="pageNum"

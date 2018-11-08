@@ -1,5 +1,5 @@
 <template>
-    <div class="table__wrapper">
+    <div class="table__wrapper noselect__wrapper">
         <h1>Tasks</h1>
         <table>
             <tr>

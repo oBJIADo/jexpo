@@ -5,18 +5,18 @@
                 <!--<li><router-link class="link_wrapper"-->
                 <!--:to="{name:'home'}">Home</router-link></li>-->
                 <li>
-                    <router-link class="link_wrapper"
+                    <router-link class="link_wrapper noselect__wrapper"
                                  :to="{name:'tasks', query: {page: 1}}">Tasks
                     </router-link>
                 </li>
                 <li>
-                    <router-link class="link_wrapper"
+                    <router-link class="link_wrapper noselect__wrapper"
                                  :to="{name:'employees'}">Employees
                     </router-link>
                 </li>
                 <li>
-                    <router-link class="link_wrapper"
-                                 :to="{name:'search', query: {page: 1}}">Search
+                    <router-link class="link_wrapper noselect__wrapper"
+                                 :to="{name:'search', query: {page: 1, caseIgnore: true}}">Search
                     </router-link>
                 </li>
                 <!--<li><a class="link_wrapper" href="#">JPA query</a></li>-->

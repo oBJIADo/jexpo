@@ -1,13 +1,16 @@
 <template>
     <div class="tasks_search__wrapper">
         <div class="large_pair__wrapper">
-            <searching-line :placeHolder="'tasks'" v-model="searchText" @submit="search()"/>
-            <div class="settings__wrapper">
+            <searching-line :placeHolder="'tasks'"
+                            :default-value="searchParam"
+                            v-model="searchText"
+                            @submit="search()"/>
+            <div class="settings__wrapper noselect__wrapper">
                 <label class="container">Case ignore
                     <input type="checkbox"
                            :name="'settings'"
-                           :value="'caseIgnore'"
-                           v-model="settings"
+                           :checked="isCaseIgnore"
+                           @input="isCaseIgnore = !isCaseIgnore"
                     />
                     <span class="checkmark"></span>
                 </label>
@@ -22,18 +25,16 @@
             </div>
         </div>
         <div class="small_pair__wrapper">
-            <label class="sear__button clickable">Search
+            <label class="sear__button clickable noselect__wrapper">Search
                 <input type="button" @click="search()">
             </label>
             <div class="checkbox__wrapper">
                 <check-box
-                        v-for='(structure, index) in queryConstants.structure'
+                        v-for='(structure, index) in selected'
                         :key="index"
-                        :structIndex="index"
-                        :fields-mapping="queryConstants.queryMapping"
-                        :indexes='structure.indexes'
+                        :structureIndex="index"
                         :title="structure.title"
-                        :bool-array='selected'
+                        :elements="structure.elements"
                         @click="titleCBClick($event)"
                         @change="customCBClick($event)"/>
             </div>
@@ -60,12 +61,12 @@
             checkBox: CheckBox
         },
 
-        props: {
-            page: undefined,
-            searchParam: undefined,
-            queryIndexes: undefined,
-            caseIgnore: undefined
-        },
+        props: [
+            "page",
+            "searchParam",
+            "queryIndexes",
+            "caseIgnore"
+        ],
 
         data: function () {
             return {
@@ -74,7 +75,7 @@
                 queryConstants: Constants.queryConstants,
                 // selected: [0, 1, 2, 8, 9, 10, 22, 31, 32, 33, 34, 35, 36, 37, 38, 42,43,44],
                 selected: [],
-                settings: ['caseIgnore'],
+                isCaseIgnore: this.caseIgnore,
                 searchText: undefined,
                 pageNum: 1,
                 lastPage: undefined,
@@ -84,17 +85,15 @@
 
         methods: {
             removeAllValues: function (index) {
-                this.queryConstants.structure[index].indexes.forEach((value) => this.selected[value] = false)
+                this.selected[index].elements.forEach((elem) => elem.value = false)
             },
             titleCBClick: function (index) {
                 let contain = true;
-                console.log(index);
 
-                this.queryConstants.structure[index].indexes.forEach((value) => {
-                    console.log(value + ":" + this.selected[value]);
-                    if (!this.selected[value]) {
+                this.selected[index].elements.forEach((elem) => {
+                    if (!elem.value) {
                         contain = false;
-                        this.selected[value] = true;
+                        elem.value = true;
                     }
                 });
 
@@ -102,24 +101,22 @@
                     this.removeAllValues(index)
                 }
             },
-            customCBClick: function(index){
-                console.log(index +" : "+ this.selected[index]);
-                this.selected[index] = !this.selected[index];
-                console.log(index +" : "+ this.selected[index]);
+            customCBClick: function (elData) {
+                this.selected[elData.el].elements[elData.ind].value = !this.selected[elData.el].elements[elData.ind].value;
             },
 
             clickToTask: function (keys) {
                 this.$router.push({name: 'task', params: {key: keys}})
             },
             getTasks: function () {
-                const axConf = AxiosFunctions.tasksRqConfig(this.pageNum, this.searchText, this.makeIndexesStringMessage(), this.isCaseSensetive());
+                const axConf = AxiosFunctions.tasksRqConfig(this.pageNum, this.searchText, this.makeIndexesStringMessage(), this.isCaseIgnore);
                 this.$http.get(axConf.address, axConf.rqConf)
                     .then(response => {
                         this.tasks = response.data;
                     })
             },
             getPages: function () {
-                const axConf = AxiosFunctions.pagesRqConfig(this.searchText, this.makeIndexesStringMessage(), this.isCaseSensetive());
+                const axConf = AxiosFunctions.pagesRqConfig(this.searchText, this.makeIndexesStringMessage(), this.isCaseIgnore);
                 this.$http.get(axConf.address, axConf.rqConf)
                     .then(response => {
                         //todo: to func!
@@ -137,16 +134,15 @@
 
             makeIndexesStringMessage: function () {
                 let message = "";
-                this.selected.forEach((value, index) => {
-                    if (value)
-                        message += index.toString() + ","
+                this.selected.forEach((struct) => {
+                    struct.elements.forEach(elem => {
+                        if (elem.value)
+                            message += elem.index.toString() + ","
+                    });
                 });
                 return message.substring(0, message.length - 1);
             },
 
-            isCaseSensetive: function () {
-                return this.settings.indexOf('caseIgnore') >= 0
-            },
             selectAll: function () {
                 let all = [];
                 this.value.forEach(elem => {
@@ -172,7 +168,7 @@
                 const pageNum = page === undefined ? this.pageNum : page;
                 const sparam = this.searchText;
                 const sindexes = this.makeIndexesStringMessage();
-                const caseig = this.isCaseSensetive();
+                const caseig = this.isCaseIgnore;
                 return (sparam !== undefined && sparam.length > 0) ?
                     {page: pageNum, searchParam: this.searchText, queryIndexes: sindexes, caseIgnore: caseig} :
                     {page: pageNum};
@@ -182,13 +178,13 @@
             isPageNotRight: function (page) {
                 return typeof(page) !== 'number' || isNaN(page) || page < 1 || page > this.lastPage
             },
-            initSelected: function (indexes) {
-                //todo
-                let selectedArray = new Array(Constants.queryStructureLength);
-                for (let i = 0; i < Constants.queryStructureLength; i++) {
-                    selectedArray[i] = true;
+            initSelected: function (strIndexes) {
+                if (strIndexes !== undefined) {
+                    const indexes = strIndexes.split(',');
+                    return Constants.queryConstants(indexes);
+                } else {
+                    return Constants.queryConstants();
                 }
-                return selectedArray;
             }
 
         },
@@ -198,9 +194,9 @@
                 this.pageNum = +to.query.page;
                 this.searchText = to.query.searchParam;
                 this.selected = this.initSelected(to.query.queryIndexes);
-                if (this.caseIgnore) this.settings = ['caseIgnore'];
+                this.isCaseIgnore = this.caseIgnore;
                 this.getTasks();
-                if (from.query.searchParam !== this.searchText || from.query.queryIndexes !== this.queryIndexes) {
+                if (from.query.searchParam !== this.searchText || from.query.queryIndexes !== this.queryIndexes || from.query.caseIgnore !== this.isCaseIgnore) {
                     this.getPages();
                 }
             }
@@ -212,7 +208,7 @@
             //If query indexes undefined -> selected not a array -> we cant use checkboxes!
             //If it interesting for u, try and u see what happened lol
             this.selected = this.initSelected(this.queryIndexes); //so hot
-            if (this.caseIgnore) this.settings = ['caseIgnore'];
+            this.isCaseIgnore = this.caseIgnore;
             this.getPages();
             this.getTasks();
         },
