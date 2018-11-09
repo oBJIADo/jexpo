@@ -1,17 +1,23 @@
 <template>
     <div class="details__wrapper" v-if="!isEmpty(filesNames)">
         <p class="title">{{title}}</p>
-        <p
-                class="content clickable"
-                v-for="name in filesNames"
-                @click="$emit('click',name)">{{name}}</p>
+        <p class="content clickable"
+           v-for="name in filesNames"
+           @click="$emit('click',name)">{{name}}</p>
     </div>
 </template>
 
 <script>
+    import Functions from "../../js/Functions";
+
     export default {
         name: "FilesList",
-        props: ["title", "filesNames"]
+        props: ["title", "filesNames"],
+        data: function () {
+            return {
+                isEmpty: Functions.isEmpty
+            }
+        },
     }
 </script>
 
@@ -20,9 +26,9 @@
         margin: 5px;
         font-size: 15px;
         padding: 6px 10px;
-        background: #39403C;
         border-radius: 10px;
     }
+
     .details__wrapper {
         background: #333333;
         margin: 10px 0;

@@ -135,6 +135,7 @@
     import TaskElement from "./elements/task/TaskElement"
     import TextComponent from "./elements/functional/TextComponent"
     import Constants from "./js/Constants";
+    import Functions from "./js/Functions";
     import FilesList from "./elements/functional/FilesList";
 
     export default {
@@ -153,6 +154,7 @@
                 task: {},
                 filesNames: undefined,
                 imgFormats: ['jpg', 'png'],
+                isEmpty: Functions.isEmpty
             }
         },
         methods: {
@@ -185,11 +187,7 @@
                     link.click();
                 });
             },
-            isEmpty(array) {
-                if (array === undefined)
-                    return true;
-                else return array.length <= 0
-            },
+
             getFilesNames: function (keys) {
                 this.$http.get(Constants.addresses.filesUrl + '/' + this.keys)
                     .then((response) => {

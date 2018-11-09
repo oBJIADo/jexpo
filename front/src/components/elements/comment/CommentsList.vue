@@ -2,7 +2,7 @@
   <div class="comments_wrapper">
     <searching :placeHolder="'comments'" v-model="searchParam">
     </searching>
-      <comment v-for="com in comments" :comment="com" v-if="isContains(com)"></comment>
+      <comment v-for="(com, index) in comments" :key="index" :comment="com" v-if="isContains(com)"></comment>
   </div>
 </template>
 
