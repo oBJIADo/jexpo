@@ -85,7 +85,7 @@
     margin: 5px;
     font-size: 15px;
     padding: 6px 10px;
-    background: #39403C;
     border-radius: 10px;
+    color: #e5e5e5;
   }
 </style>

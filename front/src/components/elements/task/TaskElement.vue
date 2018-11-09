@@ -51,7 +51,7 @@
         margin: 5px;
         font-size: 16px;
         padding: 6px 10px;
-        color: #fff;
+        color: #e5e5e5;
         font-style: italic;
     }
 
