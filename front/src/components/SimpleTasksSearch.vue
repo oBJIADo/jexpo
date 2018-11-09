@@ -6,10 +6,9 @@
                         @submit="pageTasksChangeAction()"/>
         <tasks-table :tasks="tasks" v-model="keys" @click="clickToTask(keys)"/>
         <navigation-buttons v-if="pageNum>0"
-                            :num="pageNum"
                             :lastPage="lastPage"
-                            v-model="pageNum"
-                            @change="pageTasksChangeAction()"/>
+                            :num="pageNum"
+                            @change="pageTasksChangeAction($event)"/>
     </div>
 </template>
 
@@ -26,15 +25,12 @@
             searchingLine: SearchingLine,
             navigationButtons: NavigationButtons
         },
-        props: {
-            page: undefined,
-            searchParam: undefined
-        },
+        props: ["page", "searchParam"],
         data: function () {
             return {
                 keys: '',
                 tasks: [],
-                pageNum: 1,
+                pageNum: undefined,
                 lastPage: undefined,
                 searchText: undefined,
             }
@@ -61,7 +57,7 @@
                             if (this.lastPage === 0) {
                                 this.pageNum = 0;
                             } else {
-                                this.pageNum = 1;
+                                this.pageNum = (this.pageNum < this.lastPage) ? this.pageNum : 1;
                                 if (this.isPageNotRight(+this.pageNum)) {
                                     this.$router.push({name: "error"});
                                 }
@@ -70,10 +66,10 @@
                     )
             },
 
-            pageTasksChangeAction: function () {
+            pageTasksChangeAction: function (newPage) {
                 const query = (this.searchText !== undefined && this.searchText.length > 0) ?
                     {page: this.pageNum, searchParam: this.searchText} :
-                    {page: this.pageNum};
+                    {page: +newPage};
                 const pushParams = {
                     name: "tasks",
                     query: query
@@ -99,8 +95,8 @@
         ,
 
         created: function () {
-            this.pageNum = this.page === undefined ? +1 : this.page;
             this.searchText = this.searchParam;
+            this.pageNum = (this.page === undefined) ? 1 : this.page;
             this.getPages();
             this.getTasks();
         }

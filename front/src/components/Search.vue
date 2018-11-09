@@ -1,30 +1,23 @@
 <template>
     <div class="tasks_search__wrapper">
-        <div class="large_pair__wrapper">
+        <div class="search_tasks__wrapper">
             <searching-line :placeHolder="'tasks'"
                             :default-value="searchParam"
                             v-model="searchText"
                             @submit="search()"/>
             <div class="settings__wrapper noselect__wrapper">
-                <label class="container">Case ignore
-                    <input type="checkbox"
-                           :name="'settings'"
-                           :checked="isCaseIgnore"
-                           @input="isCaseIgnore = !isCaseIgnore"
-                    />
-                    <span class="checkmark"></span>
-                </label>
+                <c-box :elem="{name: 'Case ignore', value: isCaseIgnore}"
+                       @input="isCaseIgnore = !isCaseIgnore"></c-box>
             </div>
             <div class="tasks__wrapper">
                 <tasks-table :tasks="tasks" v-model="keys" @click="clickToTask(keys)"/>
                 <navigation-buttons v-if="pageNum>0"
                                     :num="pageNum"
                                     :lastPage="lastPage"
-                                    v-model="pageNum"
-                                    @change="pageTasksChangeAction()"/>
+                                    @change="pageTasksChangeAction($event)"/>
             </div>
         </div>
-        <div class="small_pair__wrapper">
+        <div class="search_cb__wrapper">
             <label class="sear__button clickable noselect__wrapper">Search
                 <input type="button" @click="search()">
             </label>
@@ -50,6 +43,7 @@
     import AxiosFunctions from './js/axiosFunctions'
     import NavigationButtons from './elements/functional/NavigationButtons';
     import CheckBox from './elements/functional/CheckBox'
+    import CBox from './elements/functional/CBox'
 
     export default {
         name: "Search",
@@ -58,7 +52,8 @@
             TasksTable,
             searchingLine: SearchingLine,
             navigationButtons: NavigationButtons,
-            checkBox: CheckBox
+            checkBox: CheckBox,
+            cBox: CBox
         },
 
         props: [
@@ -124,7 +119,7 @@
                         if (this.lastPage === 0) {
                             this.pageNum = 0;
                         } else {
-                            this.pageNum = 1;
+                            this.pageNum = (this.pageNum < this.lastPage) ? this.pageNum : 1;
                             if (this.isPageNotRight(+this.pageNum)) {
                                 this.$router.push({name: "error"});
                             }
@@ -156,8 +151,8 @@
                 this.$router.push({name: "search", query: query})
             },
 
-            pageTasksChangeAction: function () {
-                const query = this.createQuery();
+            pageTasksChangeAction: function (page) {
+                const query = this.createQuery(page);
                 const pushParams = {
                     name: "search",
                     query: query
@@ -225,5 +220,32 @@
 
     .tasks__wrapper {
         text-align: center;
+    }
+
+    .search_tasks__wrapper {
+        flex-basis: 90%;
+    }
+
+    .search_cb__wrapper {
+        flex-basis: 10%;
+    }
+
+    .sear__button {
+        width: 140px;
+        margin: 10px 15px;
+        list-style-type: none;
+        padding: 10px 105px 10px 105px;
+        color: #4FB9A7;
+        cursor: pointer;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+    }
+
+    .sear__button input {
+        display: none;
+    }
+
+    .tasks_search__wrapper {
+        display: flex;
     }
 </style>

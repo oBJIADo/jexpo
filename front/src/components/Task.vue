@@ -5,18 +5,21 @@
         <div class="main_details__wrapper">
 
             <div class="big_pair__wrapper">
-                <div class="grey__wrapper">
+                <div class="details__wrapper">
                     <p class="title">Description: </p>
-                    <text-component class="content" :text="task.description"></text-component>
+                    <text-component :text="task.description"></text-component>
                 </div>
-                <div class="grey__wrapper" v-if="!isEmpty(filesNames)">
-                    <p class="title">Attachements</p>
-                    <p
-                            class="content clickable"
-                            v-for="name in filesNames"
-                            @click="download(name)">{{name}}</p>
-                </div>
-                <div class="grey__wrapper" v-if="!isEmpty(task.comments)">
+                <files-list :title="'Attachments'"
+                            :files-names="filesNames"
+                            @click="download($event)"></files-list>
+                <!--<div class="details__wrapper" v-if="!isEmpty(filesNames)">-->
+                    <!--<p class="title">Attachments</p>-->
+                    <!--<p-->
+                            <!--class="content clickable"-->
+                            <!--v-for="name in filesNames"-->
+                            <!--@click="download(name)">{{name}}</p>-->
+                <!--</div>-->
+                <div class="details__wrapper" v-if="!isEmpty(task.comments)">
                     <p class="title">Comments: </p>
                     <comments-list :comments="task.comments"></comments-list>
                 </div>
@@ -24,55 +27,51 @@
 
             <div class="small_pair__wrapper">
                 <div class="details__wrapper">
-                    <h3>Details</h3>
-                    <task-element :title="'Issue type'" :field="task.issueType"></task-element>
-                    <task-element :title="'Status'" :field="task.status"></task-element>
-                    <task-element :title="'Priority'" :field="task.priority" v-if="task.priority"></task-element>
-                    <task-element :title="'Resolution'" :field="task.resolution" v-if="task.resolution"></task-element>
-                    <div class="component__wrapper" v-if="!isEmpty(task.subTasks)">
-                        <p class="title"><span>Subtasks: </span></p>
-                        <p class="content clickable" v-for="sub in task.subTasks" v-on:click="goOn(sub)">
-                            <span>{{sub}}</span>
-                        </p>
-                    </div>
-                    <div class="component__wrapper" v-if="!isEmpty(task.parentTasks)">
-                        <p class="title"><span>Parent tasks: </span></p>
-                        <p class="content clickable" v-for="sub in task.parentTasks" v-on:click="goOn(sub)">
-                            <span>{{sub}}</span>
-                        </p>
-                    </div>
-                    <div class="component__wrapper" v-if="!isEmpty(task.duplicateTasks)">
-                        <p class="title"><span>Duplicate: </span></p>
-                        <p class="content clickable" v-for="sub in task.duplicateTasks" v-on:click="goOn(sub)">
-                            <span>{{sub}}</span>
-                        </p>
-                    </div>
-                    <div class="component__wrapper" v-if="!isEmpty(task.relationTasks)">
-                        <p class="title"><span>Related to CRs: </span></p>
-                        <p class="content clickable" v-for="sub in task.relationTasks" v-on:click="goOn(sub)">
-                            <span>{{sub}}</span>
-                        </p>
-                    </div>
+                    <p class="title">Details</p>
+                    <task-element :title="'Issue type'" :input="task.issueType"></task-element>
+                    <task-element :title="'Status'" :input="task.status"></task-element>
+                    <task-element :title="'Priority'" :input="task.priority" v-if="task.priority"></task-element>
+                    <task-element :title="'Resolution'" :input="task.resolution" v-if="task.resolution"></task-element>
+                    <task-element v-if="!isEmpty(task.subTasks)"
+                                  :title="'Subtasks'"
+                                  :input="task.subTasks"
+                                  :is-clickable="true"
+                                  @click="goOn($event)"/>
+                    <task-element v-if="!isEmpty(task.parentTasks)"
+                                  :title="'Parent tasks'"
+                                  :input="task.parentTasks"
+                                  :is-clickable="true"
+                                  @click="goOn($event)"/>
+                    <task-element v-if="!isEmpty(task.duplicateTasks)"
+                                  :title="'Duplicate'"
+                                  :input="task.duplicateTasks"
+                                  :is-clickable="true"
+                                  @click="goOn($event)"/>
+                    <task-element v-if="!isEmpty(task.relationTasks)"
+                                  :title="'Related to CRs'"
+                                  :input="task.relationTasks"
+                                  :is-clickable="true"
+                                  @click="goOn($event)"/>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>Versions</h3>
-                    <task-array :title="'Affects versions'" :array="task.affectsVersions"
-                                v-if="!isEmpty(task.affectsVersions)"></task-array>
-                    <task-array :title="'Fix versions'" :array="task.fixVersions"
-                                v-if="!isEmpty(task.fixVersions)"></task-array>
-                    <task-array :title="'Components'" :array="task.components"
-                                v-if="!isEmpty(task.components)"></task-array>
-                    <task-element :title="'Delivered version'" :field="task.deliveredVersion"
+                    <p class="title">Versions</p>
+                    <task-element :title="'Affects versions'" :input="task.affectsVersions"
+                                  v-if="!isEmpty(task.affectsVersions)"></task-element>
+                    <task-element :title="'Fix versions'" :input="task.fixVersions"
+                                  v-if="!isEmpty(task.fixVersions)"></task-element>
+                    <task-element :title="'Components'" :input="task.components"
+                                  v-if="!isEmpty(task.components)"></task-element>
+                    <task-element :title="'Delivered version'" :input="task.deliveredVersion"
                                   v-if="task.deliveredVersion"></task-element>
-                    <task-element :title="'DRC number'" :field="task.drcNumber" v-if="task.drcNumber"></task-element>
-                    <task-element :title="'Order number'" :field="task.orderNumber"
+                    <task-element :title="'DRC number'" :input="task.drcNumber" v-if="task.drcNumber"></task-element>
+                    <task-element :title="'Order number'" :input="task.orderNumber"
                                   v-if="task.orderNumber"></task-element>
-                    <task-element :title="'Sprint'" :field="task.sprint" v-if="task.sprint"></task-element>
+                    <task-element :title="'Sprint'" :input="task.sprint" v-if="task.sprint"></task-element>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>People</h3>
+                    <p class="title">People</p>
                     <task-person :title="'Assignee'" :employee="task.assignee"></task-person>
                     <task-person :title="'Reporter'" :employee="task.reporter"></task-person>
                     <task-person :title="'Creator'" :employee="task.creater"></task-person>
@@ -82,52 +81,52 @@
 
             <div class="small_pair__wrapper">
                 <div class="details__wrapper">
-                    <h3>Dates</h3>
-                    <task-element :title="'Created'" :field="task.created" v-if="task.created"></task-element>
-                    <task-element :title="'Updated'" :field="task.updated" v-if="task.updated"></task-element>
-                    <task-element :title="'Resolved'" :field="task.resolved" v-if="task.resolved"></task-element>
-                    <task-element :title="'Due date'" :field="task.dueDate" v-if="task.dueDate"></task-element>
+                    <p class="title">Dates</p>
+                    <task-element :title="'Created'" :input="task.created" v-if="task.created"></task-element>
+                    <task-element :title="'Updated'" :input="task.updated" v-if="task.updated"></task-element>
+                    <task-element :title="'Resolved'" :input="task.resolved" v-if="task.resolved"></task-element>
+                    <task-element :title="'Due date'" :input="task.dueDate" v-if="task.dueDate"></task-element>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>Amounts</h3>
-                    <task-element :title="'Σ progress'" :field="task.sumProgress + '%'"
+                    <p class="title">Amounts</p>
+                    <task-element :title="'Σ progress'" :input="task.sumProgress + '%'"
                                   v-if="task.sumProgress"></task-element>
-                    <task-element :title="'Σ time spent, hour'" :field="getHours(task.sumTimeSpant)"
+                    <task-element :title="'Σ time spent, hour'" :input="getHours(task.sumTimeSpant)"
                                   v-if="task.sumTimeSpant"></task-element>
-                    <task-element :title="'Σ remaining estimate, hour'" :field="getHours(task.sumRemainingEstimate)"
+                    <task-element :title="'Σ remaining estimate, hour'" :input="getHours(task.sumRemainingEstimate)"
                                   v-if="task.sumRemainingEstimate"></task-element>
-                    <task-element :title="'Σ original estimate, hour'" :field="getHours(task.sumOriginalEstimate)"
+                    <task-element :title="'Σ original estimate, hour'" :input="getHours(task.sumOriginalEstimate)"
                                   v-if="task.sumOriginalEstimate"></task-element>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>Characteristics</h3>
-                    <task-element :title="'Original estimate, hour'" :field="getHours(task.originalEstimate)"
+                    <p class="title">Characteristics</p>
+                    <task-element :title="'Original estimate, hour'" :input="getHours(task.originalEstimate)"
                                   v-if="task.originalEstimate"></task-element>
-                    <task-element :title="'Remaining estimate, hour'" :field="getHours(task.remainingEstimate)"
+                    <task-element :title="'Remaining estimate, hour'" :input="getHours(task.remainingEstimate)"
                                   v-if="task.remainingEstimate"></task-element>
-                    <task-element :title="'Time spent, hour'" :field="getHours(task.timeSpent)"
+                    <task-element :title="'Time spent, hour'" :input="getHours(task.timeSpent)"
                                   v-if="task.timeSpent"></task-element>
-                    <task-element :title="'Work ratio'" :field="task.workRation + '%'"
+                    <task-element :title="'Work ratio'" :input="task.workRation + '%'"
                                   v-if="task.workRation"></task-element>
-                    <task-element :title="'Progress'" :field="task.progress + '%'" v-if="task.progress"></task-element>
+                    <task-element :title="'Progress'" :input="task.progress + '%'" v-if="task.progress"></task-element>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>Epic</h3>
-                    <task-element :title="'Epic Name'" :field="task.epicName" v-if="task.epicName"></task-element>
-                    <task-element :title="'Epic color'" :field="task.epicColor" v-if="task.epicColor"></task-element>
-                    <task-element :title="'Epic link'" :field="task.epicLink" v-if="task.epicLink"></task-element>
-                    <task-element :title="'Epic status'" :field="task.epicStatus" v-if="task.epicStatus"></task-element>
+                    <p class="title">Epic</p>
+                    <task-element :title="'Epic Name'" :input="task.epicName" v-if="task.epicName"></task-element>
+                    <task-element :title="'Epic color'" :input="task.epicColor" v-if="task.epicColor"></task-element>
+                    <task-element :title="'Epic link'" :input="task.epicLink" v-if="task.epicLink"></task-element>
+                    <task-element :title="'Epic status'" :input="task.epicStatus" v-if="task.epicStatus"></task-element>
                 </div>
 
                 <div class="details__wrapper">
-                    <h3>Another</h3>
-                    <task-array :title="'Labels'" :array="task.labels" v-if="!isEmpty(task.labels)"></task-array>
-                    <task-array :title="'VSE team'" :array="task.teams" v-if="!isEmpty(task.teams)"></task-array>
-                    <task-element :title="'Keyword'" :field="task.keyword" v-if="task.keyword"></task-element>
-                    <task-element :title="'Fix priority'" :field="task.fixPriority"
+                    <p class="title">Another</p>
+                    <task-element :title="'Labels'" :input="task.labels" v-if="!isEmpty(task.labels)"></task-element>
+                    <task-element :title="'VSE team'" :input="task.teams" v-if="!isEmpty(task.teams)"></task-element>
+                    <task-element :title="'Keyword'" :input="task.keyword" v-if="task.keyword"></task-element>
+                    <task-element :title="'Fix priority'" :input="task.fixPriority"
                                   v-if="task.fixPriority"></task-element>
                 </div>
             </div>
@@ -138,21 +137,20 @@
 </template>
 
 <script>
-    //todo set correct time
     import CommentsList from "./elements/comment/CommentsList"
     import TaskPerson from "./elements/task/TaskPerson"
     import TaskElement from "./elements/task/TaskElement"
-    import TaskArray from "./elements/task/TaskArray"
     import TextComponent from "./elements/functional/TextComponent"
     import Constants from "./js/Constants";
+    import FilesList from "./elements/functional/FilesList";
 
     export default {
         name: "Task",
         components: {
+            filesList: FilesList,
             commentsList: CommentsList,
             taskPerson: TaskPerson,
             taskElement: TaskElement,
-            taskArray: TaskArray,
             textComponent: TextComponent
         },
         data: function () {
@@ -207,8 +205,8 @@
 
 
             },
-            getHours(seconds){
-                return seconds/60/60
+            getHours(seconds) {
+                return seconds / 60 / 60
             }
         },
 
@@ -229,6 +227,51 @@
 </script>
 
 <style scoped>
+    .task__wrapper {
+        color: #aaa;
+        min-width: 950px;
+    }
 
+    .task__wrapper h2 {
+        text-align: center;
+    }
+
+    .head_title {
+        color: #4FB9A7;
+    }
+
+    .main_details__wrapper {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .big_pair__wrapper {
+        flex-basis: 60%;
+        margin: 0 5px 0 0;
+    }
+
+    .small_pair__wrapper {
+        flex-basis: 19%;
+        margin: 0 5px;
+    }
+
+    .details__wrapper {
+        background: #333333;
+        margin: 10px 0;
+        padding: 1px 5px;
+        border-radius: 8px;
+    }
+
+    .details__wrapper h3 {
+        border-top: 1px solid #333;
+    }
+
+    .title {
+        margin: 0;
+        font-size: 22px;
+        text-align: center;
+        color: #777777;
+        /*font-style: bold italic;*/
+    }
 </style>
 

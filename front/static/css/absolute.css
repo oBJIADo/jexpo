@@ -1,6 +1,5 @@
 .clickable {
     background: #3d4551;
-    border: 1px solid #3d4551;
 }
 
 .clickable:hover {
@@ -10,22 +9,13 @@
     /*border: 1px solid #4fb9a7;*/
 }
 
-.text {
-    word-wrap: break-word;
-    max-width: 950px;
-    /*display: inline-block;*/
-}
-
-.text a, .text div, .text li, .text ul, .text p, .text span, .text pre, .text font .text {
-    white-space: pre-wrap;
-}
-
 .noselect__wrapper *, .noselect__wrapper {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                     supported by Chrome and Opera */
 }

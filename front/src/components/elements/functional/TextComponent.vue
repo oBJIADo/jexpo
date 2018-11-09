@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="description">
     <p class="text" v-for="txt in addLinksToText()">
       <span>{{txt.text}}</span>
       <router-link class="text__link" v-if="txt.link" :to="{name:'task', params:{key: txt.link}}">{{txt.link}}</router-link>
@@ -68,5 +68,24 @@
 </script>
 
 <style scoped>
+  .text {
+    word-wrap: break-word;
+    max-width: 100%;
+    /*display: inline-block;*/
+  }
+  .text span{
+    max-width: 100%;
+  }
 
+  .text a, .text div, .text li, .text ul, .text p, .text span, .text pre, .text font .text {
+    white-space: pre-wrap;
+  }
+
+  .description {
+    margin: 5px;
+    font-size: 15px;
+    padding: 6px 10px;
+    background: #39403C;
+    border-radius: 10px;
+  }
 </style>

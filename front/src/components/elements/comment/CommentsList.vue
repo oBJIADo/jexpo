@@ -44,5 +44,24 @@
 </script>
 
 <style scoped>
+  .comments_wrapper h1 {
+    text-align: center;
+  }
 
+  .comments_wrapper ul {
+    /*padding: 10px 20px;*/
+    background: #333333;
+    border-radius: 10px;
+  }
+
+  .comments_wrapper li {
+    padding: 5px 5px;
+    margin: 20px 10px;
+    background: #39403C;
+    border-radius: 20px;
+  }
+
+  .comments_wrapper li p{
+    color: #aaaaaa;
+  }
 </style>
