@@ -1,6 +1,6 @@
 <template>
     <div v-if="" class="array_component__wrapper">
-        <div class="title"><span>{{title}}: </span></div>
+        <div class="title noselect__wrapper"><span>{{title}}: </span></div>
         <div class="content"
              v-if="!Array.isArray(input)"
              @click="clickIfClickable(input)">

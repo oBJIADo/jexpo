@@ -1,7 +1,7 @@
 <template>
     <div class="task__wrapper">
-        <h2>Task: <span class="head_title">{{task.keys}}</span></h2>
-        <h2>Summary: <span class="head_title">{{task.summary}}</span></h2>
+        <h2><span class="noselect__wrapper">Task: </span><span class="head_title">{{task.keys}}</span></h2>
+        <h2><span class="noselect__wrapper">Summary: </span><span class="head_title">{{task.summary}}</span></h2>
         <div class="main_details__wrapper">
 
             <div class="big_pair__wrapper">
@@ -12,22 +12,15 @@
                 <files-list :title="'Attachments'"
                             :files-names="filesNames"
                             @click="download($event)"></files-list>
-                <!--<div class="details__wrapper" v-if="!isEmpty(filesNames)">-->
-                    <!--<p class="title">Attachments</p>-->
-                    <!--<p-->
-                            <!--class="content clickable"-->
-                            <!--v-for="name in filesNames"-->
-                            <!--@click="download(name)">{{name}}</p>-->
-                <!--</div>-->
                 <div class="details__wrapper" v-if="!isEmpty(task.comments)">
-                    <p class="title">Comments: </p>
+                    <p class="title noselect__wrapper">Comments: </p>
                     <comments-list :comments="task.comments"></comments-list>
                 </div>
             </div>
 
             <div class="small_pair__wrapper">
                 <div class="details__wrapper">
-                    <p class="title">Details</p>
+                    <p class="title noselect__wrapper">Details</p>
                     <task-element :title="'Issue type'" :input="task.issueType"></task-element>
                     <task-element :title="'Status'" :input="task.status"></task-element>
                     <task-element :title="'Priority'" :input="task.priority" v-if="task.priority"></task-element>
@@ -55,7 +48,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">Versions</p>
+                    <p class="title noselect__wrapper">Versions</p>
                     <task-element :title="'Affects versions'" :input="task.affectsVersions"
                                   v-if="!isEmpty(task.affectsVersions)"></task-element>
                     <task-element :title="'Fix versions'" :input="task.fixVersions"
@@ -71,7 +64,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">People</p>
+                    <p class="title noselect__wrapper">People</p>
                     <task-person :title="'Assignee'" :employee="task.assignee"></task-person>
                     <task-person :title="'Reporter'" :employee="task.reporter"></task-person>
                     <task-person :title="'Creator'" :employee="task.creater"></task-person>
@@ -81,7 +74,7 @@
 
             <div class="small_pair__wrapper">
                 <div class="details__wrapper">
-                    <p class="title">Dates</p>
+                    <p class="title noselect__wrapper">Dates</p>
                     <task-element :title="'Created'" :input="task.created" v-if="task.created"></task-element>
                     <task-element :title="'Updated'" :input="task.updated" v-if="task.updated"></task-element>
                     <task-element :title="'Resolved'" :input="task.resolved" v-if="task.resolved"></task-element>
@@ -89,7 +82,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">Amounts</p>
+                    <p class="title noselect__wrapper">Amounts</p>
                     <task-element :title="'Σ progress'" :input="task.sumProgress + '%'"
                                   v-if="task.sumProgress"></task-element>
                     <task-element :title="'Σ time spent, hour'" :input="getHours(task.sumTimeSpant)"
@@ -101,7 +94,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">Characteristics</p>
+                    <p class="title noselect__wrapper">Characteristics</p>
                     <task-element :title="'Original estimate, hour'" :input="getHours(task.originalEstimate)"
                                   v-if="task.originalEstimate"></task-element>
                     <task-element :title="'Remaining estimate, hour'" :input="getHours(task.remainingEstimate)"
@@ -114,7 +107,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">Epic</p>
+                    <p class="title noselect__wrapper">Epic</p>
                     <task-element :title="'Epic Name'" :input="task.epicName" v-if="task.epicName"></task-element>
                     <task-element :title="'Epic color'" :input="task.epicColor" v-if="task.epicColor"></task-element>
                     <task-element :title="'Epic link'" :input="task.epicLink" v-if="task.epicLink"></task-element>
@@ -122,7 +115,7 @@
                 </div>
 
                 <div class="details__wrapper">
-                    <p class="title">Another</p>
+                    <p class="title noselect__wrapper">Another</p>
                     <task-element :title="'Labels'" :input="task.labels" v-if="!isEmpty(task.labels)"></task-element>
                     <task-element :title="'VSE team'" :input="task.teams" v-if="!isEmpty(task.teams)"></task-element>
                     <task-element :title="'Keyword'" :input="task.keyword" v-if="task.keyword"></task-element>
@@ -248,10 +241,11 @@
     .big_pair__wrapper {
         flex-basis: 60%;
         margin: 0 5px 0 0;
+        max-width: 60vw;
     }
 
     .small_pair__wrapper {
-        flex-basis: 19%;
+        flex-basis: 20%;
         margin: 0 5px;
     }
 

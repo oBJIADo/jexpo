@@ -1,3 +1,18 @@
+@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+body,
+html{
+    background: #1c1d22;
+    color: #777;
+    height: 100%;
+    width: 100%;
+    font-family: "Varela Round", sans-serif;
+    box-sizing: border-box;
+}
+
+li{
+    list-style-type: none;
+}
+
 .clickable {
     background: #3d4551;
 }
@@ -18,4 +33,12 @@
     user-select: none;
     /* Non-prefixed version, currently
                                      supported by Chrome and Opera */
+}
+
+.main__wrapper {
+    width: 90%;
+    margin: 0 auto;
+    min-height: 100%;
+    z-index: 1;
+    padding: 0 30px;
 }
