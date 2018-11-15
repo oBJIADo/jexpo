@@ -2,9 +2,7 @@
   <div class="comments_wrapper">
     <searching :placeHolder="'comments'" v-model="searchParam">
     </searching>
-    <ul v-for="com in comments">
-      <comment :comment="com" v-if="isContains(com)"></comment>
-    </ul>
+      <comment v-for="(com, index) in comments" :key="index" :comment="com" v-if="isContains(com)"></comment>
   </div>
 </template>
 
@@ -44,5 +42,7 @@
 </script>
 
 <style scoped>
-
+  .comments_wrapper h1 {
+    text-align: center;
+  }
 </style>

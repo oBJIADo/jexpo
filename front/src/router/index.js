@@ -42,7 +42,8 @@ export default new Router({
             props: (route) => ({
                 page: route.query.page,
                 searchParam: route.query.searchParam,
-                queryIndexes: route.query.queryIndexes
+                queryIndexes: route.query.queryIndexes,
+                caseIgnore: route.query.caseIgnore
             }),
             component: Search,
         },

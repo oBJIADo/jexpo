@@ -12,7 +12,6 @@ import ru.tsystems.jirexpo.dto.EmployeeDto;
 import ru.tsystems.jirexpo.service.api.EmployeeService;
 
 @RestController
-@RequestMapping("/rest/employees")
 @CrossOrigin
 public class EmployeeController {
 
@@ -24,9 +23,8 @@ public class EmployeeController {
      * 
      * @return List with {@link EmployeeDto}
      */
-    @GetMapping()
+    @GetMapping("employees")
     public List<EmployeeDto> getAll() {
         return employeeService.getAll();
     }
-
 }

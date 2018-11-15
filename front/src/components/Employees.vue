@@ -65,5 +65,10 @@
 </script>
 
 <style scoped>
-
+  .details__wrapper {
+    background: #333333;
+    margin: 10px 0;
+    padding: 1px 5px;
+    border-radius: 8px;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="paginator" id="pageButtons">
+    <div class="paginator noselect__wrapper" id="pageButtons">
         <a class="prev" v-bind:class="prevNext[0]" v-on:click="setNeiboPage(1, prevNext[0])"></a>
         <a v-for="page in pages" v-bind:class="page.classes" v-on:click="setCurPage(page)">
             {{page.count}}
@@ -12,15 +12,12 @@
     export default {
         name: "NavigationButtons",
 
-        props: {
-            num: undefined,
-            lastPage: 0,
-        },
+        props: ["num", "lastPage"],
 
-        model: {
-            pageNum: undefined,
-            event: 'change'
-        },
+        // model: {
+        //     pageNum: undefined,
+        //     event: 'change'
+        // },
 
         data: function () {
             return {
@@ -34,7 +31,7 @@
                 this.setPage(+to);
             },
             'lastPage'() {
-                this.setFirstPage()
+                this.setPage(+this.num)
             }
         },
         methods: {
@@ -178,7 +175,7 @@
                 count = param > 0 ? count - 1 : count + 1;
                 this.changePage(+count);
             },
-        }
+        },
     }
 </script>
 
