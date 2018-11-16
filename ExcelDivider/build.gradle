@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        ktVersion = "1.3.0"
+        ktVersion = "1.3.10"
     }
     repositories {
         mavenCentral()
@@ -19,6 +19,14 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src//main/kt']
+        }
+    }
+}
 
 double javaVersion = 1.8
 
