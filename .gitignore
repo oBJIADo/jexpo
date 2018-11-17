@@ -1,5 +1,8 @@
 # Intellij
 .idea/
+*.iml
 ./ExcelDivider/.idea/
 ./front/.idea/
 ./jirexpo/.idea/
+
+*.properties
