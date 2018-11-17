@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Version")
-class Version : OneParamEntity()
+data class Version(
+        @Column(name = "param")
+        var version: String? = null
+) : GeneralEntity()

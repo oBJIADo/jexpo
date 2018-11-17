@@ -3,7 +3,7 @@ package ru.tsystems.divider.entity
 import javax.persistence.*
 
 @Entity(name = "Consumables")
-class Consumables(
+data class Consumables(
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "status")
         var status: Status? = null,
@@ -22,6 +22,22 @@ class Consumables(
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "sprint")
         var sprint: Sprint? = null,
+
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "workers")
+        var workers: Workers? = null,
+
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "epics")
+        var epics: Epics? = null,
+
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "statistics")
+        var statistics: Statistics? = null,
+
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "dates")
+        var dates: Dates? = null,
 
         @Column(name = "order_number")
         var orderNumber: String? = null,

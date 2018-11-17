@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Sprint")
-class Sprint : OneParamEntity()
+class Sprint(
+        @Column(name = "param")
+        var sprint: String? = null
+) : GeneralEntity()

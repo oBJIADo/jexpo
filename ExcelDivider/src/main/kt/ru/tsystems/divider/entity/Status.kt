@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Status")
-class Status : OneParamEntity()
+data class Status(
+        @Column(name = "param")
+        var status: String? = null
+) : GeneralEntity()

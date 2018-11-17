@@ -5,7 +5,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Dates")
-class Dates(
+data class Dates(
         @Column(name = "updated")
         var updated: Date? = null,
         @Column(name = "resolved")

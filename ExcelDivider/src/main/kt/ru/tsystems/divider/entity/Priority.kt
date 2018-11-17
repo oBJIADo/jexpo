@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Priority")
-class Priority : OneParamEntity()
+data class Priority(
+        @Column(name = "param")
+        var priority: String? = null
+) : GeneralEntity()

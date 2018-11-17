@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Team")
-class Team : OneParamEntity()
+data class Team(
+        @Column(name = "param")
+        var team: String? = null
+): GeneralEntity()

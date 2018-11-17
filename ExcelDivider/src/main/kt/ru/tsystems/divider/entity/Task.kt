@@ -1,4 +1,4 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
 import java.util.Date
 import javax.persistence.CascadeType
@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 @Entity(name = "Task")
-class Task(
+data class Task(
         @Column(name = "keys")
         var keys: String? = null,
 
@@ -30,7 +30,9 @@ class Task(
         @OneToMany(mappedBy = "task")
         var comments: List<Comment> = ArrayList<Comment>(),
 
-
+        @ManyToOne(cascade = [CascadeType.ALL])//todo: OneToOne
+        @JoinColumn(name = "consumables")
+        var consumables: Consumables? = null,
 
         @ManyToMany
         @JoinTable(name = "sub_task", joinColumns = [JoinColumn(name = "task_id")],

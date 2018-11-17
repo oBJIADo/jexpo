@@ -4,7 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Statistics")
-class Statistics(
+data class Statistics(
         @Column(name = "progress")
         var progress: Int? = null,
         @Column(name = "time_spent")

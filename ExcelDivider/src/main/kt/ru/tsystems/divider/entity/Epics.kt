@@ -3,7 +3,7 @@ package ru.tsystems.divider.entity
 import javax.persistence.*
 
 @Entity(name = "Epics")
-class Epics(
+data class Epics(
         @Column(name = "epic_name")
         var epicName: String? = null,
         @ManyToOne(cascade = [CascadeType.ALL])

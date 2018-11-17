@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity(name = "Workers")
-class Workers(
+data class Workers(
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "assignee")
         var assignee: Employee? = null,

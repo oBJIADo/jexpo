@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "Resolution")
-class Resolution : OneParamEntity()
+data class Resolution(
+        @Column(name = "param")
+        var resolution: String? = null
+) : GeneralEntity()

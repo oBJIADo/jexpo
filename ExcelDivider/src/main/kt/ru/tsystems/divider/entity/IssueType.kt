@@ -1,6 +1,10 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "IssueType")
-class IssueType : OneParamEntity()
+data class IssueType(
+        @Column(name = "param")
+        var type: String? = null
+) : GeneralEntity()

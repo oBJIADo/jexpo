@@ -1,4 +1,4 @@
-package ru.tsystems.jirexpo.entity
+package ru.tsystems.divider.entity
 
 import java.util.*
 import javax.persistence.CascadeType
@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-class Comment(
+data class Comment(
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "task_id")
         var task: Task? = null,
