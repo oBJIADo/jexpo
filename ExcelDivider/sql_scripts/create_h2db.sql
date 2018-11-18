@@ -1,26 +1,18 @@
+create table nature(
+  id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  title varchar(30) unique
+)
+
+CREATE TABLE feature(
+  id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  title varchar (30),
+  nature int references nature(id),
+  UNIQUE (title, nature)
+)
+
 CREATE TABLE version (
   id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE issueType (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE status (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE priority (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE resolution (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(40) unique             NOT NULL
 );
 
 CREATE TABLE employee (
@@ -28,21 +20,6 @@ CREATE TABLE employee (
   firstname  varchar(30)                    NOT NULL,
   secondname varchar(30)                    NOT NULL,
   unique (firstname, secondname)
-);
-
-CREATE TABLE epicColor (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE sprint (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(60) unique             NOT NULL
-);
-
-CREATE TABLE keyword (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(60) unique             NOT NULL
 );
 
 create table workers (
@@ -55,8 +32,8 @@ create table workers (
 create table epics (
   id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   epic_name   varchar(150),
-  epic_status int references status (id),
-  epic_color   int references epicColor (id),
+  epic_status int references feature (id),
+  epic_color   int references feature (id),
   epic_link   varchar(100)
 );
 
@@ -84,16 +61,16 @@ create table dates (
 
 create table consumables (
   id                INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  status            int references status (id),
-  priority          int references priority (id),
-  resolution        int references resolution (id),
+  status            int references feature (id),
+  priority          int references feature (id),
+  resolution        int references feature(id),
   description       varchar(32500),
-  sprint            int references sprint (id),
+  sprint            int references feature (id),
   order_number      varchar(100),
   delivered_version varchar(100),
   drc_number        varchar(20),
-  keyword           int references keyword (id),
-  fix_priority      int references priority (id),
+  keyword           int references feature (id),
+  fix_priority      int references feature (id),
   workers           int references workers (id),
   epics             int references epics (id),
   statistics        int references statistics (id),
@@ -104,7 +81,7 @@ CREATE TABLE task (
   id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   keys        varchar(9)                     NOT NULL UNIQUE,
   summary     varchar(300)                   NOT NULL,
-  issue_type  int references issueType (id),
+  issue_type  int references feature (id),
   created     timestamp,
   consumables int references consumables (id)
 );
