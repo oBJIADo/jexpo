@@ -1,138 +1,130 @@
 package ru.tsystems.divider.service.api;
 
-import java.util.Set;
+import ru.tsystems.divider.entity.Comment;
+import ru.tsystems.divider.entity.Employee;
+import ru.tsystems.divider.entity.Feature;
+import ru.tsystems.divider.entity.Task;
 
-import ru.tsystems.divider.entity.*;
+import java.util.Set;
 
 //Think about this
 public interface EntityBuilder {
 
     /**
      * Make a Comment entity and return it
-     * 
-     * @param comment
-     *            Comment.
+     *
+     * @param comment Comment.
      * @return New comment.
      */
     Comment buildComments(String comment);
 
     /**
      * Make a Employee entity and return it
-     * 
-     * @param employee
-     *            String with employee.
+     *
+     * @param employee String with employee.
      * @return New Employee entity.
      */
     Employee buildEmployee(String employee);
 
     /**
      * Make a component entity and return it
-     * 
-     * @param component
-     *            component.
+     *
+     * @param component component.
      * @return Set with components component entity.
      */
-    Set<Component> buildComponents(String component);
+    Set<Feature> buildComponents(String component);
 
     /**
      * Make a EpicColor entity and return it
-     * 
-     * @param color
-     *            color.
+     *
+     * @param color color.
      * @return New EpicColor entity.
      */
-    EpicColor buildEpicColor(String color);
+    Feature buildEpicColor(String color);
 
     /**
      * Make a IssueType entity and return it
-     * 
-     * @param type
-     *            Issue Type.
+     *
+     * @param type Issue Type.
      * @return New IssueType entity.
      */
-    IssueType buildIssueType(String type);
+    Feature buildIssueType(String type);
 
     /**
      * Make a Keyword entity and return it
-     * 
-     * @param keyword
-     *            keyword.
+     *
+     * @param keyword keyword.
      * @return New keyword entity.
      */
-    Keyword buildKeyword(String keyword);
+    Feature buildKeyword(String keyword);
 
     /**
      * Make a label entity and return it
-     * 
-     * @param label
-     *            label.
+     *
+     * @param label label.
      * @return Set with labels entity.
      */
-    Set<Label> buildLabels(String label);
+    Set<Feature> buildLabels(String label);
 
     /**
      * Make a priority entity and return it
-     * 
-     * @param priority
-     *            priority.
+     *
+     * @param priority priority.
      * @return New priority entity.
      */
-    Priority buildPriority(String priority);
+    Feature buildPriority(String priority);
 
     /**
      * Make a resolution entity and return it
-     * 
-     * @param resolution
-     *            resolution.
+     *
+     * @param resolution resolution.
      * @return New resolution entity.
      */
-    Resolution buildResolution(String resolution);
+    Feature buildResolution(String resolution);
 
     /**
      * Make a sprint entity and return it
-     * 
-     * @param sprint
-     *            sprint.
+     *
+     * @param sprint sprint.
      * @return New sprint entity.
      */
-    Sprint buildSprint(String sprint);
+    Feature buildSprint(String sprint);
 
     /**
      * Make a status entity and return it
-     * 
-     * @param status
-     *            assignee.
+     *
+     * @param status assignee.
      * @return New status entity.
      */
-    Status buildStatus(String status);
+    Feature buildStatus(String status);
 
     /**
      * Make a team entity and return it
-     * 
-     * @param team
-     *            team.
+     *
+     * @param team team.
      * @return New team entity.
      */
-    Set<Team> buildTeams(String team);
+    Set<Feature> buildTeams(String team);
 
     /**
      * Make a version entity and return it
      *
-     * @param version
-     *            version.
+     * @param version version.
      * @return Set with version entities.
      */
-    Set<Version> buildVersions(String version);
+    Set<Feature> buildVersions(String version);
 
     /**
      * Make a subtask set and return it
      *
-     * @param subTasks
-     *            version.
+     * @param subTasks version.
      * @return Set with version entities.
      */
     Set<Task> buildConnectionToAnotherTasks(String subTasks);
 
     Comment buildCommentsWithTask(String comment);
+
+    //todo: javadocks
+    public Feature buildDeliveredVersion(String status);
 
 }

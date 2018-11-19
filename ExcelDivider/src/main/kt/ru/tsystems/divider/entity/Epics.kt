@@ -8,10 +8,10 @@ data class Epics(
         var epicName: String? = null,
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "epic_status")
-        val epicStatus: Status? = null,
+        val epicStatus: Feature? = null,
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "epic_color")
-        var epicColor: EpicColor? = null,
+        var epicColor: Feature? = null,
         @Column(name = "epic_link")
         var epicLink: String? = null
 ) : GeneralEntity()

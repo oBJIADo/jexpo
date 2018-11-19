@@ -1,27 +1,33 @@
 package ru.tsystems.divider.entity
 
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
 
 @Entity(name = "Consumables")
 data class Consumables(
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "status")
-        var status: Status? = null,
+        var status: Feature? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "priority")
-        var priority: Priority? = null,
+        var priority: Feature? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "resolution")
-        var resolution: Resolution? = null,
+        var resolution: Feature? = null,
 
         @Column(name = "description")
         var description: String? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "sprint")
-        var sprint: Sprint? = null,
+        var sprint: Feature? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "workers")
@@ -39,46 +45,47 @@ data class Consumables(
         @JoinColumn(name = "dates")
         var dates: Dates? = null,
 
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "drc_number")
+        var drcNumber: String? = null,
+
         @Column(name = "order_number")
         var orderNumber: String? = null,
 
         @Column(name = "delivered_version")
-        var deliveredVersion: String? = null,
-
-        @Column(name = "drc_number")
-        var drcNumber: String? = null,
+        var deliveredVersion: Feature? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "keyword")
-        var keyword: Keyword? = null,
+        var keyword: Feature? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "fix_priority")
-        var fixPriority: Priority? = null,
+        var fixPriority: Feature? = null,
 
         @ManyToMany
         @JoinTable(name = "sub_affects_version", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "version_id")])
-        var affectsVersions: Set<Version> = HashSet<Version>(),
+        var affectsVersions: Set<Feature> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "task_fix_version", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "version_id")])
-        var fixVersions: Set<Version> = HashSet<Version>(),
+        var fixVersions: Set<Feature> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "task_component", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "component_id")])
-        var components: Set<Component> = HashSet<Component>(),
+        var components: Set<Feature> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "task_label", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "label_id")])
-        var labels: Set<Label> = HashSet<Label>(),
+        var labels: Set<Feature> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "task_team", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "team_id")])
-        var teams: Set<Team> = HashSet<Team>()
+        var teams: Set<Feature> = HashSet()
 
 ) : GeneralEntity()

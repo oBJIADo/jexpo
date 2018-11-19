@@ -22,7 +22,7 @@ data class Task(
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "issue_type")
-        var issueType: IssueType? = null,
+        var issueType: Feature? = null,
 
         @Column(name = "created")
         var created: Date? = null,
@@ -37,20 +37,20 @@ data class Task(
         @ManyToMany
         @JoinTable(name = "sub_task", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "subtask_id")])
-        var subTasks: Set<Task> = HashSet<Task>(),
+        var subTasks: Set<Task> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "sub_task", joinColumns = [JoinColumn(name = "subtask_id")],
                 inverseJoinColumns = [JoinColumn(name = "task_id")])
-        var parentTasks: Set<Task> = HashSet<Task>(),
+        var parentTasks: Set<Task> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "relation_task", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "relation_task_id")])
-        var relationTasks: Set<Task> = HashSet<Task>(),
+        var relationTasks: Set<Task> = HashSet(),
 
         @ManyToMany
         @JoinTable(name = "duplicate_task", joinColumns = [JoinColumn(name = "task_id")],
                 inverseJoinColumns = [JoinColumn(name = "duplicate_task_id")])
-        var duplicateTasks: Set<Task> = HashSet<Task>()
+        var duplicateTasks: Set<Task> = HashSet()
 ) : GeneralEntity()

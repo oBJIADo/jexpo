@@ -131,7 +131,7 @@ open class RowToEntityConverterImpl(
     private fun setUpConsumables(row: Row): Consumables = Consumables(
             affectsVersions = builder.buildVersions(getStringCellValue(getCell(row, "affectsVersion"))),
             components = builder.buildComponents(getStringCellValue(getCell(row, "components"))),
-            deliveredVersion = getStringCellValue(getCell(row, "deliveredVersion")),
+            deliveredVersion = builder.buildDeliveredVersion(getStringCellValue(getCell(row, "deliveredVersion"))),
             description = getStringCellValue(getCell(row, "description")),
             drcNumber = getStringCellValue(getCell(row, "drcNumber")),
             fixPriority = builder.buildPriority(getStringCellValue(getCell(row, "fixPriority"))),

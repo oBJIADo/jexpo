@@ -1,19 +1,17 @@
 package ru.tsystems.divider.service.api;
 
-import ru.tsystems.divider.entity.OneParamEntity;
+import ru.tsystems.divider.entity.Feature;
 
-public interface OneParamService<Entity extends OneParamEntity> {
-
+public interface FeatureService {
     /**
      * Find One param entity by this param.
-     * 
+     *
      * @param param
      *            param for searching.
-     * @param className
-     *            Class of the current entity.
+     * @param nature
      * @return Entity if it exist, either null.
      */
-    Entity findByParam(String param, Class<? extends Entity> className);
+    public Feature findByParam(String param, String nature);
 
     /**
      * Persist into db OneParamEntity.
@@ -21,5 +19,7 @@ public interface OneParamService<Entity extends OneParamEntity> {
      * @param entity
      *            One param Entity.
      */
-    void persist(Entity entity);
+    public void persist(Feature entity);
+
+    public Feature createFeatur(String title, String nature);
 }

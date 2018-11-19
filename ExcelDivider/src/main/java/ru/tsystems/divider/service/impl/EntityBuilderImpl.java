@@ -1,5 +1,20 @@
 package ru.tsystems.divider.service.impl;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.tsystems.divider.components.api.MessageWorker;
+import ru.tsystems.divider.entity.Comment;
+import ru.tsystems.divider.entity.Employee;
+import ru.tsystems.divider.entity.Feature;
+import ru.tsystems.divider.entity.Task;
+import ru.tsystems.divider.service.api.EmployeeService;
+import ru.tsystems.divider.service.api.EntityBuilder;
+import ru.tsystems.divider.service.api.FeatureService;
+import ru.tsystems.divider.service.api.FieldBuilder;
+import ru.tsystems.divider.service.api.TaskService;
+import ru.tsystems.divider.utils.constants.NatureConstants;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,28 +22,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import ru.tsystems.divider.components.api.MessageWorker;
-import ru.tsystems.divider.entity.*;
-import ru.tsystems.divider.service.api.*;
-
 @Service
 public class EntityBuilderImpl implements EntityBuilder {
     private static final Logger logger = Logger.getLogger(EntityBuilderImpl.class);
 
-    @Autowired
     private FieldBuilder rebuilder;
 
-    @Autowired
-    private OneParamService<OneParamEntity> oneParamService;
+    private FeatureService featureService;
 
-    @Autowired
     private EmployeeService employeeService;
 
-    @Autowired
     private TaskService taskService;
 
     private static final String SYMBOLS_SOURCE = "symbol.divideSymbol.";
@@ -45,7 +48,16 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     private final String FORMAT_DATE;
 
-    public EntityBuilderImpl(@Autowired MessageWorker messageWorker) {
+    public EntityBuilderImpl(@Autowired MessageWorker messageWorker,
+                             @Autowired FieldBuilder rebuilder,
+                             @Autowired FeatureService featureService,
+                             @Autowired EmployeeService employeeService,
+                             @Autowired TaskService taskService) {
+        this.rebuilder = rebuilder;
+        this.featureService = featureService;
+        this.employeeService = employeeService;
+        this.taskService = taskService;
+
         KEY_MODIFICATOR = messageWorker.getSourceValue("modificator.keys.pre");
 
         FORMAT_DATE = messageWorker.getSourceValue("format.read.date") == null ? "dd.MM.yyyy HH:mm"
@@ -60,8 +72,7 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a Employee entity and return it
      *
-     * @param employee
-     *            String with employee.
+     * @param employee String with employee.
      * @return New Employee entity.
      */
     @Override
@@ -74,100 +85,98 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a EpicColor entity and return it
      *
-     * @param color
-     *            color.
+     * @param color color.
      * @return New EpicColor entity.
      */
     @Override
-    public EpicColor buildEpicColor(String color) {
-        return (EpicColor) getOrCreateOneParamEntity(new EpicColor(color), EpicColor.class);
+    public Feature buildEpicColor(String color) {
+        return getOrCreateOneParamEntity(color, NatureConstants.EPIC_COLOR);
     }
 
     /**
      * Make a IssueType entity and return it
      *
-     * @param type
-     *            Issue Type.
+     * @param type Issue Type.
      * @return New IssueType entity.
      */
     @Override
-    public IssueType buildIssueType(String type) {
-        return (IssueType) getOrCreateOneParamEntity(new IssueType(type), IssueType.class);
+    public Feature buildIssueType(String type) {
+        return getOrCreateOneParamEntity(type, NatureConstants.ISSUE_TYPE);
     }
 
     /**
      * Make a Keyword entity and return it
      *
-     * @param keyword
-     *            keyword.
+     * @param keyword keyword.
      * @return New keyword entity.
      */
     @Override
-    public Keyword buildKeyword(String keyword) {
-        return (Keyword) getOrCreateOneParamEntity(new Keyword(keyword), Keyword.class);
+    public Feature buildKeyword(String keyword) {
+        return getOrCreateOneParamEntity(keyword, NatureConstants.KEYWORD);
     }
 
     /**
      * Make a priority entity and return it
      *
-     * @param priority
-     *            priority.
+     * @param priority priority.
      * @return New priority entity.
      */
     @Override
-    public Priority buildPriority(String priority) {
-        return (Priority) getOrCreateOneParamEntity(new Priority(priority), Priority.class);
+    public Feature buildPriority(String priority) {
+        return getOrCreateOneParamEntity(priority, NatureConstants.PRIORITY);
     }
 
     /**
      * Make a resolution entity and return it
      *
-     * @param resolution
-     *            assignee.
+     * @param resolution assignee.
      * @return New resolution entity.
      */
     @Override
-    public Resolution buildResolution(String resolution) {
-        return (Resolution) getOrCreateOneParamEntity(new Resolution(resolution), Resolution.class);
+    public Feature buildResolution(String resolution) {
+        return getOrCreateOneParamEntity(resolution, NatureConstants.RESOLUTION);
     }
 
     /**
      * Make a sprint entity and return it
      *
-     * @param sprint
-     *            sprint.
+     * @param sprint sprint.
      * @return New sprint entity.
      */
     @Override
-    public Sprint buildSprint(String sprint) {
-        return (Sprint) getOrCreateOneParamEntity(new Sprint(sprint), Sprint.class);
+    public Feature buildSprint(String sprint) {
+        return getOrCreateOneParamEntity(sprint, NatureConstants.SPRINT);
     }
 
     /**
      * Make a status entity and return it
      *
-     * @param status
-     *            assignee.
+     * @param status assignee.
      * @return New status entity.
      */
     @Override
-    public Status buildStatus(String status) {
-        return (Status) getOrCreateOneParamEntity(new Status(status), Status.class);
+    public Feature buildStatus(String status) {
+        return getOrCreateOneParamEntity(status, NatureConstants.STATUS);
+    }
+
+    //todo: javadocs
+    @Override
+    public Feature buildDeliveredVersion(String status) {
+        return getOrCreateOneParamEntity(status, NatureConstants.VERSION);
     }
 
     /**
      * Make a team entity and return it
      *
-     * @param team
-     *            team.
+     * @param team team.
      * @return New team entity.
      */
     @Override
-    public Set<Team> buildTeams(String team) {
+    public Set<Feature> buildTeams(String team) {
         if (isEmtyOrNull(team))
             return null;
 
-        Set<Team> components = new HashSet<>();
+        Set<Feature> components = new HashSet<>();
 
         String[] params = rebuilder.rebuildJiraField(team, ANOTHER_DIVIDER);
         for (String param : params)
@@ -179,19 +188,17 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a team entity and return it
      *
-     * @param team
-     *            team.
+     * @param team team.
      * @return New team entity.
      */
-    private Team buildTeam(String team) {
-        return (Team) getOrCreateOneParamEntity(new Team(team), Team.class);
+    private Feature buildTeam(String team) {
+        return getOrCreateOneParamEntity(team, NatureConstants.TEAM);
     }
 
     /**
      * Make a Comment entity and return it
      *
-     * @param comment
-     *            Comment.
+     * @param comment Comment.
      * @return New comment.
      */
     @Override
@@ -207,7 +214,7 @@ public class EntityBuilderImpl implements EntityBuilder {
         comentator = this.buildEmployee(author);
         commentBirthDay = this.dateFromString(date);
 
-        return new Comment(commentBirthDay, comentator, commentText);
+        return new Comment(null, commentBirthDay, comentator, commentText);
     }
 
     @Override
@@ -233,9 +240,8 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     /**
      * Convert String with special format (dd.MM.yyyy HH:mm) into Date.
-     * 
-     * @param date
-     *            String with date.
+     *
+     * @param date String with date.
      * @return Date
      */
     private Date dateFromString(String date) {
@@ -251,16 +257,15 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a component entity and return it
      *
-     * @param component
-     *            component.
+     * @param component component.
      * @return Set with components component entity.
      */
     @Override
-    public Set<Component> buildComponents(String component) {
+    public Set<Feature> buildComponents(String component) {
         if (isEmtyOrNull(component))
             return null;
 
-        Set<Component> components = new HashSet<>();
+        Set<Feature> components = new HashSet<>();
 
         String[] params = rebuilder.rebuildJiraField(component, ANOTHER_DIVIDER);
         for (String param : params)
@@ -272,27 +277,25 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a component entity and return it
      *
-     * @param component
-     *            component.
+     * @param component component.
      * @return New component entity.
      */
-    private Component buildComponent(String component) {
-        return (Component) getOrCreateOneParamEntity(new Component(component), Component.class);
+    private Feature buildComponent(String component) {
+        return getOrCreateOneParamEntity(component, NatureConstants.COMPONENT);
     }
 
     /**
      * Make a label entity and return it
      *
-     * @param label
-     *            label.
+     * @param label label.
      * @return Set with labels entity.
      */
     @Override
-    public Set<Label> buildLabels(String label) {
+    public Set<Feature> buildLabels(String label) {
         if (isEmtyOrNull(label))
             return null;
 
-        Set<Label> labels = new HashSet<>();
+        Set<Feature> labels = new HashSet<>();
 
         String[] params = rebuilder.rebuildJiraField(label, ANOTHER_DIVIDER);
         for (String param : params)
@@ -304,26 +307,24 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a label entity and return it
      *
-     * @param label
-     *            label.
+     * @param label label.
      * @return New label entity.
      */
-    private Label buildLabel(String label) {
-        return (Label) getOrCreateOneParamEntity(new Label(label), Label.class);
+    private Feature buildLabel(String label) {
+        return getOrCreateOneParamEntity(label, NatureConstants.LABEL);
     }
 
     /**
      * Make a version entity and return it
      *
-     * @param version
-     *            version.
+     * @param version version.
      * @return Set with version entities.
      */
     @Override
-    public Set<Version> buildVersions(String version) {
+    public Set<Feature> buildVersions(String version) {
         if (isEmtyOrNull(version))
             return null;
-        Set<Version> labels = new HashSet<>();
+        Set<Feature> labels = new HashSet<>();
 
         String[] params = rebuilder.rebuildJiraField(version, ANOTHER_DIVIDER);
         for (String param : params)
@@ -335,42 +336,36 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a resolution entity and return it
      *
-     * @param version
-     *            version.
+     * @param version version.
      * @return New version entity.
      */
-    private Version buildVersion(String version) {
-        return (Version) getOrCreateOneParamEntity(new Version(version), Version.class);
+    private Feature buildVersion(String version) {
+        return getOrCreateOneParamEntity(version, NatureConstants.VERSION);
     }
 
     /**
      * Try to find one param entity. If it doesn't exist, persist new.
-     * 
-     * @param uncheked
-     *            Entity
-     * @param className
-     *            Entity's class.
+     *
+     * @param title  Title
+     * @param nature Nature constant.
      * @return OneParamEntity
      */
-    private OneParamEntity getOrCreateOneParamEntity(OneParamEntity uncheked,
-            Class<? extends OneParamEntity> className) {
-        if (isEmtyOrNull(uncheked.getParam()))
+    private Feature getOrCreateOneParamEntity(String title, String nature) {
+        if (title == null || title.isEmpty() || nature == null || nature.isEmpty())
             return null;
 
-        OneParamEntity ope = oneParamService.findByParam(uncheked.getParam(), className);
-        if (ope != null) {
-            return ope;
+        Feature feature = featureService.findByParam(title, nature);
+        if (feature != null) {
+            return feature;
         } else {
-            oneParamService.persist(uncheked);
-            return uncheked;
+            return featureService.createFeatur(title, nature);
         }
     }
 
     /**
      * Get employee or create new if it not exist.
-     * 
-     * @param names
-     *            String massive with firstname and secondname.
+     *
+     * @param names String massive with firstname and secondname.
      * @return Employee.
      */
     private Employee getOrCreateEmployee(String[] names) {
@@ -385,11 +380,9 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     /**
      * Try to find employee into db. If it not exit, create new employee and persist it into.
-     * 
-     * @param firstName
-     *            Employee's firstname.
-     * @param secondName
-     *            Employee's secondname.
+     *
+     * @param firstName  Employee's firstname.
+     * @param secondName Employee's secondname.
      * @return Employee.
      */
     private Employee findOrPersistEmployee(String firstName, String secondName) {
@@ -407,7 +400,7 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     /**
      * Logging and get null user. Calling if names has null values.
-     * 
+     *
      * @return null
      */
     private Employee getUnassignedEmployee() {
@@ -418,8 +411,7 @@ public class EntityBuilderImpl implements EntityBuilder {
     /**
      * Make a subtask set and return it
      *
-     * @param subTasks
-     *            version.
+     * @param subTasks version.
      * @return Set with version entities.
      */
     @Override
