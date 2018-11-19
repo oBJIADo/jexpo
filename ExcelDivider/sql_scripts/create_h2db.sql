@@ -5,15 +5,10 @@ create table nature(
 
 CREATE TABLE feature(
   id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  title varchar (30),
-  nature int references nature(id),
+  title varchar (30) not null,
+  nature int references nature(id) not null,
   UNIQUE (title, nature)
 )
-
-CREATE TABLE version (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
 
 CREATE TABLE employee (
   id         INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -67,7 +62,7 @@ create table consumables (
   description       varchar(32500),
   sprint            int references feature (id),
   order_number      varchar(100),
-  delivered_version varchar(100),
+  delivered_version int references feature(id),
   drc_number        varchar(20),
   keyword           int references feature (id),
   fix_priority      int references feature (id),
@@ -124,7 +119,7 @@ CREATE TABLE comment (
 CREATE TABLE sub_affects_version (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  version_id     int REFERENCES version (id)
+  version_id     int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, version_id),
   UNIQUE (consumables_id, version_id)
@@ -133,50 +128,51 @@ CREATE TABLE sub_affects_version (
 CREATE TABLE task_fix_version (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  version_id     int REFERENCES version (id)
+  version_id     int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, version_id),
   UNIQUE (consumables_id, version_id)
 );
 
-CREATE TABLE component (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
 CREATE TABLE task_component (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  component_id   int REFERENCES component (id)
+  component_id   int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, component_id),
   UNIQUE (consumables_id, component_id)
 );
 
-CREATE TABLE label (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(50) unique             NOT NULL
-);
 
 CREATE TABLE task_label (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  label_id       int REFERENCES label (id)
+  label_id       int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, label_id),
   UNIQUE (consumables_id, label_id)
 );
 
-CREATE TABLE team (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
 
 CREATE TABLE task_team (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  team_id        int REFERENCES team (id)
+  team_id        int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, team_id),
   UNIQUE (consumables_id, team_id)
 );
+
+INSERT IntO nature(title) values ('version');
+INSERT IntO nature(title) values ('epicStatus');
+INSERT IntO nature(title) values ('epicColor');
+INSERT IntO nature(title) values ('status');
+INSERT IntO nature(title) values ('priority');
+INSERT IntO nature(title) values ('resolution');
+INSERT IntO nature(title) values ('sprint');
+INSERT IntO nature(title) values ('keyword');
+INSERT IntO nature(title) values ('fixPriority');
+INSERT IntO nature(title) values ('issueType');
+INSERT IntO nature(title) values ('component');
+INSERT IntO nature(title) values ('label');
+INSERT IntO nature(title) values ('team');
