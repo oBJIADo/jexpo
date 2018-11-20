@@ -27,7 +27,7 @@ public class MessageWorkerImpl implements MessageWorker {
 
     }
 
-    public String getSourceValue(String sourceName) {
+    public String getSourceValue(String sourceName) { //todo: this method should be removed and all "sourcePath"s should be in constants!
         try {
             String message = messageSource.getMessage(sourceName, null, Locale.getDefault());
             return message == null || message.isEmpty() ? null : message;

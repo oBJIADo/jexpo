@@ -1,6 +1,6 @@
 package ru.tsystems.divider.exceptions;
 
-public class PropertiesException extends Exception {
+public class PropertiesException extends Exception { //todo: use it or remove!
 
     /**
      * Constructs a new exception with {@code null} as its detail message.

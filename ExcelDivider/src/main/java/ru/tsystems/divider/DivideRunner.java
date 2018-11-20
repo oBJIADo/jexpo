@@ -67,10 +67,6 @@ public class DivideRunner {
             System.out.println("Can't to read file.");
             logger.fatal("Can't to read file.");
         }
-        // catch (PropertiesException propExc){
-        // System.out.println(propExc.getMessage());
-        // logger.fatal(propExc.getMessage());
-        // }
     }
 
     private static void startTasksReader(String fileName, String sheetName, int startRowIndex,

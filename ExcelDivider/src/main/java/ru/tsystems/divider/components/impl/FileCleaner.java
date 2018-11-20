@@ -12,6 +12,11 @@ import ru.tsystems.divider.service.api.ExcelFileWriter;
 import ru.tsystems.divider.service.impl.XlsxReaderImpl;
 import ru.tsystems.divider.service.impl.XlsxWriterImpl;
 
+/*
+    todo: Component should remove tags from source only. It shouldn't read file, parsinx xlsx, etc... When class will
+    todo: changing, rename this class to new name. Mb should to add properties for that!
+ */
+
 public class FileCleaner {
 
     private final static Map<String, String> REPLACES_TAGS;
@@ -56,7 +61,7 @@ public class FileCleaner {
         REPLACES.put("\t", " ");
     }
 
-    public void ClearFile(String readFileName, String resultFileName, String sheetName)
+    public void clearFile(String readFileName, String resultFileName, String sheetName)
             throws IOException, NoShetException {
         try (ExcelFileReader reader = new XlsxReaderImpl(readFileName, sheetName);
                 ExcelFileWriter writer = new XlsxWriterImpl(resultFileName, sheetName)) {
@@ -110,7 +115,6 @@ public class FileCleaner {
 
     public static String removeTags(String line) {
         String result = line;
-        String fullTag;
         int indexStart;
         int indexEnd;
 
@@ -121,7 +125,6 @@ public class FileCleaner {
                     result = result.substring(0, indexStart) + REPLACES_TAGS.get(tag);
                 else
                     result = result.substring(0, indexStart) + REPLACES_TAGS.get(tag) + result.substring(indexEnd + 1);
-                // }
             }
         }
         return result;

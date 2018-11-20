@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ru.tsystems.divider.exceptions.NoShetException;
 
+//todo: deprecated "OldExcel" methods, if it possible
 public interface JiraToDBConverter {
 
     /**

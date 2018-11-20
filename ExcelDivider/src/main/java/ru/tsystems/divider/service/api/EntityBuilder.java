@@ -7,6 +7,7 @@ import ru.tsystems.divider.entity.Task;
 
 import java.util.Set;
 
+//todo: All methods with simmilar arguments and output results should be deprecated!
 //Think about this
 public interface EntityBuilder {
 

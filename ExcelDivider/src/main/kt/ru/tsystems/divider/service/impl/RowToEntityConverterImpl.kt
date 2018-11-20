@@ -4,6 +4,7 @@ import org.apache.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.tsystems.divider.components.api.MessageWorker
 import ru.tsystems.divider.entity.Comment
@@ -20,6 +21,7 @@ import ru.tsystems.divider.service.api.RowToEntityConverter
 import ru.tsystems.divider.service.api.TaskService
 import java.util.*
 
+@Service
 open class RowToEntityConverterImpl(
         @Autowired messageWorker: MessageWorker,
         @Autowired private val builder: EntityBuilder,
@@ -36,7 +38,6 @@ open class RowToEntityConverterImpl(
     private val SOURCE = "column.index."
 
     init {
-
 
         KEY_MODIFICATOR = messageWorker.getSourceValue("modificator.keys.pre")
 

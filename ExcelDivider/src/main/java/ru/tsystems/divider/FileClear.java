@@ -11,7 +11,7 @@ public class FileClear {
     public static void main(String[] args) {
         try {
             FileCleaner fileCleaner = new FileCleaner();
-            fileCleaner.ClearFile(args[0], args[1], args[2]);
+            fileCleaner.clearFile(args[0], args[1], args[2]);
         } catch (FileNotFoundException fnfExc) {
             System.out.println("No file: " + fnfExc.getMessage());
         } catch (IOException ioExc) {
