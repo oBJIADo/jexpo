@@ -4,16 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.divider.dao.api.FeatureDao;
+import ru.tsystems.divider.dao.api.NatureDao;
 import ru.tsystems.divider.entity.Feature;
 import ru.tsystems.divider.service.api.FeatureService;
+import ru.tsystems.divider.service.api.NatureService;
 
 @Service
 public class FeatureServiceImpl implements FeatureService {
 
     private FeatureDao featureDao;
+    private NatureService natureService;
 
-    FeatureServiceImpl(@Autowired FeatureDao dao){
-        this.featureDao = dao;
+    FeatureServiceImpl(@Autowired FeatureDao fDao, @Autowired NatureService natureService){
+        this.featureDao = fDao;
+        this.natureService = natureService;
     }
 
     /**
@@ -37,7 +41,7 @@ public class FeatureServiceImpl implements FeatureService {
      *            One param Entity.
      */
     @Override
-    @Transactional
+    @Transactional //todo: rename or delete.
     public void persist(Feature entity) {
         featureDao.persist(entity);
     }
@@ -50,7 +54,6 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     @Transactional
     public Feature createFeatur(String title, String nature) {
-        //todo
-        return null;
+        return new Feature(title, natureService.getOrAddNatureByTitle(nature));
     }
 }

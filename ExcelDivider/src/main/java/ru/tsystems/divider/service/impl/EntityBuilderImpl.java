@@ -4,15 +4,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tsystems.divider.components.api.MessageWorker;
+import ru.tsystems.divider.dao.api.EmployeeDao;
+import ru.tsystems.divider.dao.api.TaskDao;
 import ru.tsystems.divider.entity.Comment;
 import ru.tsystems.divider.entity.Employee;
 import ru.tsystems.divider.entity.Feature;
 import ru.tsystems.divider.entity.Task;
-import ru.tsystems.divider.service.api.EmployeeService;
 import ru.tsystems.divider.service.api.EntityBuilder;
 import ru.tsystems.divider.service.api.FeatureService;
 import ru.tsystems.divider.service.api.FieldBuilder;
-import ru.tsystems.divider.service.api.TaskService;
 import ru.tsystems.divider.utils.constants.NatureConstants;
 
 import java.text.DateFormat;
@@ -30,9 +30,9 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     private FeatureService featureService;
 
-    private EmployeeService employeeService;
+    private EmployeeDao employeeDao;
 
-    private TaskService taskService;
+    private TaskDao taskDao;
 
     private static final String SYMBOLS_SOURCE = "symbol.divideSymbol.";
 
@@ -51,12 +51,12 @@ public class EntityBuilderImpl implements EntityBuilder {
     public EntityBuilderImpl(@Autowired MessageWorker messageWorker,
                              @Autowired FieldBuilder rebuilder,
                              @Autowired FeatureService featureService,
-                             @Autowired EmployeeService employeeService,
-                             @Autowired TaskService taskService) {
+                             @Autowired EmployeeDao employeeDao,
+                             @Autowired TaskDao taskDao) {
         this.rebuilder = rebuilder;
         this.featureService = featureService;
-        this.employeeService = employeeService;
-        this.taskService = taskService;
+        this.employeeDao = employeeDao;
+        this.taskDao = taskDao;
 
         KEY_MODIFICATOR = messageWorker.getSourceValue("modificator.keys.pre");
 
@@ -233,7 +233,7 @@ public class EntityBuilderImpl implements EntityBuilder {
 
         comentator = this.buildEmployee(author);
         commentBirthDay = this.dateFromString(date);
-        Task task = taskService.findByKey(key);
+        Task task = taskDao.getBykey(key);
 
         return new Comment(task, commentBirthDay, comentator, commentText);
     }
@@ -387,13 +387,13 @@ public class EntityBuilderImpl implements EntityBuilder {
      */
     private Employee findOrPersistEmployee(String firstName, String secondName) {
         Employee employee;
-        if ((employee = employeeService.getByNames(firstName, secondName)) != null) {
+        if ((employee = employeeDao.getByNames(firstName, secondName)) != null) {
             return employee;
-        } else if ((employee = employeeService.getByNames(secondName, firstName)) != null) {
+        } else if ((employee = employeeDao.getByNames(secondName, firstName)) != null) {
             return employee;
         } else {
             employee = new Employee(firstName, secondName);
-            employeeService.persist(employee);
+            employeeDao.persist(employee);
             return employee;
         }
     }
@@ -434,7 +434,7 @@ public class EntityBuilderImpl implements EntityBuilder {
 
     private Task buildSubTask(String key) {
         try {
-            Task task = taskService.findByKey(key);
+            Task task = taskDao.getBykey(key);
             if (task == null)
                 throw new IllegalStateException("Illegal task connection with key: " + key);
             return task;

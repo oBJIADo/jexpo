@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.tsystems.divider.components.api.MessageWorker
+import ru.tsystems.divider.dao.api.CommentDao
+import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Consumables
 import ru.tsystems.divider.entity.Dates
@@ -14,11 +16,9 @@ import ru.tsystems.divider.entity.Epics
 import ru.tsystems.divider.entity.Statistics
 import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.entity.Workers
-import ru.tsystems.divider.service.api.CommentService
 import ru.tsystems.divider.service.api.EntityBuilder
 import ru.tsystems.divider.service.api.FieldBuilder
 import ru.tsystems.divider.service.api.RowToEntityConverter
-import ru.tsystems.divider.service.api.TaskService
 import java.util.*
 
 @Service
@@ -26,8 +26,8 @@ open class RowToEntityConverterImpl(
         @Autowired messageWorker: MessageWorker,
         @Autowired private val builder: EntityBuilder,
         @Autowired private val fieldBuilder: FieldBuilder,
-        @Autowired private val taskService: TaskService,
-        @Autowired private val commentService: CommentService
+        @Autowired private val taskDao: TaskDao,
+        @Autowired private val commentDao: CommentDao
 ) : RowToEntityConverter {
     private val logger = Logger.getLogger(RowToEntityConverterImpl::class.java)
 
@@ -110,14 +110,14 @@ open class RowToEntityConverterImpl(
         var key = getStringCellValue(getCell(row, "keys"))
         if (KEY_MODIFICATOR != null)
             key = fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR)
-        if (taskService.findByKey(key) == null) {
+        if (taskDao.getBykey(key) == null) {
             this.createNewTask(row)
         }
     }
 
     private fun createNewTask(row: Row) {
         val task = setUpTask(row)
-        taskService.persist(task)
+        taskDao.persist(task)
         saveAllComments(row, task)
     }
 
@@ -188,15 +188,16 @@ open class RowToEntityConverterImpl(
     @Transactional
     override fun addTasksConnectFromRow(row: Row) {
         val key = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys")), KEY_MODIFICATOR)
-        val task = taskService.findByKey(key) ?: throw IllegalArgumentException()
+        val task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
 
         task.subTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "subTasks")))
         task.relationTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "relationTasks")))
         task.duplicateTasks = builder
                 .buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "duplicateTasks")))
-        taskService.merge(task)
+        taskDao.merge(task)
     }
 
+    @Transactional
     override fun saveAllComments(row: Row, task: Task) {
         var currentIndex = FIELDS["commentStart"]
                 ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
@@ -207,7 +208,7 @@ open class RowToEntityConverterImpl(
         while (commentString != null) {
             curComment = builder.buildComments(commentString)
             curComment.task = task
-            commentService.persist(curComment)
+            commentDao.persist(curComment)
             commentString = getStringCellValue(row.getCell(currentIndex++)) //todo : delete duplicates
         }
     }
@@ -223,7 +224,7 @@ open class RowToEntityConverterImpl(
         while (commentString != null) {
             curComment = builder.buildCommentsWithTask(commentString)
             if (curComment != null) {
-                commentService.persist(curComment)
+                commentDao.persist(curComment)
             }
             commentString = getStringCellValue(row.getCell(currentIndex++)) //todo : delete duplicates
         }
