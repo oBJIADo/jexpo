@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tsystems.divider.dao.api.FeatureDao;
-import ru.tsystems.divider.dao.api.NatureDao;
 import ru.tsystems.divider.entity.Feature;
 import ru.tsystems.divider.service.api.FeatureService;
 import ru.tsystems.divider.service.api.NatureService;

@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring.xml"})
 public class FieldBuilderImplTest {
-    private String xlsxFilePath = "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\test\\resources\\Book1.xlsx";
+    private String xlsxFilePath = "./src/test/resources/Book1.xlsx";
 
     private String testSheetName = "RebuildTest";
 

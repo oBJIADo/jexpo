@@ -8,12 +8,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.tsystems.divider.common.MessageSimulator;
+import ru.tsystems.divider.components.api.MessageWorker;
 import ru.tsystems.divider.entity.*;
 import ru.tsystems.divider.exceptions.NoShetException;
 import ru.tsystems.divider.service.api.EntityBuilder;
 import ru.tsystems.divider.service.api.ExcelFileReader;
 import ru.tsystems.divider.utils.constants.NatureConstants;
 
+import javax.xml.bind.PropertyException;
+import javax.xml.ws.handler.MessageContext;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
@@ -22,20 +26,24 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring.xml"})
 public class EntityBuilderImplTest {
     private ExcelFileReader xlsxReader;
     private int rowIndex = 2;
 
-    @Autowired
-    private EntityBuilder builder;
+
 
     @Before
-    public void initStreams() throws IOException {
-        String xlsxFilePath = "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\test\\resources\\Book1.xlsx";
+    public void initStreams() throws IOException, PropertyException {
+        String xlsxFilePath = "./src/test/resources/Book1.xlsx";
         String testSheetName = "buildTest";
         xlsxReader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
+
+        MessageWorker messageWorker = MessageSimulator.getMessageWorker();
+        FieldBuilderImpl fieldBuilder = new FieldBuilderImpl(messageWorker);
+
+
+        EntityBuilder builder = new EntityBuilderImpl(messageWorker, fieldBuilder);
+        FeatureServiceImpl featureService = new FeatureServiceImpl();
     }
 
     @After

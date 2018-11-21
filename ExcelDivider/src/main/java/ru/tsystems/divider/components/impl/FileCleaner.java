@@ -54,6 +54,7 @@ public class FileCleaner {
         REPLACES.put("&gt;", ">");
         REPLACES.put("&#228;", "ä");
         REPLACES.put("&#132;", "\"");
+        REPLACES.put("&#29;", "|");
         REPLACES.put("&nbsp;", " ");
         REPLACES.put("&lt;", "<");
         REPLACES.put("&quot;", "\"");

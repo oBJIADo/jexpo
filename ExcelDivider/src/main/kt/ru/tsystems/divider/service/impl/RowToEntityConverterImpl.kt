@@ -201,32 +201,30 @@ open class RowToEntityConverterImpl(
     override fun saveAllComments(row: Row, task: Task) {
         var currentIndex = FIELDS["commentStart"]
                 ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
-        var commentString: String?
+        var commentString: String? = null
         var curComment: Comment
 
-        commentString = getStringCellValue(row.getCell(currentIndex++))  //todo : delete duplicates
-        while (commentString != null) {
+          //todo : delete duplicates
+        while ({commentString = getStringCellValue(row.getCell(currentIndex++)); commentString}() != null) {
             curComment = builder.buildComments(commentString)
             curComment.task = task
             commentDao.persist(curComment)
-            commentString = getStringCellValue(row.getCell(currentIndex++)) //todo : delete duplicates
         }
     }
+
 
     @Transactional
     override fun saveAllComments(row: Row) { //todo: rename or delete method
         var currentIndex: Int = FIELDS["commentMode.commentStart"]
                 ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
-        var commentString: String?
+        var commentString: String? = null
         var curComment: Comment
 
-        commentString = getStringCellValue(row.getCell(currentIndex++))  //todo : delete duplicates
-        while (commentString != null) {
+        while ({commentString = getStringCellValue(row.getCell(currentIndex++)); commentString}() != null) {
             curComment = builder.buildCommentsWithTask(commentString)
             if (curComment != null) {
                 commentDao.persist(curComment)
             }
-            commentString = getStringCellValue(row.getCell(currentIndex++)) //todo : delete duplicates
         }
     }
 
@@ -251,7 +249,7 @@ open class RowToEntityConverterImpl(
         return if (cell == null) null else doubleToInt(cell.numericCellValue) * 100
     }
 
-    private fun doubleToInt(value: Double): Int {
+    private fun doubleToInt(value: Double): Int { //todo: smthng strange
         var value = value
         if (value < 1 && value > 0)
             value *= 100.0

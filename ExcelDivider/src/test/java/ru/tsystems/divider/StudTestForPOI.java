@@ -22,7 +22,7 @@ import java.util.GregorianCalendar;
 
 public class StudTestForPOI {
 
-    private String xlsxFilePath = "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\test\\resources\\Book1.xlsx";
+    private String xlsxFilePath = "./src/test/resources/Book1.xlsx";
     private String firstSheetName = "First";
     private String secondSheetName = "Second";
     private FileInputStream fileInputStream;

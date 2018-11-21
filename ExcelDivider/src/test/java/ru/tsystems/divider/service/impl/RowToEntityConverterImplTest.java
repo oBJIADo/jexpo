@@ -25,7 +25,7 @@ public class RowToEntityConverterImplTest {
 
     @Before
     public void initStreams() throws IOException {
-        String xlsxFilePath = "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\test\\resources\\Book1.xlsx";
+        String xlsxFilePath = "./src/test/resources/Book1.xlsx";
         String testSheetName = "buildTest";
         xlsxReader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
     }

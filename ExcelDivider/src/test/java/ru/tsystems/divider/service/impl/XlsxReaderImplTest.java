@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class XlsxReaderImplTest {
-    private String xlsxFilePath = "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\test\\resources\\Book1.xlsx";
+    private String xlsxFilePath = "./src/test/resources/Book1.xlsx";
     private String firstSheetName = "First";
     private String secondSheetName = "Second";
     private XlsxReaderImpl xlsxReader;

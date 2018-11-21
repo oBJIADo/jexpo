@@ -1,17 +1,19 @@
 package ru.tsystems.divider;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
-
 import ru.tsystems.divider.exceptions.ExcelFormatException;
 import ru.tsystems.divider.exceptions.NoShetException;
+import ru.tsystems.divider.service.api.ExcelFileReader;
 import ru.tsystems.divider.service.api.JiraToDBConverter;
+import ru.tsystems.divider.service.impl.XlsReaderImpl;
+import ru.tsystems.divider.service.impl.XlsxReaderImpl;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @SpringBootApplication
 @ImportResource("classpath:spring.xml")
@@ -70,31 +72,58 @@ public class DivideRunner {
     }
 
     private static void startTasksReader(String fileName, String sheetName, int startRowIndex,
-            JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException {
+                                         JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException { //todo: Simple this shit
         String fileFormat = getFormat(fileName);
-        switch (fileFormat) {
-        case EXCEL_FORMAT:
-            converter.transferAll(fileName, sheetName, startRowIndex);
-            break;
-        case EXCEL_OLD_FORMAT:
-            converter.transferAllOldExcell(fileName, sheetName, startRowIndex);
-            break;
-        default:
+        if (EXCEL_FORMAT.equalsIgnoreCase(fileFormat)) {
+            try (ExcelFileReader excelReader = new XlsxReaderImpl(fileName, sheetName)) {
+                converter.transferAll(excelReader, startRowIndex);
+            } catch (IOException exc) {
+                logger.error("IOexception." + exc.getMessage());
+                throw exc;
+            } catch (NoShetException nsexc) {
+                logger.error("NoSheetException: " + nsexc.getMessage());
+                throw nsexc;
+            }
+        } else if (EXCEL_OLD_FORMAT.equalsIgnoreCase(fileFormat)) {
+            try (ExcelFileReader excelReader = new XlsReaderImpl(fileName, sheetName)) {
+                converter.transferAll(excelReader, startRowIndex);
+            } catch (IOException exc) {
+                logger.error("IOexception." + exc.getMessage());
+                throw exc;
+            } catch (NoShetException nsexc) {
+                logger.error("NoSheetException: " + nsexc.getMessage());
+                throw nsexc;
+            }
+        } else {
             throw new ExcelFormatException(fileFormat, fileName);
         }
     }
 
+
     private static void startCommentReader(String fileName, String sheetName, int startRowIndex,
-            JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException {
+                                           JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException {
         String fileFormat = getFormat(fileName);
-        switch (fileFormat) {
-        case EXCEL_FORMAT:
-            converter.transferAllComments(fileName, sheetName, startRowIndex);
-            break;
-        case EXCEL_OLD_FORMAT:
-            converter.transferAllCommentsOldExcell(fileName, sheetName, startRowIndex);
-            break;
-        default:
+        if (EXCEL_FORMAT.equalsIgnoreCase(fileFormat)) {
+            try (ExcelFileReader excelReader = new XlsxReaderImpl(fileName, sheetName)) {
+                converter.transferAllComments(excelReader, startRowIndex);
+            } catch (IOException exc) {
+                logger.error("IOexception." + exc.getMessage());
+                throw exc;
+            } catch (NoShetException nsexc) {
+                logger.error("NoSheetException: " + nsexc.getMessage());
+                throw nsexc;
+            }
+        } else if (EXCEL_OLD_FORMAT.equalsIgnoreCase(fileFormat)) {
+            try (ExcelFileReader excelReader = new XlsReaderImpl(fileName, sheetName)) {
+                converter.transferAllComments(excelReader, startRowIndex);
+            } catch (IOException exc) {
+                logger.error("IOexception." + exc.getMessage());
+                throw exc;
+            } catch (NoShetException nsexc) {
+                logger.error("NoSheetException: " + nsexc.getMessage());
+                throw nsexc;
+            }
+        } else {
             throw new ExcelFormatException(fileFormat, fileName);
         }
     }
