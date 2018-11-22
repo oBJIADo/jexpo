@@ -29,19 +29,19 @@ public class MessageSimulator implements MessageWorker {
     private String simulateMessageWorker(String str) {
         switch (str) {
             case "modificator.keys.pre":
-                return null;
+                return "AD-";
             case "format.read.date":
                 return null;
             case "symbol.divideSymbol.employee":
-                return null;
+                return ",";
             case "symbol.divideSymbol.anotherTasks":
-                return null;
+                return ",";
             case "symbol.divideSymbol.comments":
-                return null;
+                return ";";
             case "symbol.divideSymbol.another":
-                return null;
+                return ",";
             case "format.read.comment":
-                return null;
+                return "date,author";
             default:
                 return null;
         }
