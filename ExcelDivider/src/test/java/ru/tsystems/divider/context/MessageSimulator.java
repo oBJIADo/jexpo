@@ -2,10 +2,24 @@ package ru.tsystems.divider.context;
 
 import ru.tsystems.divider.components.api.MessageWorker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MessageSimulator implements MessageWorker {
 
-    private MessageSimulator() {//todo: switch to map
+    private final Map<String, String> properties;
+
+    private MessageSimulator() {
+        properties = new HashMap<>();
+        properties.put("modificator.keys.pre", "AD-");
+        properties.put("format.read.date", null);
+        properties.put("symbol.divideSymbol.employee", ",");
+        properties.put("symbol.divideSymbol.anotherTasks", ",");
+        properties.put("symbol.divideSymbol.comments", ";");
+        properties.put("symbol.divideSymbol.another", ",");
+        properties.put("format.read.comment", "date,author");
     }
+
 
     private static MessageSimulator messageSimulator;
 
@@ -18,33 +32,12 @@ public class MessageSimulator implements MessageWorker {
 
     @Override
     public String getSourceValue(String sourcePath, String sourceName) {
-        return simulateMessageWorker(sourcePath + sourceName);
+        return properties.get(sourcePath + sourceName);
     }
 
     @Override
     public String getSourceValue(String sourceName) {
-        return simulateMessageWorker(sourceName);
-    }
-
-    private String simulateMessageWorker(String str) {
-        switch (str) {
-            case "modificator.keys.pre":
-                return "AD-";
-            case "format.read.date":
-                return null;
-            case "symbol.divideSymbol.employee":
-                return ",";
-            case "symbol.divideSymbol.anotherTasks":
-                return ",";
-            case "symbol.divideSymbol.comments":
-                return ";";
-            case "symbol.divideSymbol.another":
-                return ",";
-            case "format.read.comment":
-                return "date,author";
-            default:
-                return null;
-        }
+        return properties.get(sourceName);
     }
 
 }
