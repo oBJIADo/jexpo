@@ -14,7 +14,7 @@ public class FeatureServiceImpl implements FeatureService {
     private FeatureDao featureDao;
     private NatureService natureService;
 
-    FeatureServiceImpl(@Autowired FeatureDao fDao, @Autowired NatureService natureService){
+    public FeatureServiceImpl(@Autowired FeatureDao fDao, @Autowired NatureService natureService){
         this.featureDao = fDao;
         this.natureService = natureService;
     }

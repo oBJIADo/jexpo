@@ -1,15 +1,15 @@
-package ru.tsystems.divider.common;
+package ru.tsystems.divider.context;
 
 import ru.tsystems.divider.components.api.MessageWorker;
 
 public class MessageSimulator implements MessageWorker {
 
-    private MessageSimulator() {
+    private MessageSimulator() {//todo: switch to map
     }
 
     private static MessageSimulator messageSimulator;
 
-    public static MessageSimulator getMessageWorker() {
+    protected static MessageSimulator getMessageWorker() {
         if (messageSimulator == null) {
             messageSimulator = new MessageSimulator();
         }

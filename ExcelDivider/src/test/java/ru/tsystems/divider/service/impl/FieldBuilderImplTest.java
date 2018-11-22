@@ -3,33 +3,30 @@ package ru.tsystems.divider.service.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.tsystems.divider.context.MessageSimulator;
+import ru.tsystems.divider.context.TestContext;
 import ru.tsystems.divider.exceptions.NoShetException;
 import ru.tsystems.divider.service.api.ExcelFileReader;
 import ru.tsystems.divider.service.api.FieldBuilder;
 
+import javax.xml.bind.PropertyException;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring.xml"})
 public class FieldBuilderImplTest {
     private String xlsxFilePath = "./src/test/resources/Book1.xlsx";
 
     private String testSheetName = "RebuildTest";
 
-    @Autowired
     private FieldBuilder fieldBuilder;
 
     private ExcelFileReader reader;
 
     @Before
-    public void init() throws IOException {
+    public void init() throws IOException, PropertyException {
         reader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
+        fieldBuilder = TestContext.getTestContext().getFieldBuilder();
     }
 
     @After

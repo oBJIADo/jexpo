@@ -7,8 +7,11 @@ import ru.tsystems.divider.service.api.NatureService;
 
 public class NatureServiceImpl implements NatureService {
 
-    @Autowired
     private NatureDao natureDao;
+
+    public NatureServiceImpl( @Autowired NatureDao natureDao) {
+        this.natureDao = natureDao;
+    }
 
     public Nature getOrAddNatureByTitle(String title){
 

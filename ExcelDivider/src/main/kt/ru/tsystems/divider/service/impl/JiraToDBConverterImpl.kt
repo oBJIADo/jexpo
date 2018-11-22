@@ -11,11 +11,8 @@ import ru.tsystems.divider.service.api.RowToEntityConverter
 import java.io.IOException
 
 @Service
-class JiraToDBConverterImpl : JiraToDBConverter {
+class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEntityConverter) : JiraToDBConverter {
     private val logger = Logger.getLogger(JiraToDBConverterImpl::class.java)
-
-    @Autowired
-    private val rowToEntityConverter: RowToEntityConverter? = null
 
     /**
      * Read excel file which created by jira and write it to ad DB.
@@ -29,13 +26,13 @@ class JiraToDBConverterImpl : JiraToDBConverter {
      */
     @Throws(IOException::class, NoShetException::class)
     override fun transferAll(excelReader: ExcelFileReader, startRowIndex: Int) {
-                addTasks(startRowIndex, excelReader)
-                addSubTasks(startRowIndex, excelReader)
+        addTasks(startRowIndex, excelReader)
+        addSubTasks(startRowIndex, excelReader)
     }
 
     @Throws(IOException::class, NoShetException::class)
     override fun transferAllComments(excelReader: ExcelFileReader, startRowIndex: Int) {
-            addComments(startRowIndex, excelReader)
+        addComments(startRowIndex, excelReader)
     }
 
     @Throws(NoShetException::class)
@@ -43,7 +40,7 @@ class JiraToDBConverterImpl : JiraToDBConverter {
         var curRow: Row? = null
         var curRowIndex = startRowIndex
 
-        while ({curRow = reader.getRow(curRowIndex); curRow}() != null) { //THIS CRUTCH SO BRILLIANT!!!!!!
+        while ({ curRow = reader.getRow(curRowIndex); curRow }() != null) { //THIS CRUTCH SO BRILLIANT!!!!!!
             rowToEntityConverter!!.saveAllComments(curRow!!)
             curRowIndex++
         }
@@ -54,7 +51,7 @@ class JiraToDBConverterImpl : JiraToDBConverter {
         var curRow: Row? = null
         var curRowIndex = startRowIndex
 
-        while ({curRow = reader.getRow(curRowIndex); curRow}() != null) {
+        while ({ curRow = reader.getRow(curRowIndex); curRow }() != null) {
             rowToEntityConverter!!.addTaskFromRow(curRow!!)
             curRowIndex++
         }
@@ -65,7 +62,7 @@ class JiraToDBConverterImpl : JiraToDBConverter {
         var curRow: Row? = null
         var subtaskIndex = startRowIndex
 
-        while ({curRow = reader.getRow(subtaskIndex); curRow}() != null) {
+        while ({ curRow = reader.getRow(subtaskIndex); curRow }() != null) {
             rowToEntityConverter!!.addTasksConnectFromRow(curRow!!)
             subtaskIndex++
         }
