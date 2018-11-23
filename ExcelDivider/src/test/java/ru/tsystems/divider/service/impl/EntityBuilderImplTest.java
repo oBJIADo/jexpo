@@ -30,6 +30,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class EntityBuilderImplTest {
@@ -77,49 +78,49 @@ public class EntityBuilderImplTest {
     @Test
     public void buildEpicColor() throws NoShetException {
         String cellText = getStringCellValue(xlsxReader.getCell(33, rowIndex));
-        Feature actual = builder.buildEpicColor(cellText);
+        Feature actual = builder.buildFeature(cellText, NatureConstants.EPIC_COLOR);
         assertNull(actual);
     }
 
     @Test//todo: tests
     public void buildIssueType() throws NoShetException {
         String issueType = getStringCellValue(xlsxReader.getCell(3, rowIndex));
-        Feature actual = builder.buildIssueType(issueType);
+        Feature actual = builder.buildFeature(issueType, NatureConstants.ISSUE_TYPE);
         assertEquals("Problem Request", actual.getTitle());
     }
 
     @Test
     public void buildKeyword() throws NoShetException {
         String keyword = getStringCellValue(xlsxReader.getCell(39, rowIndex));
-        Feature actual = builder.buildKeyword(keyword);
+        Feature actual = builder.buildFeature(keyword, NatureConstants.KEYWORD);
         assertEquals("Fachkonzept", actual.getTitle());
     }
 
     @Test
     public void buildPriority() throws NoShetException {
         String priority = getStringCellValue(xlsxReader.getCell(5, rowIndex));
-        Feature actual = builder.buildPriority(priority);
+        Feature actual = builder.buildFeature(priority, NatureConstants.PRIORITY);
         assertEquals("Minor", actual.getTitle());
     }
 
     @Test
     public void buildResolution() throws NoShetException {
         String resolution = getStringCellValue(xlsxReader.getCell(6, rowIndex));
-        Feature actual = builder.buildResolution(resolution);
+        Feature actual = builder.buildFeature(resolution, NatureConstants.RESOLUTION);
         assertEquals("Unresolved", actual.getTitle());
     }
 
     @Test
     public void buildSprint() throws NoShetException {
         String sprint = getStringCellValue(xlsxReader.getCell(34, rowIndex));
-        Feature actual = builder.buildSprint(sprint);
+        Feature actual = builder.buildFeature(sprint, NatureConstants.SPRINT);
         assertNull(actual);
     }
 
     @Test
     public void buildStatus() throws NoShetException {
         String status = getStringCellValue(xlsxReader.getCell(32, rowIndex));
-        Feature actual = builder.buildStatus(status);
+        Feature actual = builder.buildFeature(status, NatureConstants.STATUS);
         assertNull(actual);
     }
 
@@ -154,7 +155,7 @@ public class EntityBuilderImplTest {
     @Test
     public void buildComponents() throws NoShetException {
         String component = getStringCellValue(xlsxReader.getCell(16, rowIndex));
-        Set<Feature> actual = builder.buildComponents(component);
+        Set<Feature> actual = builder.buildFeatureSet(component, NatureConstants.COMPONENT);
         Set<Feature> expected = new HashSet<>();
         expected.add(new Feature("AD V5.4 Spezifikation", new Nature(NatureConstants.COMPONENT)));
 
@@ -164,15 +165,15 @@ public class EntityBuilderImplTest {
     @Test
     public void buildLabels() throws NoShetException {
         String label = getStringCellValue(xlsxReader.getCell(29, rowIndex));
-        Set<Feature> actual = builder.buildLabels(label);
+        Set<Feature> actual = builder.buildFeatureSet(label, NatureConstants.LABEL);
 
-        assertNull(actual);
+        assertTrue(actual.isEmpty());
     }
 
     @Test
     public void buildVersions() throws NoShetException {
         String version = getStringCellValue(xlsxReader.getCell(14, rowIndex));
-        Set<Feature> actual = builder.buildVersions(version);
+        Set<Feature> actual = builder.buildFeatureSet(version, NatureConstants.VERSION);
         Set<Feature> expected = new HashSet<>();
         expected.add(new Feature("V05.400.01", new Nature(NatureConstants.VERSION)));
 
