@@ -19,8 +19,10 @@ import ru.tsystems.divider.entity.Workers
 import ru.tsystems.divider.service.api.EntityBuilder
 import ru.tsystems.divider.service.api.FieldBuilder
 import ru.tsystems.divider.service.api.RowToEntityConverter
+import ru.tsystems.divider.utils.constants.*
 import java.util.*
 
+//todo: Remove all "?: EMPTY_STRING"
 @Service
 open class RowToEntityConverterImpl(
         @Autowired messageWorker: MessageWorker,
@@ -34,6 +36,8 @@ open class RowToEntityConverterImpl(
     private val FIELDS: MutableMap<String, Int> //todo: to map
 
     private val KEY_MODIFICATOR: String?
+
+    private val EMPTY_STRING = ""
 
     private val SOURCE = "column.index."
 
@@ -124,27 +128,27 @@ open class RowToEntityConverterImpl(
     private fun setUpTask(row: Row): Task = Task(
             keys = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys")), KEY_MODIFICATOR),
             summary = getStringCellValue(getCell(row, "summary")),
-            issueType = builder.buildIssueType(getStringCellValue(getCell(row, "issueType"))),
+            issueType = builder.buildFeature(getStringCellValue(getCell(row, "issueType")) ?: EMPTY_STRING, ISSUE_TYPE),
             created = getDateCellValue(getCell(row, "created")),
             consumables = setUpConsumables(row)
     )
 
     private fun setUpConsumables(row: Row): Consumables = Consumables(
-            affectsVersions = builder.buildVersions(getStringCellValue(getCell(row, "affectsVersion"))),
-            components = builder.buildComponents(getStringCellValue(getCell(row, "components"))),
-            deliveredVersion = builder.buildDeliveredVersion(getStringCellValue(getCell(row, "deliveredVersion"))),
+            affectsVersions = builder.buildFeatureSet(getStringCellValue(getCell(row, "affectsVersion")) ?: EMPTY_STRING, VERSION),
+            components = builder.buildFeatureSet(getStringCellValue(getCell(row, "components")) ?: EMPTY_STRING, COMPONENT),
+            deliveredVersion = builder.buildFeature(getStringCellValue(getCell(row, "deliveredVersion")) ?: EMPTY_STRING, VERSION),
             description = getStringCellValue(getCell(row, "description")),
             drcNumber = getStringCellValue(getCell(row, "drcNumber")),
-            fixPriority = builder.buildPriority(getStringCellValue(getCell(row, "fixPriority"))),
-            fixVersions = builder.buildVersions(getStringCellValue(getCell(row, "fixVersion"))),
-            keyword = builder.buildKeyword(getStringCellValue(getCell(row, "keyword"))),
-            labels = builder.buildLabels(getStringCellValue(getCell(row, "labels"))),
+            fixPriority = builder.buildFeature(getStringCellValue(getCell(row, "fixPriority")) ?: EMPTY_STRING, PRIORITY),
+            fixVersions = builder.buildFeatureSet(getStringCellValue(getCell(row, "fixVersion")) ?: EMPTY_STRING, VERSION),
+            keyword = builder.buildFeature(getStringCellValue(getCell(row, "keyword")) ?: EMPTY_STRING, KEYWORD),
+            labels = builder.buildFeatureSet(getStringCellValue(getCell(row, "labels")) ?: EMPTY_STRING, LABEL),
             orderNumber = getStringCellValue(getCell(row, "orderNumber")),
-            priority = builder.buildPriority(getStringCellValue(getCell(row, "priority"))),
-            resolution = builder.buildResolution(getStringCellValue(getCell(row, "resolution"))),
-            sprint = builder.buildSprint(getStringCellValue(getCell(row, "sprint"))),
-            status = builder.buildStatus(getStringCellValue(getCell(row, "status"))),
-            teams = builder.buildTeams(getStringCellValue(getCell(row, "teams"))),
+            priority = builder.buildFeature(getStringCellValue(getCell(row, "priority")) ?: EMPTY_STRING, PRIORITY),
+            resolution = builder.buildFeature(getStringCellValue(getCell(row, "resolution")) ?: EMPTY_STRING, RESOLUTION),
+            sprint = builder.buildFeature(getStringCellValue(getCell(row, "sprint")) ?: EMPTY_STRING, SPRINT),
+            status = builder.buildFeature(getStringCellValue(getCell(row, "status")) ?: EMPTY_STRING, STATUS),
+            teams = builder.buildFeatureSet(getStringCellValue(getCell(row, "teams")) ?: EMPTY_STRING, TEAM),
 
             dates = setUpDates(row),
             epics = setUpEpics(row),
@@ -153,16 +157,16 @@ open class RowToEntityConverterImpl(
     )
 
     private fun setUpWorkers(row: Row): Workers = Workers(
-            assignee = builder.buildEmployee(getStringCellValue(getCell(row, "assignee"))),
-            creater = builder.buildEmployee(getStringCellValue(getCell(row, "creater"))),
-            reporter = builder.buildEmployee(getStringCellValue(getCell(row, "reporter")))
+            assignee = builder.buildEmployee(getStringCellValue(getCell(row, "assignee")) ?: EMPTY_STRING),
+            creater = builder.buildEmployee(getStringCellValue(getCell(row, "creater")) ?: EMPTY_STRING),
+            reporter = builder.buildEmployee(getStringCellValue(getCell(row, "reporter")) ?: EMPTY_STRING)
     )
 
     private fun setUpEpics(row: Row): Epics = Epics(
-            epicColor = builder.buildEpicColor(getStringCellValue(getCell(row, "epicColor"))),
+            epicColor = builder.buildFeature(getStringCellValue(getCell(row, "epicColor")) ?: EMPTY_STRING, EPIC_COLOR),
             epicLink = getStringCellValue(getCell(row, "epicLink")),
             epicName = getStringCellValue(getCell(row, "epicName")),
-            epicStatus = builder.buildStatus(getStringCellValue(getCell(row, "epicStatus")))
+            epicStatus = builder.buildFeature(getStringCellValue(getCell(row, "epicStatus")) ?: EMPTY_STRING, EPIC_STATUS)
     )
 
     private fun setUpStatistics(row: Row): Statistics = Statistics(
@@ -190,10 +194,10 @@ open class RowToEntityConverterImpl(
         val key = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys")), KEY_MODIFICATOR)
         val task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
 
-        task.subTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "subTasks")))
-        task.relationTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "relationTasks")))
+        task.subTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "subTasks")) ?: EMPTY_STRING)
+        task.relationTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "relationTasks")) ?: EMPTY_STRING)
         task.duplicateTasks = builder
-                .buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "duplicateTasks")))
+                .buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "duplicateTasks")) ?: EMPTY_STRING)
         taskDao.merge(task)
     }
 
@@ -202,12 +206,12 @@ open class RowToEntityConverterImpl(
         var currentIndex = FIELDS["commentStart"]
                 ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
         var commentString: String? = null
-        var curComment: Comment
+        var curComment: Comment?
 
           //todo : delete duplicates
         while ({commentString = getStringCellValue(row.getCell(currentIndex++)); commentString}() != null) {
-            curComment = builder.buildComments(commentString)
-            curComment.task = task
+            curComment = builder.buildComments(commentString ?: EMPTY_STRING)
+            curComment!!.task = task
             commentDao.persist(curComment)
         }
     }
@@ -221,7 +225,7 @@ open class RowToEntityConverterImpl(
         var curComment: Comment
 
         while ({commentString = getStringCellValue(row.getCell(currentIndex++)); commentString}() != null) {
-            curComment = builder.buildCommentsWithTask(commentString)
+            curComment = builder.buildCommentsWithTask(commentString ?: EMPTY_STRING)
             if (curComment != null) {
                 commentDao.persist(curComment)
             }
