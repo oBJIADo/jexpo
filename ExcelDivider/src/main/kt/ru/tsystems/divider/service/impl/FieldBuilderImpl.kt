@@ -183,12 +183,15 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
     }
 
     override fun buildTaskKey(key: String, modificator: String): String {
+        if(key.isEmpty()){
+            throw IllegalArgumentException("Key cannot be empty") //todo
+        }
         val numericPart = getNumPart(key)
 
         return modificator + numericPart
     }
 
-    private fun getNumPart(key: String): String? {
+    private fun getNumPart(key: String): String {
         val firstIndex: Int
         val lastIndex: Int
         var i = 0
@@ -198,7 +201,7 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
         }
 
         if (i == key.length) {
-            return null
+            throw IllegalArgumentException("No numeric part in task's key") //todo
         } else {
             firstIndex = i
             i = key.length - 1

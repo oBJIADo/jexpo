@@ -84,7 +84,10 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
      * @param comment Comment.
      * @return New comment.
      */
-    override fun buildComments(comment: String): Comment {
+    override fun buildComments(comment: String): Comment? {
+        if(comment.isEmpty()) //todo
+            return null
+
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
         val date = commentDividingResult[1]
         val author = commentDividingResult[2]
@@ -99,7 +102,9 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         return Comment(null, commentBirthDay, comentator, commentText)
     }
 
-    override fun buildCommentsWithTask(comment: String): Comment {
+    override fun buildCommentsWithTask(comment: String): Comment? {
+        if(comment.isEmpty()) //todo
+            return null
 
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
                 ?: throw java.lang.IllegalArgumentException("todo") //todo
@@ -216,22 +221,20 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
 
         val keys = rebuilder.rebuildJiraField(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
-            if (key != null)
-                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))
-                        ?: throw IllegalArgumentException("todo")) //todo
-        }
+            if (key != null) {
+                try {
+                    tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))) //todo: if->try not beauty
+                } catch (ilStExc: IllegalStateException){
+                    logger.error(ilStExc.message + "; This task not added to dependencies!!!")
+                }
+            }
+            }
 
         return tasks
 
     }
 
-    private fun buildSubTask(key: String): Task? {
-        try {
+    private fun buildSubTask(key: String): Task {
             return taskDao.getBykey(key) ?: throw IllegalStateException("Illegal task connection with key: $key")
-        } catch (ilStExc: IllegalStateException) {
-            logger.error(ilStExc.message + "; This task not added to dependencies!!!")
-            return null
-        }
-
     }
 }
