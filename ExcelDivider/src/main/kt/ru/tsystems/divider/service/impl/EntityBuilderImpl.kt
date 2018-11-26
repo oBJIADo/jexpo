@@ -73,7 +73,7 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         val components = HashSet<Feature>()
         val params = rebuilder.rebuildJiraField(title, ANOTHER_DIVIDER)
         for (param in params)
-            components.add(buildFeature(param, nature)?: throw IllegalArgumentException("Not real"))//todo
+            components.add(buildFeature(param, nature) ?: throw IllegalArgumentException("Not real"))//todo
 
         return components
     }
@@ -93,17 +93,18 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         val commentBirthDay: Date?
         val comentator: Employee?
 
-        comentator = this.buildEmployee(author)
-        commentBirthDay = this.dateFromString(date)
+        comentator = if (author == null) null else this.buildEmployee(author)
+        commentBirthDay = if (date == null) null else this.dateFromString(date)
 
         return Comment(null, commentBirthDay, comentator, commentText)
     }
 
     override fun buildCommentsWithTask(comment: String): Comment {
 
-        val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER) ?:
-        throw java.lang.IllegalArgumentException("todo") //todo
-        val key = rebuilder.buildTaskKey(commentDividingResult[0], KEY_MODIFICATOR)
+        val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
+                ?: throw java.lang.IllegalArgumentException("todo") //todo
+        val rebuilderKey = commentDividingResult[0]
+        val key = if (rebuilderKey == null) null else rebuilder.buildTaskKey(rebuilderKey, KEY_MODIFICATOR)//todo
         val date = commentDividingResult[1]
         val author = commentDividingResult[2]
         val commentText = commentDividingResult[3]
@@ -111,8 +112,8 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         val commentBirthDay: Date?
         val comentator: Employee?
 
-        comentator = this.buildEmployee(author)
-        commentBirthDay = this.dateFromString(date)
+        comentator = if(author == null) null else this.buildEmployee(author)
+        commentBirthDay = if(date == null) null else this.dateFromString(date)
         val task = taskDao.getBykey(key)
 
         return Comment(task, commentBirthDay, comentator, commentText)
@@ -216,8 +217,8 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         val keys = rebuilder.rebuildJiraField(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
             if (key != null)
-                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))?:
-                throw IllegalArgumentException("todo")) //todo
+                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))
+                        ?: throw IllegalArgumentException("todo")) //todo
         }
 
         return tasks
