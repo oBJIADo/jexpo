@@ -1,9 +1,10 @@
 package ru.tsystems.divider.context;
 
 import ru.tsystems.divider.dao.api.NatureDao;
+import ru.tsystems.divider.entity.Feature;
 import ru.tsystems.divider.entity.Nature;
 
-public class InMemoryNature extends InMemoryDaoGeneral<Nature> implements NatureDao {
+public class InMemoryNature extends InMemoryDaoGeneral<Nature> implements NatureDao, ContextSimmulator<Feature> {
 
     private static InMemoryNature dao;
 
@@ -14,8 +15,9 @@ public class InMemoryNature extends InMemoryDaoGeneral<Nature> implements Nature
         return dao;
     }
 
-    private InMemoryNature() {
+    protected InMemoryNature() {
         super();
+        reset();
     }
 
     @Override
@@ -25,6 +27,21 @@ public class InMemoryNature extends InMemoryDaoGeneral<Nature> implements Nature
                 return nature;
             }
         }
+        return null;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public void setValue(String key, Feature value) {
+
+    }
+
+    @Override
+    public Feature getValue(String key) {
         return null;
     }
 }

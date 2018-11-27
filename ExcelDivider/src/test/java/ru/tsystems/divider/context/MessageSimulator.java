@@ -5,11 +5,11 @@ import ru.tsystems.divider.components.api.MessageWorker;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageSimulator implements MessageWorker {
+public class MessageSimulator implements MessageWorker, ContextSimmulator<String> {
 
     private Map<String, String> properties;
 
-    public void resetProperties() {
+    public void reset() {
         properties = new HashMap<>();
         properties.put("modificator.keys.pre", "AD-");
         properties.put("format.read.date", null);
@@ -20,16 +20,16 @@ public class MessageSimulator implements MessageWorker {
         properties.put("format.read.comment", "date,author");
     }
 
-    public void setProp(String key, String value){
+    public void setValue(String key, String value){
         properties.put(key, value);
     }
 
-    public String getProperty(String key, String value){
+    public String getValue(String key){
         return properties.get(key);
     }
 
-    private MessageSimulator() {
-        resetProperties();
+    protected MessageSimulator() {
+        reset();
     }
 
 

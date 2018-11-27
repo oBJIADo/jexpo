@@ -47,7 +47,7 @@ public class TestContext {
         try {
             messageWorker = MessageSimulator.getMessageWorker();
 
-            taskDao = InMemoryTask.getInMemoryDao();
+            taskDao = new InMemoryTask();
             featureDao = InMemoryFeature.getInMemoryDao();
             natureDao = InMemoryNature.getInMemoryDao();
             employeeDao = InMemoryEmployee.getInMemoryDao();

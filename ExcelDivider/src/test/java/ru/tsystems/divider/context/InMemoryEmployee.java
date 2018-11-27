@@ -3,12 +3,12 @@ package ru.tsystems.divider.context;
 import ru.tsystems.divider.dao.api.EmployeeDao;
 import ru.tsystems.divider.entity.Employee;
 
-public class InMemoryEmployee extends InMemoryDaoGeneral<Employee> implements EmployeeDao {
+public class InMemoryEmployee extends InMemoryDaoGeneral<Employee> implements EmployeeDao, ContextSimmulator<Employee> {
 
     private static InMemoryEmployee dao;
 
-    protected static InMemoryEmployee getInMemoryDao(){
-        if(dao == null){
+    protected static InMemoryEmployee getInMemoryDao() {
+        if (dao == null) {
             dao = new InMemoryEmployee();
         }
         return dao;
@@ -16,6 +16,7 @@ public class InMemoryEmployee extends InMemoryDaoGeneral<Employee> implements Em
 
     private InMemoryEmployee() {
         super();
+        reset();
     }
 
     /**
@@ -27,11 +28,26 @@ public class InMemoryEmployee extends InMemoryDaoGeneral<Employee> implements Em
      */
     @Override
     public Employee getByNames(String firstName, String secondName) {
-        for(Employee employee: database){
-            if(firstName.equals(employee.getFirstname()) && secondName.equals(employee.getSecondname())){
+        for (Employee employee : database) {
+            if (firstName.equals(employee.getFirstname()) && secondName.equals(employee.getSecondname())) {
                 return employee;
             }
         }
+        return null;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public void setValue(String key, Employee value) {
+
+    }
+
+    @Override
+    public Employee getValue(String key) {
         return null;
     }
 }

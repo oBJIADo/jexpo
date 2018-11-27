@@ -3,7 +3,7 @@ package ru.tsystems.divider.context;
 import ru.tsystems.divider.dao.api.TaskDao;
 import ru.tsystems.divider.entity.Task;
 
-public class InMemoryTask extends InMemoryDaoGeneral<Task> implements TaskDao {
+public class InMemoryTask extends InMemoryDaoGeneral<Task> implements TaskDao, ContextSimmulator<Task> {
     private static InMemoryTask dao;
 
     protected static InMemoryTask getInMemoryDao() {
@@ -13,8 +13,9 @@ public class InMemoryTask extends InMemoryDaoGeneral<Task> implements TaskDao {
         return dao;
     }
 
-    private InMemoryTask() {
+    protected InMemoryTask() {
         super();
+        reset();
     }
 
     /**
@@ -30,6 +31,21 @@ public class InMemoryTask extends InMemoryDaoGeneral<Task> implements TaskDao {
                 return task;
             }
         }
+        return null;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public void setValue(String key, Task value) {
+
+    }
+
+    @Override
+    public Task getValue(String key) {
         return null;
     }
 }

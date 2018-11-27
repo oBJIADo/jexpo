@@ -3,7 +3,7 @@ package ru.tsystems.divider.context;
 import ru.tsystems.divider.dao.api.FeatureDao;
 import ru.tsystems.divider.entity.Feature;
 
-public class InMemoryFeature extends InMemoryDaoGeneral<Feature> implements FeatureDao {
+public class InMemoryFeature extends InMemoryDaoGeneral<Feature> implements FeatureDao, ContextSimmulator<Feature> {
 
     private static InMemoryFeature dao;
 
@@ -16,6 +16,7 @@ public class InMemoryFeature extends InMemoryDaoGeneral<Feature> implements Feat
 
     private InMemoryFeature() {
         super();
+        reset();
     }
 
     /**
@@ -32,6 +33,21 @@ public class InMemoryFeature extends InMemoryDaoGeneral<Feature> implements Feat
                 return feature;
             }
         }
+        return null;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public void setValue(String key, Feature value) {
+
+    }
+
+    @Override
+    public Feature getValue(String key) {
         return null;
     }
 }
