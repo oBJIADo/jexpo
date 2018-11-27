@@ -34,94 +34,92 @@ import static org.junit.Assert.assertTrue;
 
 
 public class EntityBuilderImplTest {
-    private ExcelFileReader xlsxReader;
     private int rowIndex = 2;
-    EntityBuilder builder;
+    private EntityBuilder builder;
 
     @Before
-    public void initStreams() throws IOException, PropertyException {
-        String xlsxFilePath = "./src/test/resources/Book1.xlsx";
-        String testSheetName = "buildTest";
-        xlsxReader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
+    public void initStreams() {
         builder = TestContext.getTestContext().getEntityBuilder();
-    }
-
-    @After
-    public void closeStreams() throws IOException {
-        xlsxReader.close();
     }
 
     @Test
     public void buildTask() {
+        //todo
     }
 
     @Test
     public void buildEmployee() throws NoShetException {
-        String cellText = getStringCellValue(xlsxReader.getCell(8, rowIndex));
-        Employee actual = builder.buildEmployee(cellText);
+        Employee actual = builder.buildEmployee("Bochkareva, Iuliia\n");
         Employee expected = new Employee("Bochkareva", "Iuliia");
 
+        assertEquals(expected.getFirstname(), actual.getFirstname());
+        assertEquals(expected.getSecondname(), actual.getSecondname());
+
+        actual = builder.buildEmployee("Iuliia, Bochkareva\n");
         assertEquals(expected.getFirstname(), actual.getFirstname());
         assertEquals(expected.getSecondname(), actual.getSecondname());
     }
 
     @Test
     public void buildAssigne() throws NoShetException {
-        String cellText = getStringCellValue(xlsxReader.getCell(7, rowIndex));
-        Employee actual = builder.buildEmployee(cellText);
+        Employee actual = builder.buildEmployee("Domke, Jorg\n");
         Employee expected = new Employee("Domke", "Jorg");
 
+        assertEquals(expected.getFirstname(), actual.getFirstname());
+        assertEquals(expected.getSecondname(), actual.getSecondname());
+
+        actual = builder.buildEmployee("Jorg, Domke\n");
         assertEquals(expected.getFirstname(), actual.getFirstname());
         assertEquals(expected.getSecondname(), actual.getSecondname());
     }
 
     @Test
     public void buildEpicColor() throws NoShetException {
-        String cellText = getStringCellValue(xlsxReader.getCell(33, rowIndex));
-        Feature actual = builder.buildFeature(cellText, NatureConstants.EPIC_COLOR);
-        assertNull(actual);
+        Feature actual = builder.buildFeature("OHMYGOSH", NatureConstants.EPIC_COLOR);
+        Feature expected = new Feature("OHMYGOSH", new Nature(NatureConstants.EPIC_COLOR));
+        assertEquals(expected, actual);
     }
 
     @Test//todo: tests
     public void buildIssueType() throws NoShetException {
-        String issueType = getStringCellValue(xlsxReader.getCell(3, rowIndex));
-        Feature actual = builder.buildFeature(issueType, NatureConstants.ISSUE_TYPE);
-        assertEquals("Problem Request", actual.getTitle());
+        Feature actual = builder.buildFeature("ISSuE", NatureConstants.ISSUE_TYPE);
+        Feature expected = new Feature("ISSuE", new Nature(NatureConstants.ISSUE_TYPE));
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildKeyword() throws NoShetException {
-        String keyword = getStringCellValue(xlsxReader.getCell(39, rowIndex));
-        Feature actual = builder.buildFeature(keyword, NatureConstants.KEYWORD);
-        assertEquals("Fachkonzept", actual.getTitle());
+        Feature actual = builder.buildFeature("Keyword", NatureConstants.KEYWORD);
+        Feature expected = new Feature("Keyword", new Nature(NatureConstants.KEYWORD));
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildPriority() throws NoShetException {
-        String priority = getStringCellValue(xlsxReader.getCell(5, rowIndex));
-        Feature actual = builder.buildFeature(priority, NatureConstants.PRIORITY);
-        assertEquals("Minor", actual.getTitle());
+        Feature actual = builder.buildFeature("Priority", NatureConstants.PRIORITY);
+        Feature expected = new Feature("Priority", new Nature(NatureConstants.PRIORITY));
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildResolution() throws NoShetException {
-        String resolution = getStringCellValue(xlsxReader.getCell(6, rowIndex));
-        Feature actual = builder.buildFeature(resolution, NatureConstants.RESOLUTION);
-        assertEquals("Unresolved", actual.getTitle());
+        Feature actual = builder.buildFeature("resolution", NatureConstants.RESOLUTION);
+        Feature expected = new Feature("resolution", new Nature(NatureConstants.RESOLUTION));
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildSprint() throws NoShetException {
-        String sprint = getStringCellValue(xlsxReader.getCell(34, rowIndex));
-        Feature actual = builder.buildFeature(sprint, NatureConstants.SPRINT);
-        assertNull(actual);
+        Feature actual = builder.buildFeature("sprint", NatureConstants.SPRINT);
+        Feature expected = new Feature("sprint", new Nature(NatureConstants.SPRINT));
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildStatus() throws NoShetException {
-        String status = getStringCellValue(xlsxReader.getCell(32, rowIndex));
-        Feature actual = builder.buildFeature(status, NatureConstants.STATUS);
-        assertNull(actual);
+        Feature actual = builder.buildFeature("status", NatureConstants.STATUS);
+        Feature expected = new Feature("status", new Nature(NatureConstants.STATUS));
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -131,8 +129,16 @@ public class EntityBuilderImplTest {
 
     @Test
     public void buildComments() throws NoShetException {
-        String comment = getStringCellValue(xlsxReader.getCell(41, rowIndex));
-        Comment actual = builder.buildComments(comment);
+        Comment actual = builder.buildComments("16.11.2017 11:07; Bochkareva, Iuliia;                 Hello Krystek, Stefanie,\n" +
+                "\n" +
+                "Could you please tell, this error code will be added in specification?  or there will be another decision?\n" +
+                "\n" +
+                "*I just need to create the test in accordance with specification.\n" +
+                "\n" +
+                "Thanks in advance,\n" +
+                "\n" +
+                "Iuliia\n" +
+                "        \n");
 
         Comment expected = new Comment(
                 null,
@@ -145,18 +151,17 @@ public class EntityBuilderImplTest {
                         "Iuliia")
         );
 
-//        assertEquals(expected, actual);
 
-        assertEquals(expected.getAuthor(), actual.getAuthor());
-        assertEquals(expected.getComment(), actual.getComment());
-        assertEquals(expected.getCommentDate(), actual.getCommentDate());
+        assertEquals(expected, actual);
     }
 
     @Test
     public void buildComponents() throws NoShetException {
-        String component = getStringCellValue(xlsxReader.getCell(16, rowIndex));
-        Set<Feature> actual = builder.buildFeatureSet(component, NatureConstants.COMPONENT);
+        Set<Feature> actual = builder.buildFeatureSet("AD V5.4 Spezifikation; COM1; COM2; COM10", NatureConstants.COMPONENT);
         Set<Feature> expected = new HashSet<>();
+        expected.add(new Feature("COM1", new Nature(NatureConstants.COMPONENT)));
+        expected.add(new Feature("COM2", new Nature(NatureConstants.COMPONENT)));
+        expected.add(new Feature("COM10", new Nature(NatureConstants.COMPONENT)));
         expected.add(new Feature("AD V5.4 Spezifikation", new Nature(NatureConstants.COMPONENT)));
 
         assertEquals(expected, actual);
@@ -164,39 +169,17 @@ public class EntityBuilderImplTest {
 
     @Test
     public void buildLabels() throws NoShetException {
-        String label = getStringCellValue(xlsxReader.getCell(29, rowIndex));
-        Set<Feature> actual = builder.buildFeatureSet(label, NatureConstants.LABEL);
-
+        Set<Feature> actual = builder.buildFeatureSet("", NatureConstants.LABEL);
         assertTrue(actual.isEmpty());
     }
 
     @Test
     public void buildVersions() throws NoShetException {
-        String version = getStringCellValue(xlsxReader.getCell(14, rowIndex));
-        Set<Feature> actual = builder.buildFeatureSet(version, NatureConstants.VERSION);
+        Set<Feature> actual = builder.buildFeatureSet("V05.400.01; V05.400.02", NatureConstants.VERSION);
         Set<Feature> expected = new HashSet<>();
         expected.add(new Feature("V05.400.01", new Nature(NatureConstants.VERSION)));
+        expected.add(new Feature("V05.400.02", new Nature(NatureConstants.VERSION)));
 
         assertEquals(expected, actual);
     }
-
-    private String getStringCellValue(Cell cell) {
-        if (cell == null)
-            return null;
-        return cell.getStringCellValue();
-    }
-
-    private Date getDateCellValue(Cell cell) {
-        if (cell == null)
-            return null;
-        return cell.getDateCellValue();
-    }
-
-    private Double getNumericCellValue(Cell cell) {
-        if (cell == null)
-            return null;
-        return cell.getNumericCellValue();
-    }
-
-
 }

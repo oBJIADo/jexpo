@@ -21,7 +21,7 @@ class FeatureServiceImpl(@param:Autowired private val featureDao: FeatureDao,
      * @return Entity if it exist, either null.
      */
     @Transactional
-    override fun findByParam(param: String, nature: String): Feature {
+    override fun findByParam(param: String, nature: String): Feature? {
         return featureDao.getByParam(param, nature)
     }
 

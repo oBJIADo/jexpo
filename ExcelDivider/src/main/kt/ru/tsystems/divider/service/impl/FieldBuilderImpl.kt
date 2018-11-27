@@ -36,7 +36,7 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
                     NAME_ID -> id = i
                     NAME_AUTHOR -> author = i
                     NAME_DATE -> date = i
-                    NAME_NOTHING -> { }
+//                    NAME_NOTHING -> { }
                     else -> throw PropertyException("format.read.comment", "Wrong keyword at index: $i")
                 }
             }

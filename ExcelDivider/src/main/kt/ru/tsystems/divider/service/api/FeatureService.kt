@@ -11,7 +11,7 @@ interface FeatureService {
      * @param nature
      * @return Entity if it exist, either null.
      */
-    fun findByParam(param: String, nature: String): Feature
+    fun findByParam(param: String, nature: String): Feature?
 
     /**
      * Persist into db OneParamEntity.

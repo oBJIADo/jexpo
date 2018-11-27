@@ -12,7 +12,9 @@ import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Consumables
 import ru.tsystems.divider.entity.Dates
+import ru.tsystems.divider.entity.Employee
 import ru.tsystems.divider.entity.Epics
+import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Statistics
 import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.entity.Workers
@@ -20,6 +22,7 @@ import ru.tsystems.divider.service.api.EntityBuilder
 import ru.tsystems.divider.service.api.FieldBuilder
 import ru.tsystems.divider.service.api.RowToEntityConverter
 import ru.tsystems.divider.utils.constants.COMPONENT
+import ru.tsystems.divider.utils.constants.DEFAULT
 import ru.tsystems.divider.utils.constants.EPIC_COLOR
 import ru.tsystems.divider.utils.constants.EPIC_STATUS
 import ru.tsystems.divider.utils.constants.ISSUE_TYPE
@@ -32,8 +35,8 @@ import ru.tsystems.divider.utils.constants.STATUS
 import ru.tsystems.divider.utils.constants.TEAM
 import ru.tsystems.divider.utils.constants.VERSION
 import java.util.*
+import kotlin.collections.HashSet
 
-//todo: Remove all "?: EMPTY_STRING"
 @Service
 open class RowToEntityConverterImpl(
         @Autowired messageWorker: MessageWorker,
@@ -47,8 +50,6 @@ open class RowToEntityConverterImpl(
     private val FIELDS: MutableMap<String, Int> //todo: to map
 
     private val KEY_MODIFICATOR: String?
-
-    private val EMPTY_STRING = ""
 
     private val SOURCE = "column.index."
 
@@ -142,33 +143,27 @@ open class RowToEntityConverterImpl(
                     // todo: default key (DK) to constants or smthng else
             ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: "DK"),
             summary = getStringCellValue(getCell(row, "summary")),
-            issueType = builder.buildFeature(getStringCellValue(getCell(row, "issueType")) ?: EMPTY_STRING, ISSUE_TYPE),
+            issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), ISSUE_TYPE),
             created = getDateCellValue(getCell(row, "created")),
             consumables = setUpConsumables(row)
     )
 
     private fun setUpConsumables(row: Row): Consumables = Consumables(
-            affectsVersions = builder.buildFeatureSet(getStringCellValue(getCell(row, "affectsVersion"))
-                    ?: EMPTY_STRING, VERSION),
-            components = builder.buildFeatureSet(getStringCellValue(getCell(row, "components"))
-                    ?: EMPTY_STRING, COMPONENT),
-            deliveredVersion = builder.buildFeature(getStringCellValue(getCell(row, "deliveredVersion"))
-                    ?: EMPTY_STRING, VERSION),
+            affectsVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "affectsVersion")), VERSION),
+            components = buildFeatureSetOrNull(getStringCellValue(getCell(row, "components")), COMPONENT),
+            deliveredVersion = buildFeatureOrNull(getStringCellValue(getCell(row, "deliveredVersion")), VERSION),
             description = getStringCellValue(getCell(row, "description")),
             drcNumber = getStringCellValue(getCell(row, "drcNumber")),
-            fixPriority = builder.buildFeature(getStringCellValue(getCell(row, "fixPriority"))
-                    ?: EMPTY_STRING, PRIORITY),
-            fixVersions = builder.buildFeatureSet(getStringCellValue(getCell(row, "fixVersion"))
-                    ?: EMPTY_STRING, VERSION),
-            keyword = builder.buildFeature(getStringCellValue(getCell(row, "keyword")) ?: EMPTY_STRING, KEYWORD),
-            labels = builder.buildFeatureSet(getStringCellValue(getCell(row, "labels")) ?: EMPTY_STRING, LABEL),
+            fixPriority = buildFeatureOrNull(getStringCellValue(getCell(row, "fixPriority")), PRIORITY),
+            fixVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "fixVersion")), VERSION),
+            keyword = buildFeatureOrNull(getStringCellValue(getCell(row, "keyword")), KEYWORD),
+            labels = buildFeatureSetOrNull(getStringCellValue(getCell(row, "labels")), LABEL),
             orderNumber = getStringCellValue(getCell(row, "orderNumber")),
-            priority = builder.buildFeature(getStringCellValue(getCell(row, "priority")) ?: EMPTY_STRING, PRIORITY),
-            resolution = builder.buildFeature(getStringCellValue(getCell(row, "resolution"))
-                    ?: EMPTY_STRING, RESOLUTION),
-            sprint = builder.buildFeature(getStringCellValue(getCell(row, "sprint")) ?: EMPTY_STRING, SPRINT),
-            status = builder.buildFeature(getStringCellValue(getCell(row, "status")) ?: EMPTY_STRING, STATUS),
-            teams = builder.buildFeatureSet(getStringCellValue(getCell(row, "teams")) ?: EMPTY_STRING, TEAM),
+            priority = buildFeatureOrNull(getStringCellValue(getCell(row, "priority")), PRIORITY),
+            resolution = buildFeatureOrNull(getStringCellValue(getCell(row, "resolution")), RESOLUTION),
+            sprint = buildFeatureOrNull(getStringCellValue(getCell(row, "sprint")), SPRINT),
+            status = buildFeatureOrNull(getStringCellValue(getCell(row, "status")), STATUS),
+            teams = buildFeatureSetOrNull(getStringCellValue(getCell(row, "teams")), TEAM),
 
             dates = setUpDates(row),
             epics = setUpEpics(row),
@@ -177,17 +172,16 @@ open class RowToEntityConverterImpl(
     )
 
     private fun setUpWorkers(row: Row): Workers = Workers(
-            assignee = builder.buildEmployee(getStringCellValue(getCell(row, "assignee")) ?: EMPTY_STRING),
-            creater = builder.buildEmployee(getStringCellValue(getCell(row, "creater")) ?: EMPTY_STRING),
-            reporter = builder.buildEmployee(getStringCellValue(getCell(row, "reporter")) ?: EMPTY_STRING)
+            assignee = buildEmployeeOrNull(getStringCellValue(getCell(row, "assignee"))),
+            creater = buildEmployeeOrNull(getStringCellValue(getCell(row, "creater"))),
+            reporter = buildEmployeeOrNull(getStringCellValue(getCell(row, "reporter")))
     )
 
     private fun setUpEpics(row: Row): Epics = Epics(
-            epicColor = builder.buildFeature(getStringCellValue(getCell(row, "epicColor")) ?: EMPTY_STRING, EPIC_COLOR),
+            epicColor = buildFeatureOrNull(getStringCellValue(getCell(row, "epicColor")), EPIC_COLOR),
             epicLink = getStringCellValue(getCell(row, "epicLink")),
             epicName = getStringCellValue(getCell(row, "epicName")),
-            epicStatus = builder.buildFeature(getStringCellValue(getCell(row, "epicStatus"))
-                    ?: EMPTY_STRING, EPIC_STATUS)
+            epicStatus = buildFeatureOrNull(getStringCellValue(getCell(row, "epicStatus")), EPIC_STATUS)
     )
 
     private fun setUpStatistics(row: Row): Statistics = Statistics(
@@ -209,6 +203,18 @@ open class RowToEntityConverterImpl(
             dueDate = getDateCellValue(getCell(row, "dueDate"))
     )
 
+    private fun buildEmployeeOrNull(employee: String?):
+            Employee? = if(employee == null) null else builder.buildEmployee(employee)
+
+    private fun buildFeatureOrNull(title: String?, nature: String = DEFAULT):
+            Feature? = if(title == null) null else builder.buildFeature(title, nature)
+
+    private fun buildFeatureSetOrNull(title: String?, nature: String = DEFAULT):
+            Set<Feature> = if(title == null) HashSet() else builder.buildFeatureSet(title, nature)
+
+    private fun buildTaskConnection(task: String?) :
+            Set<Task> = if(task == null) HashSet() else builder.buildConnectionToAnotherTasks(task)
+
 
     @Transactional
     override fun addTasksConnectFromRow(row: Row) {
@@ -217,12 +223,10 @@ open class RowToEntityConverterImpl(
                 ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: "DK")
         val task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
 
-        task.subTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "subTasks"))
-                ?: EMPTY_STRING)
-        task.relationTasks = builder.buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "relationTasks"))
-                ?: EMPTY_STRING)
-        task.duplicateTasks = builder
-                .buildConnectionToAnotherTasks(getStringCellValue(getCell(row, "duplicateTasks")) ?: EMPTY_STRING)
+        task.subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
+        task.relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
+        task.duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
+
         taskDao.merge(task)
     }
 
@@ -235,7 +239,7 @@ open class RowToEntityConverterImpl(
 
         //todo : delete duplicates
         while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
-            curComment = builder.buildComments(commentString ?: EMPTY_STRING)
+            curComment = builder.buildComments(commentString!!) //todo
             curComment!!.task = task
             commentDao.persist(curComment)
         }
@@ -247,16 +251,17 @@ open class RowToEntityConverterImpl(
         var currentIndex: Int = FIELDS["commentMode.commentStart"]
                 ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
         var commentString: String? = null
-        var curComment: Comment
+        var curComment: Comment?
 
         while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
-            curComment = builder.buildCommentsWithTask(commentString ?: EMPTY_STRING)
+            curComment = builder.buildCommentsWithTask(commentString!!) //todo
             if (curComment != null) {
                 commentDao.persist(curComment)
             }
         }
     }
 
+    //todo : methods to EXCEL READER
     private fun getStringCellValue(cell: Cell?): String? {
         if (cell == null)
             return null
@@ -277,6 +282,7 @@ open class RowToEntityConverterImpl(
     private fun getPercentCellValue(cell: Cell?): Int? {
         return if (cell == null) null else doubleToInt(cell.numericCellValue) * 100
     }
+    //todo : methods to EXCEL READER
 
     private fun doubleToInt(value: Double): Int { //todo: smthng strange
         var value = value
@@ -285,6 +291,7 @@ open class RowToEntityConverterImpl(
         return value.toInt()
     }
 
+    //todo: not right.. mb get value?
     private fun getCell(row: Row, fieldName: String): Cell? {
         val index: Int = FIELDS[fieldName] ?: -1
         return if (index < 0) null else row.getCell(index)

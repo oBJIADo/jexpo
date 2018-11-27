@@ -183,7 +183,7 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
      * @return Employee.
      */
     private fun findOrPersistEmployee(firstName: String, secondName: String): Employee {
-        var employee: Employee = employeeDao.getByNames(firstName, secondName)
+        var employee: Employee? = employeeDao.getByNames(firstName, secondName)
         if (employee != null) {
             return employee
         } else {

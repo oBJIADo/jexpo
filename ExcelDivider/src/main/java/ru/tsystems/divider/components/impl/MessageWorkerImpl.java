@@ -14,8 +14,11 @@ import ru.tsystems.divider.components.api.MessageWorker;
 public class MessageWorkerImpl implements MessageWorker {
     private static final Logger logger = Logger.getLogger(MessageWorker.class);
 
-    @Autowired
     private MessageSource messageSource;
+
+    public MessageWorkerImpl(@Autowired MessageSource messageSource){
+        this.messageSource = messageSource;
+    }
 
     public String getSourceValue(String sourcePath, String sourceName) {
         try {
