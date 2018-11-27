@@ -1,4 +1,4 @@
-package ru.tsystems.divider.service.impl
+package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
@@ -18,9 +18,9 @@ import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Statistics
 import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.entity.Workers
-import ru.tsystems.divider.service.api.EntityBuilder
-import ru.tsystems.divider.service.api.FieldBuilder
-import ru.tsystems.divider.service.api.RowToEntityConverter
+import ru.tsystems.divider.service.api.functional.EntityBuilder
+import ru.tsystems.divider.service.api.functional.FieldBuilder
+import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 import ru.tsystems.divider.utils.constants.COMPONENT
 import ru.tsystems.divider.utils.constants.DEFAULT
 import ru.tsystems.divider.utils.constants.EPIC_COLOR

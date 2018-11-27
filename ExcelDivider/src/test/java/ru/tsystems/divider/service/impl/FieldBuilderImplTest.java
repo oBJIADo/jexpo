@@ -3,11 +3,11 @@ package ru.tsystems.divider.service.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.tsystems.divider.context.MessageSimulator;
 import ru.tsystems.divider.context.TestContext;
 import ru.tsystems.divider.exceptions.NoShetException;
-import ru.tsystems.divider.service.api.ExcelFileReader;
-import ru.tsystems.divider.service.api.FieldBuilder;
+import ru.tsystems.divider.service.api.excel.ExcelReader;
+import ru.tsystems.divider.service.api.functional.FieldBuilder;
+import ru.tsystems.divider.service.impl.excel.XlsxFileReader;
 
 import javax.xml.bind.PropertyException;
 import java.io.IOException;
@@ -21,11 +21,11 @@ public class FieldBuilderImplTest {
 
     private FieldBuilder fieldBuilder;
 
-    private ExcelFileReader reader;
+    private ExcelReader reader;
 
     @Before
     public void init() throws IOException, PropertyException {
-        reader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
+        reader = new XlsxFileReader(xlsxFilePath, testSheetName);
         fieldBuilder = TestContext.getTestContext().getFieldBuilder();
     }
 

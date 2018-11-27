@@ -1,6 +1,7 @@
-package ru.tsystems.divider.service.api
+package ru.tsystems.divider.service.api.functional
 
 import ru.tsystems.divider.exceptions.NoShetException
+import ru.tsystems.divider.service.api.excel.ExcelReader
 import java.io.IOException
 
 
@@ -18,8 +19,8 @@ interface JiraToDBConverter {
      * First row index with needed data.
      */
     @Throws(IOException::class, NoShetException::class)
-    fun transferAll(excelReader: ExcelFileReader, startRowIndex: Int)
+    fun transferAll(excelReader: ExcelReader, startRowIndex: Int)
 
     @Throws(IOException::class, NoShetException::class)
-    fun transferAllComments(excelReader: ExcelFileReader, startRowIndex: Int)
+    fun transferAllComments(excelReader: ExcelReader, startRowIndex: Int)
 }

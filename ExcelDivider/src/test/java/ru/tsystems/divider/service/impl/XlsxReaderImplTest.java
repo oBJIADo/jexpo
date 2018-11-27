@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.tsystems.divider.exceptions.NoShetException;
+import ru.tsystems.divider.service.api.excel.ExcelReader;
+import ru.tsystems.divider.service.impl.excel.XlsxFileReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,11 +19,11 @@ public class XlsxReaderImplTest {
     private String xlsxFilePath = "./src/test/resources/Book1.xlsx";
     private String firstSheetName = "First";
     private String secondSheetName = "Second";
-    private XlsxReaderImpl xlsxReader;
+    private ExcelReader xlsxReader;
 
     @Before
     public void initAllParams() throws IOException {
-        xlsxReader = new XlsxReaderImpl(xlsxFilePath, secondSheetName);
+        xlsxReader = new XlsxFileReader(xlsxFilePath, secondSheetName);
     }
 
     @After

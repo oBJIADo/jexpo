@@ -1,10 +1,10 @@
-package ru.tsystems.divider.service.impl
+package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.components.api.MessageWorker
-import ru.tsystems.divider.service.api.FieldBuilder
+import ru.tsystems.divider.service.api.functional.FieldBuilder
 import javax.xml.bind.PropertyException
 
 @Service

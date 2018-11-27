@@ -1,12 +1,12 @@
-package ru.tsystems.divider.service.impl
+package ru.tsystems.divider.service.impl.entity
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.tsystems.divider.dao.api.FeatureDao
 import ru.tsystems.divider.entity.Feature
-import ru.tsystems.divider.service.api.FeatureService
-import ru.tsystems.divider.service.api.NatureService
+import ru.tsystems.divider.service.api.entity.FeatureService
+import ru.tsystems.divider.service.api.entity.NatureService
 
 @Service
 class FeatureServiceImpl(@param:Autowired private val featureDao: FeatureDao,

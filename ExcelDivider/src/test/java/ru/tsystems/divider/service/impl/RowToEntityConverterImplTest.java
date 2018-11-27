@@ -5,8 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.tsystems.divider.context.TestContext;
 import ru.tsystems.divider.exceptions.NoShetException;
-import ru.tsystems.divider.service.api.RowToEntityConverter;
-import ru.tsystems.divider.service.api.ExcelFileReader;
+import ru.tsystems.divider.service.api.excel.ExcelReader;
+import ru.tsystems.divider.service.api.functional.RowToEntityConverter;
+import ru.tsystems.divider.service.impl.excel.XlsxFileReader;
 
 import java.io.IOException;
 
@@ -15,13 +16,13 @@ public class RowToEntityConverterImplTest {
     private RowToEntityConverter rowToEntityConverter;
 
     private int rowIndex = 2;
-    private ExcelFileReader xlsxReader;
+    private ExcelReader xlsxReader;
 
     @Before
     public void initStreams() throws IOException {
         String xlsxFilePath = "./src/test/resources/Book1.xlsx";
         String testSheetName = "buildTest";
-        xlsxReader = new XlsxReaderImpl(xlsxFilePath, testSheetName);
+        xlsxReader = new XlsxFileReader(xlsxFilePath, testSheetName);
         rowToEntityConverter = TestContext.getTestContext().getRteConv();
     }
 

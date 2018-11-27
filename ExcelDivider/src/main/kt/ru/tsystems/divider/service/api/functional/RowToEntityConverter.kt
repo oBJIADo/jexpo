@@ -1,4 +1,4 @@
-package ru.tsystems.divider.service.api
+package ru.tsystems.divider.service.api.functional
 
 import org.apache.poi.ss.usermodel.Row
 import ru.tsystems.divider.entity.Task

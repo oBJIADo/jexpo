@@ -1,4 +1,4 @@
-package ru.tsystems.divider.service.api
+package ru.tsystems.divider.service.api.entity
 
 import ru.tsystems.divider.entity.Nature
 

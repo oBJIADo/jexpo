@@ -2,8 +2,8 @@ package ru.tsystems.divider.components.impl
 
 import org.apache.poi.ss.usermodel.Cell
 import ru.tsystems.divider.exceptions.NoShetException
-import ru.tsystems.divider.service.impl.XlsxReaderImpl
-import ru.tsystems.divider.service.impl.XlsxWriterImpl
+import ru.tsystems.divider.service.impl.excel.XlsxFileReader
+import ru.tsystems.divider.service.impl.excel.XlsxFileWriter
 import java.io.IOException
 import java.util.*
 
@@ -59,8 +59,8 @@ class FileCleaner {
 
     @Throws(IOException::class, NoShetException::class)
     fun clearFile(readFileName: String, resultFileName: String, sheetName: String) {
-        XlsxReaderImpl(readFileName, sheetName).use { reader ->
-            XlsxWriterImpl(resultFileName, sheetName).use { writer ->
+        XlsxFileReader(readFileName, sheetName).use { reader ->
+            XlsxFileWriter(resultFileName, sheetName).use { writer ->
                 var cell: Cell? = null
                 var cellIndex = 1
                 var cellIndexToWrite = 1

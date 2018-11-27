@@ -7,10 +7,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import ru.tsystems.divider.exceptions.ExcelFormatException;
 import ru.tsystems.divider.exceptions.NoShetException;
-import ru.tsystems.divider.service.api.ExcelFileReader;
-import ru.tsystems.divider.service.api.JiraToDBConverter;
-import ru.tsystems.divider.service.impl.XlsReaderImpl;
-import ru.tsystems.divider.service.impl.XlsxReaderImpl;
+import ru.tsystems.divider.service.api.excel.ExcelReader;
+import ru.tsystems.divider.service.api.functional.JiraToDBConverter;
+import ru.tsystems.divider.service.impl.excel.XlsFileReader;
+import ru.tsystems.divider.service.impl.excel.XlsxFileReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -75,7 +75,7 @@ public class DivideRunner {
                                          JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException { //todo: Simple this shit
         String fileFormat = getFormat(fileName);
         if (EXCEL_FORMAT.equalsIgnoreCase(fileFormat)) {
-            try (ExcelFileReader excelReader = new XlsxReaderImpl(fileName, sheetName)) {
+            try (ExcelReader excelReader = new XlsxFileReader(fileName, sheetName)) {
                 converter.transferAll(excelReader, startRowIndex);
             } catch (IOException exc) {
                 logger.error("IOexception." + exc.getMessage());
@@ -85,7 +85,7 @@ public class DivideRunner {
                 throw nsexc;
             }
         } else if (EXCEL_OLD_FORMAT.equalsIgnoreCase(fileFormat)) {
-            try (ExcelFileReader excelReader = new XlsReaderImpl(fileName, sheetName)) {
+            try (ExcelReader excelReader = new XlsFileReader(fileName, sheetName)) { //todo
                 converter.transferAll(excelReader, startRowIndex);
             } catch (IOException exc) {
                 logger.error("IOexception." + exc.getMessage());
@@ -104,7 +104,7 @@ public class DivideRunner {
                                            JiraToDBConverter converter) throws ExcelFormatException, IOException, NoShetException {
         String fileFormat = getFormat(fileName);
         if (EXCEL_FORMAT.equalsIgnoreCase(fileFormat)) {
-            try (ExcelFileReader excelReader = new XlsxReaderImpl(fileName, sheetName)) {
+            try (ExcelReader excelReader = new XlsxFileReader(fileName, sheetName)) {
                 converter.transferAllComments(excelReader, startRowIndex);
             } catch (IOException exc) {
                 logger.error("IOexception." + exc.getMessage());
@@ -114,7 +114,7 @@ public class DivideRunner {
                 throw nsexc;
             }
         } else if (EXCEL_OLD_FORMAT.equalsIgnoreCase(fileFormat)) {
-            try (ExcelFileReader excelReader = new XlsReaderImpl(fileName, sheetName)) {
+            try (ExcelReader excelReader = new XlsFileReader(fileName, sheetName)) {
                 converter.transferAllComments(excelReader, startRowIndex);
             } catch (IOException exc) {
                 logger.error("IOexception." + exc.getMessage());

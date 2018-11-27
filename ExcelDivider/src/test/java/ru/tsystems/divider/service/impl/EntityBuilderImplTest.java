@@ -1,29 +1,16 @@
 package ru.tsystems.divider.service.impl;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.tsystems.divider.context.InMemoryFeature;
-import ru.tsystems.divider.context.InMemoryEmployee;
-import ru.tsystems.divider.context.InMemoryNature;
-import ru.tsystems.divider.context.InMemoryTask;
-import ru.tsystems.divider.context.MessageSimulator;
-import ru.tsystems.divider.components.api.MessageWorker;
 import ru.tsystems.divider.context.TestContext;
 import ru.tsystems.divider.entity.Comment;
 import ru.tsystems.divider.entity.Employee;
 import ru.tsystems.divider.entity.Feature;
 import ru.tsystems.divider.entity.Nature;
 import ru.tsystems.divider.exceptions.NoShetException;
-import ru.tsystems.divider.service.api.EntityBuilder;
-import ru.tsystems.divider.service.api.ExcelFileReader;
-import ru.tsystems.divider.service.api.FeatureService;
-import ru.tsystems.divider.service.api.NatureService;
+import ru.tsystems.divider.service.api.functional.EntityBuilder;
 import ru.tsystems.divider.utils.constants.NatureConstants;
 
-import javax.xml.bind.PropertyException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

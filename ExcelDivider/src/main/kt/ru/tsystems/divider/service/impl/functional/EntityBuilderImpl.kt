@@ -1,4 +1,4 @@
-package ru.tsystems.divider.service.impl
+package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,9 +10,9 @@ import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Employee
 import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Task
-import ru.tsystems.divider.service.api.EntityBuilder
-import ru.tsystems.divider.service.api.FeatureService
-import ru.tsystems.divider.service.api.FieldBuilder
+import ru.tsystems.divider.service.api.functional.EntityBuilder
+import ru.tsystems.divider.service.api.entity.FeatureService
+import ru.tsystems.divider.service.api.functional.FieldBuilder
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

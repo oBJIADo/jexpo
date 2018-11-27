@@ -1,4 +1,4 @@
-package ru.tsystems.divider.service.api
+package ru.tsystems.divider.service.api.functional
 
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Employee

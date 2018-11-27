@@ -2,18 +2,18 @@ package ru.tsystems.divider.context;
 
 
 import ru.tsystems.divider.components.api.MessageWorker;
-import ru.tsystems.divider.service.api.EntityBuilder;
-import ru.tsystems.divider.service.api.FeatureService;
-import ru.tsystems.divider.service.api.FieldBuilder;
-import ru.tsystems.divider.service.api.JiraToDBConverter;
-import ru.tsystems.divider.service.api.NatureService;
-import ru.tsystems.divider.service.api.RowToEntityConverter;
-import ru.tsystems.divider.service.impl.EntityBuilderImpl;
-import ru.tsystems.divider.service.impl.FeatureServiceImpl;
-import ru.tsystems.divider.service.impl.FieldBuilderImpl;
-import ru.tsystems.divider.service.impl.JiraToDBConverterImpl;
-import ru.tsystems.divider.service.impl.NatureServiceImpl;
-import ru.tsystems.divider.service.impl.RowToEntityConverterImpl;
+import ru.tsystems.divider.service.api.functional.EntityBuilder;
+import ru.tsystems.divider.service.api.entity.FeatureService;
+import ru.tsystems.divider.service.api.functional.FieldBuilder;
+import ru.tsystems.divider.service.api.functional.JiraToDBConverter;
+import ru.tsystems.divider.service.api.entity.NatureService;
+import ru.tsystems.divider.service.api.functional.RowToEntityConverter;
+import ru.tsystems.divider.service.impl.functional.EntityBuilderImpl;
+import ru.tsystems.divider.service.impl.entity.FeatureServiceImpl;
+import ru.tsystems.divider.service.impl.functional.FieldBuilderImpl;
+import ru.tsystems.divider.service.impl.functional.JiraToDBConverterImpl;
+import ru.tsystems.divider.service.impl.entity.NatureServiceImpl;
+import ru.tsystems.divider.service.impl.functional.RowToEntityConverterImpl;
 
 public class TestContext {
 

@@ -1,13 +1,13 @@
-package ru.tsystems.divider.service.impl
+package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.exceptions.NoShetException
-import ru.tsystems.divider.service.api.ExcelFileReader
-import ru.tsystems.divider.service.api.JiraToDBConverter
-import ru.tsystems.divider.service.api.RowToEntityConverter
+import ru.tsystems.divider.service.api.excel.ExcelReader
+import ru.tsystems.divider.service.api.functional.JiraToDBConverter
+import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 import java.io.IOException
 
 @Service
@@ -25,18 +25,18 @@ class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEn
      * First row index with needed data.
      */
     @Throws(IOException::class, NoShetException::class)
-    override fun transferAll(excelReader: ExcelFileReader, startRowIndex: Int) {
+    override fun transferAll(excelReader: ExcelReader, startRowIndex: Int) {
         addTasks(startRowIndex, excelReader)
         addSubTasks(startRowIndex, excelReader)
     }
 
     @Throws(IOException::class, NoShetException::class)
-    override fun transferAllComments(excelReader: ExcelFileReader, startRowIndex: Int) {
+    override fun transferAllComments(excelReader: ExcelReader, startRowIndex: Int) {
         addComments(startRowIndex, excelReader)
     }
 
     @Throws(NoShetException::class)
-    private fun addComments(startRowIndex: Int, reader: ExcelFileReader) {//todo: just todo; Remove all !! and do smthng with dat shitty code
+    private fun addComments(startRowIndex: Int, reader: ExcelReader) {//todo: just todo; Remove all !! and do smthng with dat shitty code
         var curRow: Row? = null
         var curRowIndex = startRowIndex
 
@@ -47,7 +47,7 @@ class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEn
     }
 
     @Throws(NoShetException::class) //todo: just todo; Remove all !! and do smthng with dat shitty code
-    private fun addTasks(startRowIndex: Int, reader: ExcelFileReader) {
+    private fun addTasks(startRowIndex: Int, reader: ExcelReader) {
         var curRow: Row? = null
         var curRowIndex = startRowIndex
 
@@ -58,7 +58,7 @@ class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEn
     }
 
     @Throws(NoShetException::class)
-    private fun addSubTasks(startRowIndex: Int, reader: ExcelFileReader) {//todo: just todo; Remove all !! and do smthng with dat shitty code
+    private fun addSubTasks(startRowIndex: Int, reader: ExcelReader) {//todo: just todo; Remove all !! and do smthng with dat shitty code
         var curRow: Row? = null
         var subtaskIndex = startRowIndex
 
