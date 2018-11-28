@@ -33,19 +33,4 @@ public class InMemoryTask extends InMemoryDaoGeneral<Task> implements TaskDao, C
         }
         return null;
     }
-
-    @Override
-    public void reset() {
-
-    }
-
-    @Override
-    public void setValue(String key, Task value) {
-
-    }
-
-    @Override
-    public Task getValue(String key) {
-        return null;
-    }
 }

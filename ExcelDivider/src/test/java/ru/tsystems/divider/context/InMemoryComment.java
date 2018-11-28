@@ -18,19 +18,4 @@ public class InMemoryComment extends InMemoryDaoGeneral<Comment> implements Comm
         super();
         reset();
     }
-
-    @Override
-    public void reset() {
-
-    }
-
-    @Override
-    public void setValue(String key, Comment value) {
-
-    }
-
-    @Override
-    public Comment getValue(String key) {
-        return null;
-    }
 }

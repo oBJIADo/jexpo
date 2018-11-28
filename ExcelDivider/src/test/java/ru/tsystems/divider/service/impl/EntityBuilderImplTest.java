@@ -16,17 +16,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 
 public class EntityBuilderImplTest {
-    private int rowIndex = 2;
     private EntityBuilder builder;
 
     @Before
     public void initStreams() {
-        builder = TestContext.getTestContext().getEntityBuilder();
+        TestContext testContext = TestContext.getTestContext();
+        testContext.reset();
+        builder = testContext.getEntityBuilder();
     }
 
     @Test
@@ -62,50 +63,50 @@ public class EntityBuilderImplTest {
 
     @Test
     public void buildEpicColor() throws NoShetException {
-        Feature actual = builder.buildFeature("OHMYGOSH", NatureConstants.EPIC_COLOR);
-        Feature expected = new Feature("OHMYGOSH", new Nature(NatureConstants.EPIC_COLOR));
+        Feature actual = builder.buildFeature("OHMYGOSH", NatureConstants.NATURE_EPIC_COLOR);
+        Feature expected = new Feature("OHMYGOSH", new Nature(NatureConstants.NATURE_EPIC_COLOR));
         assertEquals(expected, actual);
     }
 
     @Test//todo: tests
     public void buildIssueType() throws NoShetException {
-        Feature actual = builder.buildFeature("ISSuE", NatureConstants.ISSUE_TYPE);
-        Feature expected = new Feature("ISSuE", new Nature(NatureConstants.ISSUE_TYPE));
+        Feature actual = builder.buildFeature("ISSuE", NatureConstants.NATURE_ISSUE_TYPE);
+        Feature expected = new Feature("ISSuE", new Nature(NatureConstants.NATURE_ISSUE_TYPE));
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildKeyword() throws NoShetException {
-        Feature actual = builder.buildFeature("Keyword", NatureConstants.KEYWORD);
-        Feature expected = new Feature("Keyword", new Nature(NatureConstants.KEYWORD));
+        Feature actual = builder.buildFeature("Keyword", NatureConstants.NATURE_KEYWORD);
+        Feature expected = new Feature("Keyword", new Nature(NatureConstants.NATURE_KEYWORD));
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildPriority() throws NoShetException {
-        Feature actual = builder.buildFeature("Priority", NatureConstants.PRIORITY);
-        Feature expected = new Feature("Priority", new Nature(NatureConstants.PRIORITY));
+        Feature actual = builder.buildFeature("Priority", NatureConstants.NATURE_PRIORITY);
+        Feature expected = new Feature("Priority", new Nature(NatureConstants.NATURE_PRIORITY));
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildResolution() throws NoShetException {
-        Feature actual = builder.buildFeature("resolution", NatureConstants.RESOLUTION);
-        Feature expected = new Feature("resolution", new Nature(NatureConstants.RESOLUTION));
+        Feature actual = builder.buildFeature("resolution", NatureConstants.NATURE_RESOLUTION);
+        Feature expected = new Feature("resolution", new Nature(NatureConstants.NATURE_RESOLUTION));
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildSprint() throws NoShetException {
-        Feature actual = builder.buildFeature("sprint", NatureConstants.SPRINT);
-        Feature expected = new Feature("sprint", new Nature(NatureConstants.SPRINT));
+        Feature actual = builder.buildFeature("sprint", NatureConstants.NATURE_SPRINT);
+        Feature expected = new Feature("sprint", new Nature(NatureConstants.NATURE_SPRINT));
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildStatus() throws NoShetException {
-        Feature actual = builder.buildFeature("status", NatureConstants.STATUS);
-        Feature expected = new Feature("status", new Nature(NatureConstants.STATUS));
+        Feature actual = builder.buildFeature("status", NatureConstants.NATURE_STATUS);
+        Feature expected = new Feature("status", new Nature(NatureConstants.NATURE_STATUS));
         assertEquals(expected, actual);
     }
 
@@ -144,29 +145,83 @@ public class EntityBuilderImplTest {
 
     @Test
     public void buildComponents() throws NoShetException {
-        Set<Feature> actual = builder.buildFeatureSet("AD V5.4 Spezifikation; COM1; COM2; COM10", NatureConstants.COMPONENT);
+        Set<Feature> actual = builder.buildFeatureSet("AD V5.4 Spezifikation; COM1; COM2; COM10", NatureConstants.NATURE_COMPONENT);
         Set<Feature> expected = new HashSet<>();
-        expected.add(new Feature("COM1", new Nature(NatureConstants.COMPONENT)));
-        expected.add(new Feature("COM2", new Nature(NatureConstants.COMPONENT)));
-        expected.add(new Feature("COM10", new Nature(NatureConstants.COMPONENT)));
-        expected.add(new Feature("AD V5.4 Spezifikation", new Nature(NatureConstants.COMPONENT)));
+        expected.add(new Feature("COM1", new Nature(NatureConstants.NATURE_COMPONENT)));
+        expected.add(new Feature("COM2", new Nature(NatureConstants.NATURE_COMPONENT)));
+        expected.add(new Feature("COM10", new Nature(NatureConstants.NATURE_COMPONENT)));
+        expected.add(new Feature("AD V5.4 Spezifikation", new Nature(NatureConstants.NATURE_COMPONENT)));
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void buildLabels() throws NoShetException {
-        Set<Feature> actual = builder.buildFeatureSet("", NatureConstants.LABEL);
+        Set<Feature> actual = builder.buildFeatureSet("", NatureConstants.NATURE_LABEL);
         assertTrue(actual.isEmpty());
     }
 
     @Test
     public void buildVersions() throws NoShetException {
-        Set<Feature> actual = builder.buildFeatureSet("V05.400.01; V05.400.02", NatureConstants.VERSION);
+        Set<Feature> actual = builder.buildFeatureSet("V05.400.01; V05.400.02", NatureConstants.NATURE_VERSION);
         Set<Feature> expected = new HashSet<>();
-        expected.add(new Feature("V05.400.01", new Nature(NatureConstants.VERSION)));
-        expected.add(new Feature("V05.400.02", new Nature(NatureConstants.VERSION)));
+        expected.add(new Feature("V05.400.01", new Nature(NatureConstants.NATURE_VERSION)));
+        expected.add(new Feature("V05.400.02", new Nature(NatureConstants.NATURE_VERSION)));
 
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullEmployee(){
+        builder.buildEmployee(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullComment(){
+        builder.buildComments(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullFeature(){
+        builder.buildFeature(null, NatureConstants.NATURE_DEFAULT);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullNature(){
+        builder.buildFeature("Test", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullFeatureSet(){
+        builder.buildFeatureSet(null, NatureConstants.NATURE_DEFAULT);
+    }
+
+    @Test()
+    public void emptyEmployee(){
+        Employee employee = builder.buildEmployee("");
+        assertNull(employee);
+    }
+
+    @Test()
+    public void emptyComment(){
+        Comment comment = builder.buildComments("");
+        assertNull(comment);
+    }
+
+    @Test()
+    public void emptyFeature(){
+        Feature feature = builder.buildFeature("", NatureConstants.NATURE_DEFAULT);
+        assertNull(feature);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void emptyNature(){
+        builder.buildFeature("Test", "");
+    }
+
+    @Test()
+    public void emptyFeatureSet(){
+        Set<Feature> featureSet = builder.buildFeatureSet("", NatureConstants.NATURE_DEFAULT);
+        assertEquals(0, featureSet.size());
     }
 }

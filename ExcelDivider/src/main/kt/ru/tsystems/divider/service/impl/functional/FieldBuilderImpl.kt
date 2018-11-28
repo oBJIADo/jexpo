@@ -3,8 +3,9 @@ package ru.tsystems.divider.service.impl.functional
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import ru.tsystems.divider.components.api.MessageWorker
 import ru.tsystems.divider.service.api.functional.FieldBuilder
+import ru.tsystems.divider.utils.api.MessageWorker
+import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_COMMENT
 import javax.xml.bind.PropertyException
 
 @Service
@@ -25,9 +26,9 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
         var date = -1
         val comment: Int
 
-        val format = messageWorker.getSourceValue("format.read.comment")
+        val format = messageWorker.getSourceValue(PROPS_FORMAT_READ_COMMENT)
         if (format == null) {
-            logger.error("No keywords, return all cell as comment text")
+            logger.warn("No keywords, return all cell as comment text")
             comment = 0
         } else {
             val formats = format.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

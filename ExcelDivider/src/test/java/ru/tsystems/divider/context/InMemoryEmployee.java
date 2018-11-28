@@ -35,19 +35,4 @@ public class InMemoryEmployee extends InMemoryDaoGeneral<Employee> implements Em
         }
         return null;
     }
-
-    @Override
-    public void reset() {
-
-    }
-
-    @Override
-    public void setValue(String key, Employee value) {
-
-    }
-
-    @Override
-    public Employee getValue(String key) {
-        return null;
-    }
 }

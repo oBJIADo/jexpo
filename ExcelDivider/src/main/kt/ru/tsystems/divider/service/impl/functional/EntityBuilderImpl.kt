@@ -3,23 +3,29 @@ package ru.tsystems.divider.service.impl.functional
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import ru.tsystems.divider.components.api.MessageWorker
 import ru.tsystems.divider.dao.api.EmployeeDao
 import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Employee
 import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Task
-import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.entity.FeatureService
+import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
+import ru.tsystems.divider.utils.api.MessageWorker
+import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_DATE
+import ru.tsystems.divider.utils.constants.PROPS_MODIFICATOR_KEYS_PRE
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_ANOTHER
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_COMMENTS
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_EMPLOYEE
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
 @Service
-class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
+class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
                         @Autowired val rebuilder: FieldBuilder,
                         @Autowired val featureService: FeatureService,
                         @Autowired val employeeDao: EmployeeDao,
@@ -27,7 +33,6 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
 
     private val logger = Logger.getLogger(EntityBuilderImpl::class.java)
 
-    private val SYMBOLS_SOURCE = "symbol.divideSymbol."
 
     private val EMPLOYEE_DIVIDER: String
     private val ANOTHER_TASKS_DIVIDER: String
@@ -37,17 +42,14 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
     private val FORMAT_DATE: String
 
     init {
-        KEY_MODIFICATOR = messageWorker.getSourceValue("modificator.keys.pre")
+        KEY_MODIFICATOR = messageWorker.getObligatorySourceValue(PROPS_MODIFICATOR_KEYS_PRE)
 
-        FORMAT_DATE = if (messageWorker.getSourceValue("format.read.date") == null)
-            "dd.MM.yyyy HH:mm"
-        else
-            messageWorker.getSourceValue("format.read.date")
+        FORMAT_DATE = messageWorker.getSourceValue(PROPS_FORMAT_READ_DATE) ?: "dd.MM.yyyy HH:mm"
 
-        EMPLOYEE_DIVIDER = messageWorker.getSourceValue(SYMBOLS_SOURCE, "employee")
-        ANOTHER_TASKS_DIVIDER = messageWorker.getSourceValue(SYMBOLS_SOURCE, "anotherTasks")
-        COMMENTS_DIVIDER = messageWorker.getSourceValue(SYMBOLS_SOURCE, "comments")
-        ANOTHER_DIVIDER = messageWorker.getSourceValue(SYMBOLS_SOURCE, "another")
+        EMPLOYEE_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_EMPLOYEE)
+        ANOTHER_TASKS_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS)
+        COMMENTS_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_COMMENTS)
+        ANOTHER_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_ANOTHER)
     }
 
     /**
@@ -85,7 +87,7 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
      * @return New comment.
      */
     override fun buildComments(comment: String): Comment? {
-        if(comment.isEmpty()) //todo
+        if (comment.isEmpty()) //todo
             return null
 
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
@@ -103,7 +105,7 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
     }
 
     override fun buildCommentsWithTask(comment: String): Comment? {
-        if(comment.isEmpty()) //todo
+        if (comment.isEmpty()) //todo
             return null
 
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
@@ -117,8 +119,8 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
         val commentBirthDay: Date?
         val comentator: Employee?
 
-        comentator = if(author == null) null else this.buildEmployee(author)
-        commentBirthDay = if(date == null) null else this.dateFromString(date)
+        comentator = if (author == null) null else this.buildEmployee(author)
+        commentBirthDay = if (date == null) null else this.dateFromString(date)
         val task = taskDao.getBykey(key)
 
         return Comment(task, commentBirthDay, comentator, commentText)
@@ -224,17 +226,17 @@ class EntityBuilderImpl(@Autowired val messageWorker: MessageWorker,
             if (key != null) {
                 try {
                     tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))) //todo: if->try not beauty
-                } catch (ilStExc: IllegalStateException){
+                } catch (ilStExc: IllegalStateException) {
                     logger.error(ilStExc.message + "; This task not added to dependencies!!!")
                 }
             }
-            }
+        }
 
         return tasks
 
     }
 
     private fun buildSubTask(key: String): Task {
-            return taskDao.getBykey(key) ?: throw IllegalStateException("Illegal task connection with key: $key")
+        return taskDao.getBykey(key) ?: throw IllegalStateException("Illegal task connection with key: $key")
     }
 }

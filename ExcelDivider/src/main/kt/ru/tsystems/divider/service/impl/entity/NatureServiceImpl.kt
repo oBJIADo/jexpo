@@ -10,12 +10,17 @@ import ru.tsystems.divider.service.api.entity.NatureService
 class NatureServiceImpl(@Autowired private val natureDao: NatureDao) : NatureService {
 
     override fun getOrAddNatureByTitle(title: String): Nature {
+        if(title.isEmpty()){
+            throw IllegalArgumentException("Nature cannot be null or empty!")
+        }
 
         var nature: Nature? = natureDao.getByTitle(title)
+
         if (nature == null) {
             nature = Nature(title)
             natureDao.persist(nature)
         }
+
         return nature
     }
 

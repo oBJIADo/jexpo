@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.tsystems.divider.components.api.MessageWorker
 import ru.tsystems.divider.dao.api.CommentDao
 import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
@@ -21,19 +20,22 @@ import ru.tsystems.divider.entity.Workers
 import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 import ru.tsystems.divider.service.api.functional.RowToEntityConverter
-import ru.tsystems.divider.utils.constants.COMPONENT
-import ru.tsystems.divider.utils.constants.DEFAULT
-import ru.tsystems.divider.utils.constants.EPIC_COLOR
-import ru.tsystems.divider.utils.constants.EPIC_STATUS
-import ru.tsystems.divider.utils.constants.ISSUE_TYPE
-import ru.tsystems.divider.utils.constants.KEYWORD
-import ru.tsystems.divider.utils.constants.LABEL
-import ru.tsystems.divider.utils.constants.PRIORITY
-import ru.tsystems.divider.utils.constants.RESOLUTION
-import ru.tsystems.divider.utils.constants.SPRINT
-import ru.tsystems.divider.utils.constants.STATUS
-import ru.tsystems.divider.utils.constants.TEAM
-import ru.tsystems.divider.utils.constants.VERSION
+import ru.tsystems.divider.utils.api.MessageWorker
+import ru.tsystems.divider.utils.constants.NATURE_COMPONENT
+import ru.tsystems.divider.utils.constants.NATURE_DEFAULT
+import ru.tsystems.divider.utils.constants.NATURE_EPIC_COLOR
+import ru.tsystems.divider.utils.constants.NATURE_EPIC_STATUS
+import ru.tsystems.divider.utils.constants.NATURE_ISSUE_TYPE
+import ru.tsystems.divider.utils.constants.NATURE_KEYWORD
+import ru.tsystems.divider.utils.constants.NATURE_LABEL
+import ru.tsystems.divider.utils.constants.NATURE_PRIORITY
+import ru.tsystems.divider.utils.constants.NATURE_RESOLUTION
+import ru.tsystems.divider.utils.constants.NATURE_SPRINT
+import ru.tsystems.divider.utils.constants.NATURE_STATUS
+import ru.tsystems.divider.utils.constants.NATURE_TEAM
+import ru.tsystems.divider.utils.constants.NATURE_VERSION
+import ru.tsystems.divider.utils.constants.PROPS_COLUMN_INDEX_SOURCE
+import ru.tsystems.divider.utils.constants.PROPS_MODIFICATOR_KEYS_PRE
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -51,18 +53,16 @@ open class RowToEntityConverterImpl(
 
     private val KEY_MODIFICATOR: String?
 
-    private val SOURCE = "column.index."
-
     init {
 
-        KEY_MODIFICATOR = messageWorker.getSourceValue("modificator.keys.pre")
+        KEY_MODIFICATOR = messageWorker.getSourceValue(PROPS_MODIFICATOR_KEYS_PRE)
 
         val getIndex: (fieldName: String) -> Int =
                 { fieldName ->
                     try {
-                        Integer.valueOf(messageWorker.getSourceValue(SOURCE, fieldName) ?: "-1")
+                        Integer.valueOf(messageWorker.getSourceValue(PROPS_COLUMN_INDEX_SOURCE+fieldName) ?: "-1")
                     } catch (nfexc: NumberFormatException) {
-                        logger.error("Wrong number: $fieldName; Returned -1")
+                        logger.warn("Wrong number: $fieldName; Returned -1")
                         -1
                     }
                 }
@@ -143,27 +143,27 @@ open class RowToEntityConverterImpl(
                     // todo: default key (DK) to constants or smthng else
             ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: "DK"),
             summary = getStringCellValue(getCell(row, "summary")),
-            issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), ISSUE_TYPE),
+            issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), NATURE_ISSUE_TYPE),
             created = getDateCellValue(getCell(row, "created")),
             consumables = setUpConsumables(row)
     )
 
     private fun setUpConsumables(row: Row): Consumables = Consumables(
-            affectsVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "affectsVersion")), VERSION),
-            components = buildFeatureSetOrNull(getStringCellValue(getCell(row, "components")), COMPONENT),
-            deliveredVersion = buildFeatureOrNull(getStringCellValue(getCell(row, "deliveredVersion")), VERSION),
+            affectsVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "affectsVersion")), NATURE_VERSION),
+            components = buildFeatureSetOrNull(getStringCellValue(getCell(row, "components")), NATURE_COMPONENT),
+            deliveredVersion = buildFeatureOrNull(getStringCellValue(getCell(row, "deliveredVersion")), NATURE_VERSION),
             description = getStringCellValue(getCell(row, "description")),
             drcNumber = getStringCellValue(getCell(row, "drcNumber")),
-            fixPriority = buildFeatureOrNull(getStringCellValue(getCell(row, "fixPriority")), PRIORITY),
-            fixVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "fixVersion")), VERSION),
-            keyword = buildFeatureOrNull(getStringCellValue(getCell(row, "keyword")), KEYWORD),
-            labels = buildFeatureSetOrNull(getStringCellValue(getCell(row, "labels")), LABEL),
+            fixPriority = buildFeatureOrNull(getStringCellValue(getCell(row, "fixPriority")), NATURE_PRIORITY),
+            fixVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "fixVersion")), NATURE_VERSION),
+            keyword = buildFeatureOrNull(getStringCellValue(getCell(row, "keyword")), NATURE_KEYWORD),
+            labels = buildFeatureSetOrNull(getStringCellValue(getCell(row, "labels")), NATURE_LABEL),
             orderNumber = getStringCellValue(getCell(row, "orderNumber")),
-            priority = buildFeatureOrNull(getStringCellValue(getCell(row, "priority")), PRIORITY),
-            resolution = buildFeatureOrNull(getStringCellValue(getCell(row, "resolution")), RESOLUTION),
-            sprint = buildFeatureOrNull(getStringCellValue(getCell(row, "sprint")), SPRINT),
-            status = buildFeatureOrNull(getStringCellValue(getCell(row, "status")), STATUS),
-            teams = buildFeatureSetOrNull(getStringCellValue(getCell(row, "teams")), TEAM),
+            priority = buildFeatureOrNull(getStringCellValue(getCell(row, "priority")), NATURE_PRIORITY),
+            resolution = buildFeatureOrNull(getStringCellValue(getCell(row, "resolution")), NATURE_RESOLUTION),
+            sprint = buildFeatureOrNull(getStringCellValue(getCell(row, "sprint")), NATURE_SPRINT),
+            status = buildFeatureOrNull(getStringCellValue(getCell(row, "status")), NATURE_STATUS),
+            teams = buildFeatureSetOrNull(getStringCellValue(getCell(row, "teams")), NATURE_TEAM),
 
             dates = setUpDates(row),
             epics = setUpEpics(row),
@@ -178,10 +178,10 @@ open class RowToEntityConverterImpl(
     )
 
     private fun setUpEpics(row: Row): Epics = Epics(
-            epicColor = buildFeatureOrNull(getStringCellValue(getCell(row, "epicColor")), EPIC_COLOR),
+            epicColor = buildFeatureOrNull(getStringCellValue(getCell(row, "epicColor")), NATURE_EPIC_COLOR),
             epicLink = getStringCellValue(getCell(row, "epicLink")),
             epicName = getStringCellValue(getCell(row, "epicName")),
-            epicStatus = buildFeatureOrNull(getStringCellValue(getCell(row, "epicStatus")), EPIC_STATUS)
+            epicStatus = buildFeatureOrNull(getStringCellValue(getCell(row, "epicStatus")), NATURE_EPIC_STATUS)
     )
 
     private fun setUpStatistics(row: Row): Statistics = Statistics(
@@ -206,10 +206,10 @@ open class RowToEntityConverterImpl(
     private fun buildEmployeeOrNull(employee: String?):
             Employee? = if(employee == null) null else builder.buildEmployee(employee)
 
-    private fun buildFeatureOrNull(title: String?, nature: String = DEFAULT):
+    private fun buildFeatureOrNull(title: String?, nature: String = NATURE_DEFAULT):
             Feature? = if(title == null) null else builder.buildFeature(title, nature)
 
-    private fun buildFeatureSetOrNull(title: String?, nature: String = DEFAULT):
+    private fun buildFeatureSetOrNull(title: String?, nature: String = NATURE_DEFAULT):
             Set<Feature> = if(title == null) HashSet() else builder.buildFeatureSet(title, nature)
 
     private fun buildTaskConnection(task: String?) :

@@ -3,7 +3,7 @@ package ru.tsystems.divider;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import ru.tsystems.divider.components.impl.FileCleaner;
+import ru.tsystems.divider.utils.impl.FileCleaner;
 import ru.tsystems.divider.exceptions.NoShetException;
 
 public class FileClear {

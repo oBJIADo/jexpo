@@ -35,19 +35,4 @@ public class InMemoryFeature extends InMemoryDaoGeneral<Feature> implements Feat
         }
         return null;
     }
-
-    @Override
-    public void reset() {
-
-    }
-
-    @Override
-    public void setValue(String key, Feature value) {
-
-    }
-
-    @Override
-    public Feature getValue(String key) {
-        return null;
-    }
 }

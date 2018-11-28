@@ -6,7 +6,7 @@ import ru.tsystems.divider.entity.GeneralEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class InMemoryDaoGeneral<Entity extends GeneralEntity> implements GeneralDao<Entity> {
+public abstract class InMemoryDaoGeneral<Entity extends GeneralEntity> implements GeneralDao<Entity>, ContextSimmulator<Entity> {
     protected List<Entity> database;
 
     InMemoryDaoGeneral(){
@@ -96,7 +96,39 @@ public abstract class InMemoryDaoGeneral<Entity extends GeneralEntity> implement
      * @return Entities.
      */
     @Override
-    public List<Entity> getAll(Class<Entity> className) {
+    public final List<Entity> getAll(Class<Entity> className) {
         return database;
+    }
+
+    @Override
+    public void reset() {
+        database = new ArrayList<Entity>();
+    }
+
+    @Override
+    public final void setValue(String key, Entity value) {
+        int needed = -1;
+        value.setId(Integer.valueOf(key));
+        for(int i = 0; i<database.size(); i++){
+            if(database.get(i).getId() == value.getId()){
+                needed = i;
+            }
+        }
+
+        if(needed == -1){
+            database.add(value);
+        } else {
+            database.set(needed, value);
+        }
+    }
+
+    @Override
+    public final Entity getValue(String key) {
+        for(Entity entity: database){
+            if(entity.getId() == Integer.valueOf(key)){
+                return entity;
+            }
+        }
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package ru.tsystems.divider.components.impl
+package ru.tsystems.divider.utils.impl
 
 import org.apache.poi.ss.usermodel.Cell
 import ru.tsystems.divider.exceptions.NoShetException
