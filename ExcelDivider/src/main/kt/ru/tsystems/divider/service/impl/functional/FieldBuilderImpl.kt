@@ -100,14 +100,14 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
      * @return String without extra symbols.
      */
     private fun removeExtraSpacesAndLines(target: String): String? {
-        var target = target
-        if (target.isEmpty()) {
+        var ltarget = target
+        if (ltarget.isEmpty()) {
             logger.error("Empty target")
             return null
         }
 
-        target = removeExtraSpaces(target)
-        val splitingResult = target.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        ltarget = removeExtraSpaces(ltarget)
+        val splitingResult = ltarget.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val result = StringBuilder()
         for (i in splitingResult.indices) {
             if (!splitingResult[i].isEmpty()) {

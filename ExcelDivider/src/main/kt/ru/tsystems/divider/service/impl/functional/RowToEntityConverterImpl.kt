@@ -285,10 +285,10 @@ open class RowToEntityConverterImpl(
     //todo : methods to EXCEL READER
 
     private fun doubleToInt(value: Double): Int { //todo: smthng strange
-        var value = value
-        if (value < 1 && value > 0)
-            value *= 100.0
-        return value.toInt()
+        var lvalue = value
+        if (lvalue < 1 && lvalue > 0)
+            lvalue *= 100.0
+        return lvalue.toInt()
     }
 
     //todo: not right.. mb get value?

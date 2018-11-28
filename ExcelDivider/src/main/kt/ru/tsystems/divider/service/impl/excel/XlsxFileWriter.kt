@@ -21,15 +21,15 @@ class XlsxFileWriter(private val fileName: String, sheetName: String) : ExcelWri
     }
 
     override fun setTextCellValue(value: String, columnIndex: Int, rowIndex: Int) {
-        var columnIndex = columnIndex
-        var rowIndex = rowIndex
+        var lcolumnIndex = columnIndex
+        var lrowIndex = rowIndex
 
-        if (columnIndex > MAX_COUNT) {
-            rowIndex += columnIndex / MAX_COUNT
-            columnIndex = columnIndex % MAX_COUNT
+        if (lcolumnIndex > MAX_COUNT) {
+            lrowIndex += lcolumnIndex / MAX_COUNT
+            lcolumnIndex = lcolumnIndex % MAX_COUNT
         }
 
-        val cell = getCell(columnIndex, rowIndex)
+        val cell = getCell(lcolumnIndex, lrowIndex)
         cell!!.cellType = Cell.CELL_TYPE_STRING
         cell.setCellValue(value)
 

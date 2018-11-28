@@ -26,7 +26,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
     override fun getSourceValue(sourceName: String): String? { //todo: this method should be removed and all "sourcePath"s should be in constants!
         try {
             val message = messageSource.getMessage(sourceName, null, Locale.getDefault())
-            return if (message == null || message.isEmpty()) null else message
+            return if (message.isEmpty()) null else message
         } catch (mesExc: NoSuchMessageException) {
             logger.warn("No message by source: $sourceName")
             return null
@@ -34,16 +34,11 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
     }
 
     override fun getObligatorySourceValue(sourceName: String): String {
-        try{
-            val message = messageSource.getMessage(sourceName, null, Locale.getDefault())
-            if(message == null) { //todo
-                logger.warn("No message by source: $sourceName")
-                throw PropertiesException(sourceName)
-            }
-            return message
+        try {
+            return messageSource.getMessage(sourceName, null, Locale.getDefault())
         } catch (mesExc: NoSuchMessageException) {
             logger.warn("No message by source: $sourceName")
-            throw PropertiesException(sourceName);
+            throw PropertiesException(sourceName)
         }
     }
 }

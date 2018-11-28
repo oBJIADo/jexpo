@@ -87,8 +87,7 @@ class FileCleaner {
     }
 
     private fun isFirstNum(str: String, divideSymbol: Char): Boolean {
-        var index = 0
-        index = str.indexOf(divideSymbol) - 1
+        var index = str.indexOf(divideSymbol) - 1
         if (index < 0)
             return false
         while (index >= 0) {

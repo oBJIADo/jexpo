@@ -109,7 +109,6 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
             return null
 
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
-                ?: throw java.lang.IllegalArgumentException("todo") //todo
         val rebuilderKey = commentDividingResult[0]
         val key = if (rebuilderKey == null) null else rebuilder.buildTaskKey(rebuilderKey, KEY_MODIFICATOR)//todo
         val date = commentDividingResult[1]
@@ -217,18 +216,16 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
      * @return Set with version entities.
      */
     override fun buildConnectionToAnotherTasks(subTasks: String): Set<Task> {
-        if (subTasks.isEmpty() || ANOTHER_TASKS_DIVIDER == null)
+        if (subTasks.isEmpty())
             return HashSet()
         val tasks = HashSet<Task>()
 
         val keys = rebuilder.rebuildJiraField(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
-            if (key != null) {
-                try {
-                    tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))) //todo: if->try not beauty
-                } catch (ilStExc: IllegalStateException) {
-                    logger.error(ilStExc.message + "; This task not added to dependencies!!!")
-                }
+            try {
+                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))) //todo: if->try not beauty
+            } catch (ilStExc: IllegalStateException) {
+                logger.error(ilStExc.message + "; This task not added to dependencies!!!")
             }
         }
 
