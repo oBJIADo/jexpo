@@ -69,3 +69,9 @@ column.index.commentMode.commentStart=0
 format.read.comment=id
 
 #InDevelop
+comment.pattern.id=
+comment.pattern.author=
+comment.pattern.date=
+
+format.comment.oneCell=false
+format.comment.divideSymbol=
