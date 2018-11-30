@@ -110,7 +110,12 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
 
         val commentDividingResult = rebuilder.rebuildComment(comment, COMMENTS_DIVIDER)
         val rebuilderKey = commentDividingResult[0]
-        val key = if (rebuilderKey == null) null else rebuilder.buildTaskKey(rebuilderKey, KEY_MODIFICATOR)//todo
+        val key = if (rebuilderKey == null) {
+            throw java.lang.IllegalArgumentException("Key cannot to be null")
+        } else {
+            rebuilder.buildTaskKey(rebuilderKey, KEY_MODIFICATOR)
+        }//todo
+
         val date = commentDividingResult[1]
         val author = commentDividingResult[2]
         val commentText = commentDividingResult[3]

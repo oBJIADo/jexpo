@@ -60,7 +60,7 @@ open class RowToEntityConverterImpl(
         val getIndex: (fieldName: String) -> Int =
                 { fieldName ->
                     try {
-                        Integer.valueOf(messageWorker.getSourceValue(PROPS_COLUMN_INDEX_SOURCE+fieldName) ?: "-1")
+                        Integer.valueOf(messageWorker.getSourceValue(PROPS_COLUMN_INDEX_SOURCE + fieldName) ?: "-1")
                     } catch (nfexc: NumberFormatException) {
                         logger.warn("Wrong number: $fieldName; Returned -1")
                         -1
@@ -124,8 +124,9 @@ open class RowToEntityConverterImpl(
     @Transactional
     override fun addTaskFromRow(row: Row) {
         var key = getStringCellValue(getCell(row, "keys"))
+                ?: throw java.lang.IllegalArgumentException("Wrong key for sub-task")
         if (KEY_MODIFICATOR != null)
-            key = fieldBuilder.buildTaskKey(key ?: throw java.lang.IllegalArgumentException("Wrong key for sub-task"),
+            key = fieldBuilder.buildTaskKey(key,
                     KEY_MODIFICATOR)
         if (taskDao.getBykey(key) == null) {
             this.createNewTask(row)
@@ -204,16 +205,16 @@ open class RowToEntityConverterImpl(
     )
 
     private fun buildEmployeeOrNull(employee: String?):
-            Employee? = if(employee == null) null else builder.buildEmployee(employee)
+            Employee? = if (employee == null) null else builder.buildEmployee(employee)
 
     private fun buildFeatureOrNull(title: String?, nature: String = NATURE_DEFAULT):
-            Feature? = if(title == null) null else builder.buildFeature(title, nature)
+            Feature? = if (title == null) null else builder.buildFeature(title, nature)
 
     private fun buildFeatureSetOrNull(title: String?, nature: String = NATURE_DEFAULT):
-            Set<Feature> = if(title == null) HashSet() else builder.buildFeatureSet(title, nature)
+            Set<Feature> = if (title == null) HashSet() else builder.buildFeatureSet(title, nature)
 
-    private fun buildTaskConnection(task: String?) :
-            Set<Task> = if(task == null) HashSet() else builder.buildConnectionToAnotherTasks(task)
+    private fun buildTaskConnection(task: String?):
+            Set<Task> = if (task == null) HashSet() else builder.buildConnectionToAnotherTasks(task)
 
 
     @Transactional
