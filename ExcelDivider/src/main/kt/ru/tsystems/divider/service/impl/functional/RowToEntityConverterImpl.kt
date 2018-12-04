@@ -241,8 +241,10 @@ open class RowToEntityConverterImpl(
         //todo : delete duplicates
         while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
             curComment = builder.buildComments(commentString!!) //todo
-            curComment!!.task = task
-            commentDao.persist(curComment)
+            if (curComment != null) {
+                curComment.task = task
+                commentDao.persist(curComment)
+            }
         }
     }
 

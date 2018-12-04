@@ -15,8 +15,7 @@ interface ExcelReader : AutoCloseable {
      *
      * @return List with rows values.
      */
-    @Throws(NoShetException::class)
-    fun getRow(rowIndex: Int): Row
+    fun getRow(rowIndex: Int): Row?
 
     /**
      * Read cell from xlsx file and return it.
@@ -29,7 +28,6 @@ interface ExcelReader : AutoCloseable {
      *
      * @return Cell.
      */
-    @Throws(NoShetException::class)
     fun getCell(columnIndex: Int, rowIndex: Int): Cell?
 
     /**
@@ -38,12 +36,10 @@ interface ExcelReader : AutoCloseable {
      * @param sheetName
      * Sheet name.
      */
-    @Throws(NoShetException::class)
     fun setSheet(sheetName: String)
 
     /**
      * Close all streams
      */
-    @Throws(IOException::class)
     override fun close()
 }

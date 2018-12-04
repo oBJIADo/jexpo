@@ -53,15 +53,10 @@ object TestContext {
      * In real use case properties do not changes.
      */
     fun rebuildServices() {
-        try {
-            fieldBuilder = FieldBuilderImpl(messageWorker)
-            entityBuilder = EntityBuilderImpl(messageWorker, fieldBuilder, featureService, employeeDao, taskDao)
+        fieldBuilder = FieldBuilderImpl(messageWorker)
+        entityBuilder = EntityBuilderImpl(messageWorker, fieldBuilder, featureService, employeeDao, taskDao)
 
-            rteConv = RowToEntityConverterImpl(messageWorker, entityBuilder, fieldBuilder, taskDao, commentDao)
-        } catch (e: Exception) {
-            throw IllegalArgumentException("IDK") //todo: crutch
-        }
-
+        rteConv = RowToEntityConverterImpl(messageWorker, entityBuilder, fieldBuilder, taskDao, commentDao)
     }
 
     init {

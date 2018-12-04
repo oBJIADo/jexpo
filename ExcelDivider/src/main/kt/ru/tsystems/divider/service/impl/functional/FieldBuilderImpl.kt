@@ -155,7 +155,7 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
             index = comment.indexOf(divideSymbols)
             key = if (INDEX_ID == -1) null else comment.substring(0, index)
             commentText = comment.substring(index + 1)
-            logger.error("Wrong comment, returned as comment. Key: " + key!!)
+            logger.error("Wrong comment, returned as comment. Key: $key")
             return arrayOf<String?>(key, null, null, commentText)
         }
 
