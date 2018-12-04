@@ -21,7 +21,8 @@ import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_COMMENTS
 import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_EMPLOYEE
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.collections.HashSet
 
 @Service
@@ -95,7 +96,7 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
         val author = commentDividingResult[2]
         val commentText = commentDividingResult[3]
 
-        val commentBirthDay: Date?
+        val commentBirthDay: LocalDateTime?
         val comentator: Employee?
 
         comentator = if (author == null) null else this.buildEmployee(author)
@@ -120,7 +121,7 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
         val author = commentDividingResult[2]
         val commentText = commentDividingResult[3]
 
-        val commentBirthDay: Date?
+        val commentBirthDay: LocalDateTime?
         val comentator: Employee?
 
         comentator = if (author == null) null else this.buildEmployee(author)
@@ -136,10 +137,10 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
      * @param date String with date.
      * @return Date
      */
-    private fun dateFromString(date: String): Date? {
+    private fun dateFromString(date: String): LocalDateTime? {
         try {
-            val formatter = SimpleDateFormat(FORMAT_DATE)
-            return formatter.parse(date)
+            val dateTimeFormatt = DateTimeFormatter.ofPattern(FORMAT_DATE)
+            return LocalDateTime.parse(date, dateTimeFormatt)
         } catch (dateExc: ParseException) {
             logger.error("Can't to convert String to Date: $date")
             return null

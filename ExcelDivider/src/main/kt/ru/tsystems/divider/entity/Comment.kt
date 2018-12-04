@@ -1,6 +1,6 @@
 package ru.tsystems.divider.entity
 
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -14,7 +14,7 @@ data class Comment(
         var task: Task? = null,
 
         @Column(name = "comment_date")
-        var commentDate: Date? = null,
+        var commentDate: LocalDateTime? = null,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "author")

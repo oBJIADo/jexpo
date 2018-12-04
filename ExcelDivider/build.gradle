@@ -68,8 +68,7 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.2.15.Final'
     compile 'org.hibernate:hibernate-core:5.2.15.Final'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.springframework:spring-test:5.0.7.RELEASE'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: "$ktVersion"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.jetbrains.kotlin:kotlin-reflect:$ktVersion"
