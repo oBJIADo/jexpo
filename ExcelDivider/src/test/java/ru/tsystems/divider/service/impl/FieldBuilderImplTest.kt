@@ -27,7 +27,7 @@ class FieldBuilderImplTest {
     @Before
     fun init() {
         reader = XlsxFileReader(xlsxFilePath, testSheetName)
-        fieldBuilder = TestContext.getTestContext().fieldBuilder
+        fieldBuilder = TestContext.fieldBuilder
     }
 
     @After

@@ -21,7 +21,7 @@ class RowToEntityConverterImplTest {
         val xlsxFilePath = "./src/test/resources/Book1.xlsx"
         val testSheetName = "buildTest"
         xlsxReader = XlsxFileReader(xlsxFilePath, testSheetName)
-        rowToEntityConverter = TestContext.getTestContext().rteConv
+        rowToEntityConverter = TestContext.rteConv
     }
 
     @After

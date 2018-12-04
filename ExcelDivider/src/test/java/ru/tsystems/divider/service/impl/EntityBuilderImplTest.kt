@@ -22,9 +22,8 @@ class EntityBuilderImplTest {
 
     @Before
     fun initStreams() {
-        val testContext = TestContext.getTestContext()
-        testContext.reset()
-        builder = testContext.entityBuilder
+        TestContext.reset()
+        builder = TestContext.entityBuilder
     }
 
     @Test

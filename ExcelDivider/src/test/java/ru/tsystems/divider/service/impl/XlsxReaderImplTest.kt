@@ -3,10 +3,8 @@ package ru.tsystems.divider.service.impl
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import ru.tsystems.divider.exceptions.NoShetException
 import ru.tsystems.divider.service.api.excel.ExcelReader
 import ru.tsystems.divider.service.impl.excel.XlsxFileReader
-import java.io.IOException
 import java.util.ArrayList
 import kotlin.test.assertEquals
 
