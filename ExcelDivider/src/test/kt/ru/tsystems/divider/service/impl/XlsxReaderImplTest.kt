@@ -5,7 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import ru.tsystems.divider.service.api.excel.ExcelReader
 import ru.tsystems.divider.service.impl.excel.XlsxFileReader
-import java.util.ArrayList
+import java.util.*
 import kotlin.test.assertEquals
 
 class XlsxReaderImplTest {
@@ -36,8 +36,10 @@ class XlsxReaderImplTest {
         val row = this.xlsxReader.getRow(0)
 
         val actual = ArrayList<String>()
-        for (cell in row)
-            actual.add(cell.stringCellValue)
+        if (row != null) {
+            for (cell in row)
+                actual.add(cell.stringCellValue)
+        }
         assertEquals(expected, actual)
     }
 

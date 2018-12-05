@@ -22,4 +22,9 @@ data class Comment(
 
         @Column(name = "comment")
         var comment: String? = null
-) : GeneralEntity()
+) : GeneralEntity() {
+
+        override fun toString() :
+                String = "Author: ${author.toString()}\nDate: ${commentDate.toString()}\n-----------\n$comment"
+
+}

@@ -13,3 +13,8 @@ const val PROPS_FORMAT_READ_DATE = "format.read.date"
 const val PROPS_FORMAT_READ_COMMENT = "format.read.comment"
 
 const val PROPS_COLUMN_INDEX_SOURCE = "column.index." //todo?
+
+const val COMMENT_PATTERN_ID = "comment.pattern.id"
+const val COMMENT_PATTERN_AUTHOR = "comment.pattern.author"
+const val COMMENT_PATTERN_DATE = "comment.pattern.date"
+const val FORMAT_READ_FILL = "format.read.fill"

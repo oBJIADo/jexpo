@@ -59,12 +59,7 @@ open class RowToEntityConverterImpl(
 
         val getIndex: (fieldName: String) -> Int =
                 { fieldName ->
-                    try {
-                        Integer.valueOf(messageWorker.getSourceValue(PROPS_COLUMN_INDEX_SOURCE + fieldName) ?: "-1")
-                    } catch (nfexc: NumberFormatException) {
-                        logger.warn("Wrong number: $fieldName; Returned -1")
-                        -1
-                    }
+                    messageWorker.getIntSourceValue(PROPS_COLUMN_INDEX_SOURCE + fieldName, -1)
                 }
 
         FIELDS = HashMap()

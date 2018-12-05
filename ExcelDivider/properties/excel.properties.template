@@ -67,6 +67,7 @@ column.index.commentMode.commentStart=0
 #format.read.comment=not,id,not,not,author,date,not
 #Comment text always last
 format.read.comment=id
+format.read.fill=false
 
 #InDevelop
 comment.pattern.id=

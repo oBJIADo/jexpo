@@ -9,8 +9,17 @@ import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_COMMENT
 import javax.xml.bind.PropertyException
 
 @Service
-class FieldBuilderImpl @Throws(PropertyException::class)
-constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
+class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
+
+    private val logger = Logger.getLogger(FieldBuilderImpl::class.java)
+
+    private val NAME_ID = "id"
+
+    private val NAME_AUTHOR = "author"
+
+    private val NAME_DATE = "date"
+
+//    private val NAME_NOTHING = "not"
 
     private val INDEX_ID: Int
 
@@ -61,8 +70,7 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
      * @return List with rebuilded strings.
      */
     override fun rebuildString(string: String, symbol: String): Array<String> {
-        val result: Array<String>
-        result = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val result: Array<String>  = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (i in result.indices)
             result[i] = result[i].trim { it <= ' ' }
         return result
@@ -89,34 +97,6 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
         }
 
         result.append(nextSymbol)
-        return result.toString()
-    }
-
-    /**
-     * Remove Extra spaces and extra lines.
-     *
-     * @param target
-     * The string which can contains extra symbols.
-     * @return String without extra symbols.
-     */
-    private fun removeExtraSpacesAndLines(target: String): String? {
-        var ltarget = target
-        if (ltarget.isEmpty()) {
-            logger.error("Empty target")
-            return null
-        }
-
-        ltarget = removeExtraSpaces(ltarget)
-        val splitingResult = ltarget.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val result = StringBuilder()
-        for (i in splitingResult.indices) {
-            if (!splitingResult[i].isEmpty()) {
-                splitingResult[i] = splitingResult[i].trim { it <= ' ' }
-                result.append(splitingResult[i])
-                result.append('\n')
-            }
-        }
-        result.deleteCharAt(result.length - 1)
         return result.toString()
     }
 
@@ -158,7 +138,6 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
             logger.error("Wrong comment, returned as comment. Key: $key")
             return arrayOf<String?>(key, null, null, commentText)
         }
-
     }
 
     /**
@@ -184,7 +163,7 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
     }
 
     override fun buildTaskKey(key: String, modificator: String): String {
-        if(key.isEmpty()){
+        if (key.isEmpty()) {
             throw IllegalArgumentException("Key cannot be empty") //todo
         }
         val numericPart = getNumPart(key)
@@ -217,16 +196,6 @@ constructor(@Autowired messageWorker: MessageWorker) : FieldBuilder {
         return key.substring(firstIndex, lastIndex)
     }
 
-    companion object {
-        private val logger = Logger.getLogger(FieldBuilderImpl::class.java)
 
-        private val NAME_ID = "id"
-
-        private val NAME_AUTHOR = "author"
-
-        private val NAME_DATE = "date"
-
-        private val NAME_NOTHING = "not"
-    }
 
 }

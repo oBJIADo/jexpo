@@ -23,7 +23,12 @@ apply plugin: 'kotlin-spring'
 sourceSets {
     main {
         java {
-            srcDirs = ['src//main/kt']
+            srcDirs = ['src/main/kt']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/kt']
         }
     }
 }
