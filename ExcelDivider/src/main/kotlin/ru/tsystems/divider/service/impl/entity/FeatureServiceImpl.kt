@@ -42,7 +42,7 @@ class FeatureServiceImpl(@param:Autowired private val featureDao: FeatureDao,
      * @param nature
      */
     @Transactional
-    override fun createFeatur(title: String, nature: String): Feature {
+    override fun createFeature(title: String, nature: String): Feature {
         return Feature(title, natureService.getOrAddNatureByTitle(nature))
     }
 }

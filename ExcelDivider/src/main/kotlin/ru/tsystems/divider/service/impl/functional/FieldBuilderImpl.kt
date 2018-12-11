@@ -11,7 +11,9 @@ import javax.xml.bind.PropertyException
 @Service
 class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
 
-    private val logger = Logger.getLogger(FieldBuilderImpl::class.java)
+    companion object {
+        private val logger = Logger.getLogger(FieldBuilderImpl::class.java)
+    }
 
     private val NAME_ID = "id"
 
@@ -70,7 +72,7 @@ class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
      * @return List with rebuilded strings.
      */
     override fun rebuildString(string: String, symbol: String): Array<String> {
-        val result: Array<String>  = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val result: Array<String> = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (i in result.indices)
             result[i] = result[i].trim { it <= ' ' }
         return result
@@ -135,7 +137,7 @@ class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
             index = comment.indexOf(divideSymbols)
             key = if (INDEX_ID == -1) null else comment.substring(0, index)
             commentText = comment.substring(index + 1)
-            logger.error("Wrong comment, returned as comment. Key: $key")
+            logger.warn("Wrong comment, returned as text. Key: $key")
             return arrayOf<String?>(key, null, null, commentText)
         }
     }
@@ -195,7 +197,6 @@ class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
 
         return key.substring(firstIndex, lastIndex)
     }
-
 
 
 }

@@ -30,8 +30,9 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
                         @Autowired val employeeDao: EmployeeDao,
                         @Autowired val taskDao: TaskDao) : EntityBuilder {
 
-    private val logger = Logger.getLogger(EntityBuilderImpl::class.java)
-
+    companion object {
+        private val logger = Logger.getLogger(EntityBuilderImpl::class.java)
+    }
 
     private val EMPLOYEE_DIVIDER: String
     private val ANOTHER_TASKS_DIVIDER: String
@@ -73,8 +74,16 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
 
         val components = HashSet<Feature>()
         val params = rebuilder.rebuildJiraField(title, ANOTHER_DIVIDER)
-        for (param in params)
-            components.add(buildFeature(param, nature) ?: throw IllegalArgumentException("Not real"))//todo
+
+        var feature: Feature?
+        for (param in params) {
+            feature = buildFeature(param, nature)
+            if (feature != null) {
+                components.add(feature)
+            } else {
+                logger.warn("Empty feature when try to build feature Set. nature: $nature, feature: $feature")
+            }
+        }
 
         return components
     }
@@ -140,10 +149,10 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
             val dateTimeFormatt = DateTimeFormatter.ofPattern(FORMAT_DATE)
             return LocalDateTime.parse(date, dateTimeFormatt)
         } catch (dateExc: ParseException) {
-            logger.error("Can't to convert String to Date: $date")
+            logger.warn("Can't to convert String to Date: $date")
             return null
         } catch (dateExc: NullPointerException) {
-            logger.error("Can't to convert String to Date: $date")
+            logger.warn("Can't to convert String to Date: $date")
             return null
         }
 
@@ -156,12 +165,12 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
      * @param nature Nature constant.
      * @return OneParamEntity
      */
-    override fun buildFeature(title: String, nature: String): Feature? { //todo: no nulls
+    override fun buildFeature(title: String, nature: String): Feature? {
         if (title.isEmpty())
             return null
 
         val feature = featureService.findByParam(title, nature)
-        return feature ?: featureService.createFeatur(title, nature)
+        return feature ?: featureService.createFeature(title, nature)
     }
 
     /**
@@ -227,9 +236,9 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
         val keys = rebuilder.rebuildJiraField(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
             try {
-                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR))) //todo: if->try not beauty
+                tasks.add(buildSubTask(rebuilder.buildTaskKey(key, KEY_MODIFICATOR)))
             } catch (ilStExc: IllegalStateException) {
-                logger.error(ilStExc.message + "; This task not added to dependencies!!!")
+                logger.error(ilStExc.message + "; This task not added to dependencies!")
             }
         }
 

@@ -21,6 +21,7 @@ import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 import ru.tsystems.divider.utils.api.MessageWorker
+import ru.tsystems.divider.utils.constants.DEFAULT_KEY
 import ru.tsystems.divider.utils.constants.NATURE_COMPONENT
 import ru.tsystems.divider.utils.constants.NATURE_DEFAULT
 import ru.tsystems.divider.utils.constants.NATURE_EPIC_COLOR
@@ -40,14 +41,17 @@ import java.util.*
 import kotlin.collections.HashSet
 
 @Service
-open class RowToEntityConverterImpl(
+class RowToEntityConverterImpl(
         @Autowired messageWorker: MessageWorker,
         @Autowired private val builder: EntityBuilder,
         @Autowired private val fieldBuilder: FieldBuilder,
         @Autowired private val taskDao: TaskDao,
         @Autowired private val commentDao: CommentDao
 ) : RowToEntityConverter {
-    private val logger = Logger.getLogger(RowToEntityConverterImpl::class.java)
+
+    companion object {
+        private val logger = Logger.getLogger(RowToEntityConverterImpl::class.java)
+    }
 
     private val FIELDS: MutableMap<String, Int> //todo: to map
 
@@ -136,8 +140,7 @@ open class RowToEntityConverterImpl(
 
     private fun setUpTask(row: Row): Task = Task(
             keys = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys")
-                    // todo: default key (DK) to constants or smthng else
-            ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: "DK"),
+            ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: DEFAULT_KEY),
             summary = getStringCellValue(getCell(row, "summary")),
             issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), NATURE_ISSUE_TYPE),
             created = getDateCellValue(getCell(row, "created")),
@@ -214,11 +217,15 @@ open class RowToEntityConverterImpl(
 
     @Transactional
     override fun addTasksConnectFromRow(row: Row) {
-        val key = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys"))
-        // todo: default key (DK) to constants or smthng else
-                ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: "DK")
-        val task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
-
+        val stringKey = getStringCellValue(getCell(row, "keys"))
+        var task: Task
+        if (stringKey == null) {
+            logger.error("Task key is null! Row: ${row.rowNum}; Column: ${FIELDS["keys"]}")
+            throw java.lang.IllegalArgumentException("Task key is null")
+        } else {
+            val key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
+            task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
+        }
         task.subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
         task.relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
         task.duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
@@ -233,7 +240,6 @@ open class RowToEntityConverterImpl(
         var commentString: String? = null
         var curComment: Comment?
 
-        //todo : delete duplicates
         while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
             curComment = builder.buildComments(commentString!!) //todo
             if (curComment != null) {

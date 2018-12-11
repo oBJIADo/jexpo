@@ -10,7 +10,9 @@ import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 
 @Service
 class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEntityConverter) : JiraToDBConverter {
-    private val logger = Logger.getLogger(JiraToDBConverterImpl::class.java)
+    companion object {
+        private val logger = Logger.getLogger(JiraToDBConverterImpl::class.java)
+    }
 
     /**
      * Read excel file which created by jira and write it to ad DB.

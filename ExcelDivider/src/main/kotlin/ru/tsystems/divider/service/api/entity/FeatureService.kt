@@ -21,5 +21,5 @@ interface FeatureService {
      */
     fun persist(entity: Feature)
 
-    fun createFeatur(title: String, nature: String): Feature
+    fun createFeature(title: String, nature: String): Feature
 }

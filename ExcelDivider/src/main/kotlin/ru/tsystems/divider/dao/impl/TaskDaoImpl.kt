@@ -11,6 +11,10 @@ import javax.persistence.PersistenceContext
 @Repository
 class TaskDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Task>(), TaskDao {
 
+    companion object {
+        private val logger = Logger.getLogger(TaskDaoImpl::class.java)
+    }
+
     /**
      * Finding task by key
      *
@@ -28,9 +32,5 @@ class TaskDaoImpl(@PersistenceContext override val entityManager: EntityManager)
             return null
         }
 
-    }
-
-    companion object { //todo all logers to comp objs
-        private val logger = Logger.getLogger(TaskDaoImpl::class.java)
     }
 }

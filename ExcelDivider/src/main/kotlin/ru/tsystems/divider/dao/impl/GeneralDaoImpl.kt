@@ -9,7 +9,10 @@ import javax.persistence.EntityManager
 @Repository
 abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
 
-    private val logger = Logger.getLogger(GeneralDaoImpl::class.java) //todo to abstract
+    companion object {
+        private val logger = Logger.getLogger(GeneralDaoImpl::class.java)
+    }
+
     abstract val entityManager: EntityManager
 
     /**

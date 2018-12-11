@@ -11,7 +11,10 @@ import java.util.*
 
 @Component
 class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSource) : MessageWorker {
-    private val logger = Logger.getLogger(MessageWorker::class.java)
+
+    companion object {
+        private val logger = Logger.getLogger(MessageWorker::class.java)
+    }
 
     override fun getSourceValue(sourceName: String, default: String): String {
         try {
@@ -23,7 +26,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         return default
     }
 
-    override fun getSourceValue(sourceName: String): String? { //todo: this method should be removed and all "sourcePath"s should be in constants!
+    override fun getSourceValue(sourceName: String): String? {
         try {
             val message = getMessage(sourceName)
             return if (message.isEmpty()) null else message

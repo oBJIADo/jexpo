@@ -59,58 +59,26 @@ class DivideRunner {
 
     }
 
-    @Throws(ExcelFormatException::class, IOException::class, NoShetException::class)
-    private fun startTasksReader(fileName: String, sheetName: String, startRowIndex: Int,
-                                 converter: JiraToDBConverter) { //todo: Simple this shit
+    private fun startTasksReader(fileName: String, sheetName: String, startRowIndex: Int, converter: JiraToDBConverter) {
         val fileFormat = getFormat(fileName)
-        if (EXCEL_FORMAT.equals(fileFormat, ignoreCase = true)) {
-            try {
+        when {
+            EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
                 XlsxFileReader(fileName, sheetName).use { excelReader -> converter.transferAll(excelReader, startRowIndex) }
-            } catch (exc: IOException) {
-                throw exc
-            } catch (nsexc: NoShetException) {
-                throw nsexc
-            }
-
-        } else if (EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true)) {
-            try { //todo
+            EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
                 XlsFileReader(fileName, sheetName).use { excelReader -> converter.transferAll(excelReader, startRowIndex) }
-            } catch (exc: IOException) {
-                throw exc
-            } catch (nsexc: NoShetException) {
-                throw nsexc
-            }
-
-        } else {
-            throw ExcelFormatException(fileFormat, fileName)
+            else -> throw ExcelFormatException(fileFormat, fileName)
         }
     }
 
 
-    @Throws(ExcelFormatException::class, IOException::class, NoShetException::class)
-    private fun startCommentReader(fileName: String, sheetName: String, startRowIndex: Int,
-                                   converter: JiraToDBConverter) {
+    private fun startCommentReader(fileName: String, sheetName: String, startRowIndex: Int, converter: JiraToDBConverter) {
         val fileFormat = getFormat(fileName)
-        if (EXCEL_FORMAT.equals(fileFormat, ignoreCase = true)) {
-            try {
+        when {
+            EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
                 XlsxFileReader(fileName, sheetName).use { excelReader -> converter.transferAllComments(excelReader, startRowIndex) }
-            } catch (exc: IOException) {
-                throw exc
-            } catch (nsexc: NoShetException) {
-                throw nsexc
-            }
-
-        } else if (EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true)) {
-            try {
+            EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
                 XlsFileReader(fileName, sheetName).use { excelReader -> converter.transferAllComments(excelReader, startRowIndex) }
-            } catch (exc: IOException) {
-                throw exc
-            } catch (nsexc: NoShetException) {
-                throw nsexc
-            }
-
-        } else {
-            throw ExcelFormatException(fileFormat, fileName)
+            else -> throw ExcelFormatException(fileFormat, fileName)
         }
     }
 

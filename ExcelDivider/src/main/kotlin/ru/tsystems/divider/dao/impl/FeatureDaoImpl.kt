@@ -11,6 +11,10 @@ import javax.persistence.PersistenceContext
 @Repository
 class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Feature>(), FeatureDao {
 
+    companion object {
+        private val logger = Logger.getLogger(FeatureDaoImpl::class.java)
+    }
+
     /**
      * Get entity by param if it exist, return null if not.
      *
@@ -28,9 +32,5 @@ class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManag
             return null
         }
 
-    }
-
-    companion object {
-        private val logger = Logger.getLogger(FeatureDaoImpl::class.java)
     }
 }

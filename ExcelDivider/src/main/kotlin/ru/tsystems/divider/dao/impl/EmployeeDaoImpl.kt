@@ -11,6 +11,9 @@ import javax.persistence.PersistenceContext
 @Repository
 class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Employee>(), EmployeeDao {
 
+    companion object {
+        private val logger = Logger.getLogger(EmployeeDaoImpl::class.java)
+    }
 
     /**
      * Finding employee who has specified first and second names
@@ -33,9 +36,5 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
             return null
         }
 
-    }
-
-    companion object {
-        private val logger = Logger.getLogger(EmployeeDaoImpl::class.java)
     }
 }

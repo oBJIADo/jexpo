@@ -18,3 +18,5 @@ const val COMMENT_PATTERN_ID = "comment.pattern.id"
 const val COMMENT_PATTERN_AUTHOR = "comment.pattern.author"
 const val COMMENT_PATTERN_DATE = "comment.pattern.date"
 const val FORMAT_READ_FILL = "format.read.fill"
+
+const val DEFAULT_KEY = "DK"

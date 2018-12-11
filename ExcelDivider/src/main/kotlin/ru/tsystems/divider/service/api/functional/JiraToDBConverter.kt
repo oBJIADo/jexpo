@@ -5,7 +5,6 @@ import ru.tsystems.divider.service.api.excel.ExcelReader
 import java.io.IOException
 
 
-//todo: deprecated "OldExcel" methods, if it possible
 interface JiraToDBConverter {
 
     /**

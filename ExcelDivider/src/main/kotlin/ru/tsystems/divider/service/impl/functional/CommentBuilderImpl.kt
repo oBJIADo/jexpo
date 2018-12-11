@@ -2,6 +2,7 @@ package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
+import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.service.api.functional.CommentBuilder
 import ru.tsystems.divider.utils.api.MessageWorker
 import ru.tsystems.divider.utils.constants.COMMENT_PATTERN_AUTHOR
@@ -13,7 +14,9 @@ import javax.xml.bind.PropertyException
 
 class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuilder {
 
-    private val logger = Logger.getLogger(CommentBuilderImpl::class.java)
+    companion object {
+        private val logger = Logger.getLogger(CommentBuilderImpl::class.java)
+    }
 
     private val NAME_ID = "id"
 
@@ -82,7 +85,7 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-//    private fun buildByPatterns(comment: String): Comment {
-//
-//    }
+    private fun buildByPatterns(comment: String): Comment {
+        TODO("not implemented")
+    }
 }
