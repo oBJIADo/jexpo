@@ -14,43 +14,51 @@ import kotlin.collections.HashSet
 
 @Entity(name = "Task")
 data class Task(
-        @Column(name = "keys")
-        var keys: String? = null,
+    @Column(name = "keys")
+    var keys: String? = null,
 
-        @Column(name = "summary")
-        var summary: String? = null,
+    @Column(name = "summary")
+    var summary: String? = null,
 
-        @ManyToOne(cascade = [CascadeType.ALL])
-        @JoinColumn(name = "issue_type")
-        var issueType: Feature? = null,
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "issue_type")
+    var issueType: Feature? = null,
 
-        @Column(name = "created")
-        var created: Date? = null,
+    @Column(name = "created")
+    var created: Date? = null,
 
-        @OneToMany(mappedBy = "task")
-        var comments: List<Comment> = ArrayList<Comment>(),
+    @OneToMany(mappedBy = "task")
+    var comments: List<Comment> = ArrayList<Comment>(),
 
-        @ManyToOne(cascade = [CascadeType.ALL])//todo: OneToOne
-        @JoinColumn(name = "consumables")
-        var consumables: Consumables? = null,
+    @ManyToOne(cascade = [CascadeType.ALL])//todo: OneToOne
+    @JoinColumn(name = "consumables")
+    var consumables: Consumables? = null,
 
-        @ManyToMany
-        @JoinTable(name = "sub_task", joinColumns = [JoinColumn(name = "task_id")],
-                inverseJoinColumns = [JoinColumn(name = "subtask_id")])
-        var subTasks: Set<Task> = HashSet(),
+    @ManyToMany
+    @JoinTable(
+        name = "sub_task", joinColumns = [JoinColumn(name = "task_id")],
+        inverseJoinColumns = [JoinColumn(name = "subtask_id")]
+    )
+    var subTasks: Set<Task> = HashSet(),
 
-        @ManyToMany
-        @JoinTable(name = "sub_task", joinColumns = [JoinColumn(name = "subtask_id")],
-                inverseJoinColumns = [JoinColumn(name = "task_id")])
-        var parentTasks: Set<Task> = HashSet(),
+    @ManyToMany
+    @JoinTable(
+        name = "sub_task", joinColumns = [JoinColumn(name = "subtask_id")],
+        inverseJoinColumns = [JoinColumn(name = "task_id")]
+    )
+    var parentTasks: Set<Task> = HashSet(),
 
-        @ManyToMany
-        @JoinTable(name = "relation_task", joinColumns = [JoinColumn(name = "task_id")],
-                inverseJoinColumns = [JoinColumn(name = "relation_task_id")])
-        var relationTasks: Set<Task> = HashSet(),
+    @ManyToMany
+    @JoinTable(
+        name = "relation_task", joinColumns = [JoinColumn(name = "task_id")],
+        inverseJoinColumns = [JoinColumn(name = "relation_task_id")]
+    )
+    var relationTasks: Set<Task> = HashSet(),
 
-        @ManyToMany
-        @JoinTable(name = "duplicate_task", joinColumns = [JoinColumn(name = "task_id")],
-                inverseJoinColumns = [JoinColumn(name = "duplicate_task_id")])
-        var duplicateTasks: Set<Task> = HashSet()
+    @ManyToMany
+    @JoinTable(
+        name = "duplicate_task", joinColumns = [JoinColumn(name = "task_id")],
+        inverseJoinColumns = [JoinColumn(name = "duplicate_task_id")]
+    )
+    var duplicateTasks: Set<Task> = HashSet()
 ) : GeneralEntity()

@@ -9,8 +9,10 @@ import ru.tsystems.divider.service.api.entity.FeatureService
 import ru.tsystems.divider.service.api.entity.NatureService
 
 @Service
-class FeatureServiceImpl(@param:Autowired private val featureDao: FeatureDao,
-                         @param:Autowired private val natureService: NatureService) : FeatureService {
+class FeatureServiceImpl(
+    @param:Autowired private val featureDao: FeatureDao,
+    @param:Autowired private val natureService: NatureService
+) : FeatureService {
 
     /**
      * Find One param entity by this param.

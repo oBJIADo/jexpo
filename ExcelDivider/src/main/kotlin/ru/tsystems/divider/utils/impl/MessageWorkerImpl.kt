@@ -85,12 +85,12 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
             String = messageSource.getMessage(sourceName, null, Locale.getDefault())
 
     private fun getIntMessage(sourceName: String): Int? =
-            try {
-                Integer.valueOf(messageSource.getMessage(sourceName, null, Locale.getDefault()))
-            } catch (nfexc: NumberFormatException) {
-                logger.warn("Wrong number: $sourceName; Returned -1")
-                -1
-            }
+        try {
+            Integer.valueOf(messageSource.getMessage(sourceName, null, Locale.getDefault()))
+        } catch (nfexc: NumberFormatException) {
+            logger.warn("Wrong number: $sourceName; Returned -1")
+            -1
+        }
 
     private fun getBoolMessage(sourceName: String): Boolean? {
         val message = messageSource.getMessage(sourceName, null, Locale.getDefault())

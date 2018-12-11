@@ -128,7 +128,8 @@ class FieldBuilderImpl(@Autowired messageWorker: MessageWorker) : FieldBuilder {
 
             commentText = comment.substring(index + 1).trim { it <= ' ' }
 
-            val dividedComment = comment.substring(0, index).split(divideSymbols.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val dividedComment =
+                comment.substring(0, index).split(divideSymbols.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             key = if (INDEX_ID == -1) null else dividedComment[indexId].trim { it <= ' ' }
             date = if (INDEX_DATE == -1) null else dividedComment[indexDate].trim { it <= ' ' }
             author = if (INDEX_AUTHOR == -1) null else dividedComment[indexAuthor].trim { it <= ' ' }

@@ -24,11 +24,13 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Service
-class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
-                        @Autowired val rebuilder: FieldBuilder,
-                        @Autowired val featureService: FeatureService,
-                        @Autowired val employeeDao: EmployeeDao,
-                        @Autowired val taskDao: TaskDao) : EntityBuilder {
+class EntityBuilderImpl(
+    @Autowired messageWorker: MessageWorker,
+    @Autowired val rebuilder: FieldBuilder,
+    @Autowired val featureService: FeatureService,
+    @Autowired val employeeDao: EmployeeDao,
+    @Autowired val taskDao: TaskDao
+) : EntityBuilder {
 
     companion object {
         private val logger = Logger.getLogger(EntityBuilderImpl::class.java)
@@ -59,7 +61,12 @@ class EntityBuilderImpl(@Autowired messageWorker: MessageWorker,
      * @return New Employee entity.
      */
     override fun buildEmployee(employee: String): Employee? {
-        return if (employee.isEmpty()) null else getOrCreateEmployee(rebuilder.rebuildJiraField(employee, EMPLOYEE_DIVIDER))
+        return if (employee.isEmpty()) null else getOrCreateEmployee(
+            rebuilder.rebuildJiraField(
+                employee,
+                EMPLOYEE_DIVIDER
+            )
+        )
     }
 
     /**

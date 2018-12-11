@@ -6,5 +6,7 @@ class ExcelFormatException
  * be initialized by a call to [.initCause].
  *
  */
-(fileFormat: String, fileName: String) : Exception("This application cant work with current format. File format: " + fileFormat + "; file name: "
-        + fileName)
+    (fileFormat: String, fileName: String) : Exception(
+    "This application cant work with current format. File format: " + fileFormat + "; file name: "
+            + fileName
+)

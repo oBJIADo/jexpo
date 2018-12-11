@@ -18,11 +18,30 @@ class FieldBuilderImplTest {
 
     private lateinit var reader: ExcelReader
 
-    private val expectedComment = arrayOf<String?>(null, "22.11.2017 08:57", "Scholle, Julia", "Hi, \n\nthere was a wrong Translation in CS, we Change that, so the new value is \"Adresse\".\n\n"
-            + "The issue is fixed with the next update of the user profiles.\n\n"
-            + "Regards,\n\n" + "Julia")
+    private val expectedComment = arrayOf<String?>(
+        null,
+        "22.11.2017 08:57",
+        "Scholle, Julia",
+        "Hi, \n\nthere was a wrong Translation in CS, we Change that, so the new value is \"Adresse\".\n\n"
+                + "The issue is fixed with the next update of the user profiles.\n\n"
+                + "Regards,\n\n" + "Julia"
+    )
 
-    private val expectedFields = arrayOf("AD-10042", "AD-10044", "AD-10148", "AD-10254", "AD-10255", "AD-10256", "AD-10257", "AD-10258", "AD-10259", "AD-10260", "AD-10261", "AD-10262", "AD-10292")
+    private val expectedFields = arrayOf(
+        "AD-10042",
+        "AD-10044",
+        "AD-10148",
+        "AD-10254",
+        "AD-10255",
+        "AD-10256",
+        "AD-10257",
+        "AD-10258",
+        "AD-10259",
+        "AD-10260",
+        "AD-10261",
+        "AD-10262",
+        "AD-10292"
+    )
 
     @Before
     fun init() {

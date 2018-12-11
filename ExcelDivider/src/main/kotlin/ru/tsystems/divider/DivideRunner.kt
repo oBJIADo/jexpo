@@ -59,25 +59,55 @@ class DivideRunner {
 
     }
 
-    private fun startTasksReader(fileName: String, sheetName: String, startRowIndex: Int, converter: JiraToDBConverter) {
+    private fun startTasksReader(
+        fileName: String,
+        sheetName: String,
+        startRowIndex: Int,
+        converter: JiraToDBConverter
+    ) {
         val fileFormat = getFormat(fileName)
         when {
             EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsxFileReader(fileName, sheetName).use { excelReader -> converter.transferAll(excelReader, startRowIndex) }
+                XlsxFileReader(fileName, sheetName).use { excelReader ->
+                    converter.transferAll(
+                        excelReader,
+                        startRowIndex
+                    )
+                }
             EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsFileReader(fileName, sheetName).use { excelReader -> converter.transferAll(excelReader, startRowIndex) }
+                XlsFileReader(fileName, sheetName).use { excelReader ->
+                    converter.transferAll(
+                        excelReader,
+                        startRowIndex
+                    )
+                }
             else -> throw ExcelFormatException(fileFormat, fileName)
         }
     }
 
 
-    private fun startCommentReader(fileName: String, sheetName: String, startRowIndex: Int, converter: JiraToDBConverter) {
+    private fun startCommentReader(
+        fileName: String,
+        sheetName: String,
+        startRowIndex: Int,
+        converter: JiraToDBConverter
+    ) {
         val fileFormat = getFormat(fileName)
         when {
             EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsxFileReader(fileName, sheetName).use { excelReader -> converter.transferAllComments(excelReader, startRowIndex) }
+                XlsxFileReader(fileName, sheetName).use { excelReader ->
+                    converter.transferAllComments(
+                        excelReader,
+                        startRowIndex
+                    )
+                }
             EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsFileReader(fileName, sheetName).use { excelReader -> converter.transferAllComments(excelReader, startRowIndex) }
+                XlsFileReader(fileName, sheetName).use { excelReader ->
+                    converter.transferAllComments(
+                        excelReader,
+                        startRowIndex
+                    )
+                }
             else -> throw ExcelFormatException(fileFormat, fileName)
         }
     }

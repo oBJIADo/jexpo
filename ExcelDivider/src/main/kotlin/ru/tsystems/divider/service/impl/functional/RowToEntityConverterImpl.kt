@@ -42,11 +42,11 @@ import kotlin.collections.HashSet
 
 @Service
 class RowToEntityConverterImpl(
-        @Autowired messageWorker: MessageWorker,
-        @Autowired private val builder: EntityBuilder,
-        @Autowired private val fieldBuilder: FieldBuilder,
-        @Autowired private val taskDao: TaskDao,
-        @Autowired private val commentDao: CommentDao
+    @Autowired messageWorker: MessageWorker,
+    @Autowired private val builder: EntityBuilder,
+    @Autowired private val fieldBuilder: FieldBuilder,
+    @Autowired private val taskDao: TaskDao,
+    @Autowired private val commentDao: CommentDao
 ) : RowToEntityConverter {
 
     companion object {
@@ -62,9 +62,9 @@ class RowToEntityConverterImpl(
         KEY_MODIFICATOR = messageWorker.getSourceValue(PROPS_MODIFICATOR_KEYS_PRE)
 
         val getIndex: (fieldName: String) -> Int =
-                { fieldName ->
-                    messageWorker.getIntSourceValue(PROPS_COLUMN_INDEX_SOURCE + fieldName, -1)
-                }
+            { fieldName ->
+                messageWorker.getIntSourceValue(PROPS_COLUMN_INDEX_SOURCE + fieldName, -1)
+            }
 
         FIELDS = HashMap()
         FIELDS["keys"] = getIndex("keys")
@@ -123,10 +123,12 @@ class RowToEntityConverterImpl(
     @Transactional
     override fun addTaskFromRow(row: Row) {
         var key = getStringCellValue(getCell(row, "keys"))
-                ?: throw java.lang.IllegalArgumentException("Wrong key for sub-task")
+            ?: throw java.lang.IllegalArgumentException("Wrong key for sub-task")
         if (KEY_MODIFICATOR != null)
-            key = fieldBuilder.buildTaskKey(key,
-                    KEY_MODIFICATOR)
+            key = fieldBuilder.buildTaskKey(
+                key,
+                KEY_MODIFICATOR
+            )
         if (taskDao.getBykey(key) == null) {
             this.createNewTask(row)
         }
@@ -139,67 +141,70 @@ class RowToEntityConverterImpl(
     }
 
     private fun setUpTask(row: Row): Task = Task(
-            keys = fieldBuilder.buildTaskKey(getStringCellValue(getCell(row, "keys")
-            ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: DEFAULT_KEY),
-            summary = getStringCellValue(getCell(row, "summary")),
-            issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), NATURE_ISSUE_TYPE),
-            created = getDateCellValue(getCell(row, "created")),
-            consumables = setUpConsumables(row)
+        keys = fieldBuilder.buildTaskKey(
+            getStringCellValue(
+                getCell(row, "keys")
+            ) ?: throw IllegalArgumentException("Task's key cannot be null"), KEY_MODIFICATOR ?: DEFAULT_KEY
+        ),
+        summary = getStringCellValue(getCell(row, "summary")),
+        issueType = buildFeatureOrNull(getStringCellValue(getCell(row, "issueType")), NATURE_ISSUE_TYPE),
+        created = getDateCellValue(getCell(row, "created")),
+        consumables = setUpConsumables(row)
     )
 
     private fun setUpConsumables(row: Row): Consumables = Consumables(
-            affectsVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "affectsVersion")), NATURE_VERSION),
-            components = buildFeatureSetOrNull(getStringCellValue(getCell(row, "components")), NATURE_COMPONENT),
-            deliveredVersion = buildFeatureOrNull(getStringCellValue(getCell(row, "deliveredVersion")), NATURE_VERSION),
-            description = getStringCellValue(getCell(row, "description")),
-            drcNumber = getStringCellValue(getCell(row, "drcNumber")),
-            fixPriority = buildFeatureOrNull(getStringCellValue(getCell(row, "fixPriority")), NATURE_PRIORITY),
-            fixVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "fixVersion")), NATURE_VERSION),
-            keyword = buildFeatureOrNull(getStringCellValue(getCell(row, "keyword")), NATURE_KEYWORD),
-            labels = buildFeatureSetOrNull(getStringCellValue(getCell(row, "labels")), NATURE_LABEL),
-            orderNumber = getStringCellValue(getCell(row, "orderNumber")),
-            priority = buildFeatureOrNull(getStringCellValue(getCell(row, "priority")), NATURE_PRIORITY),
-            resolution = buildFeatureOrNull(getStringCellValue(getCell(row, "resolution")), NATURE_RESOLUTION),
-            sprint = buildFeatureOrNull(getStringCellValue(getCell(row, "sprint")), NATURE_SPRINT),
-            status = buildFeatureOrNull(getStringCellValue(getCell(row, "status")), NATURE_STATUS),
-            teams = buildFeatureSetOrNull(getStringCellValue(getCell(row, "teams")), NATURE_TEAM),
+        affectsVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "affectsVersion")), NATURE_VERSION),
+        components = buildFeatureSetOrNull(getStringCellValue(getCell(row, "components")), NATURE_COMPONENT),
+        deliveredVersion = buildFeatureOrNull(getStringCellValue(getCell(row, "deliveredVersion")), NATURE_VERSION),
+        description = getStringCellValue(getCell(row, "description")),
+        drcNumber = getStringCellValue(getCell(row, "drcNumber")),
+        fixPriority = buildFeatureOrNull(getStringCellValue(getCell(row, "fixPriority")), NATURE_PRIORITY),
+        fixVersions = buildFeatureSetOrNull(getStringCellValue(getCell(row, "fixVersion")), NATURE_VERSION),
+        keyword = buildFeatureOrNull(getStringCellValue(getCell(row, "keyword")), NATURE_KEYWORD),
+        labels = buildFeatureSetOrNull(getStringCellValue(getCell(row, "labels")), NATURE_LABEL),
+        orderNumber = getStringCellValue(getCell(row, "orderNumber")),
+        priority = buildFeatureOrNull(getStringCellValue(getCell(row, "priority")), NATURE_PRIORITY),
+        resolution = buildFeatureOrNull(getStringCellValue(getCell(row, "resolution")), NATURE_RESOLUTION),
+        sprint = buildFeatureOrNull(getStringCellValue(getCell(row, "sprint")), NATURE_SPRINT),
+        status = buildFeatureOrNull(getStringCellValue(getCell(row, "status")), NATURE_STATUS),
+        teams = buildFeatureSetOrNull(getStringCellValue(getCell(row, "teams")), NATURE_TEAM),
 
-            dates = setUpDates(row),
-            epics = setUpEpics(row),
-            statistics = setUpStatistics(row),
-            workers = setUpWorkers(row)
+        dates = setUpDates(row),
+        epics = setUpEpics(row),
+        statistics = setUpStatistics(row),
+        workers = setUpWorkers(row)
     )
 
     private fun setUpWorkers(row: Row): Workers = Workers(
-            assignee = buildEmployeeOrNull(getStringCellValue(getCell(row, "assignee"))),
-            creater = buildEmployeeOrNull(getStringCellValue(getCell(row, "creater"))),
-            reporter = buildEmployeeOrNull(getStringCellValue(getCell(row, "reporter")))
+        assignee = buildEmployeeOrNull(getStringCellValue(getCell(row, "assignee"))),
+        creater = buildEmployeeOrNull(getStringCellValue(getCell(row, "creater"))),
+        reporter = buildEmployeeOrNull(getStringCellValue(getCell(row, "reporter")))
     )
 
     private fun setUpEpics(row: Row): Epics = Epics(
-            epicColor = buildFeatureOrNull(getStringCellValue(getCell(row, "epicColor")), NATURE_EPIC_COLOR),
-            epicLink = getStringCellValue(getCell(row, "epicLink")),
-            epicName = getStringCellValue(getCell(row, "epicName")),
-            epicStatus = buildFeatureOrNull(getStringCellValue(getCell(row, "epicStatus")), NATURE_EPIC_STATUS)
+        epicColor = buildFeatureOrNull(getStringCellValue(getCell(row, "epicColor")), NATURE_EPIC_COLOR),
+        epicLink = getStringCellValue(getCell(row, "epicLink")),
+        epicName = getStringCellValue(getCell(row, "epicName")),
+        epicStatus = buildFeatureOrNull(getStringCellValue(getCell(row, "epicStatus")), NATURE_EPIC_STATUS)
     )
 
     private fun setUpStatistics(row: Row): Statistics = Statistics(
-            original_estimate = getNumericCellValue(getCell(row, "originalEstimate")),
-            progress = getPercentCellValue(getCell(row, "progress")),
-            remaining_estimate = getNumericCellValue(getCell(row, "remainingEstimate")),
-            time_spent = getNumericCellValue(getCell(row, "timeSpent")),
-            work_ration = getPercentCellValue(getCell(row, "workRatio")),
-            sum_progress = getPercentCellValue(getCell(row, "sumProgress")),
-            sum_time_spant = getNumericCellValue(getCell(row, "sumTimeSpent")),
-            sum_remaining_estimate = getNumericCellValue(getCell(row, "sumRemainingEstimate")),
-            sum_original_estimate = getNumericCellValue(getCell(row, "sumOriginalEstimate"))
+        original_estimate = getNumericCellValue(getCell(row, "originalEstimate")),
+        progress = getPercentCellValue(getCell(row, "progress")),
+        remaining_estimate = getNumericCellValue(getCell(row, "remainingEstimate")),
+        time_spent = getNumericCellValue(getCell(row, "timeSpent")),
+        work_ration = getPercentCellValue(getCell(row, "workRatio")),
+        sum_progress = getPercentCellValue(getCell(row, "sumProgress")),
+        sum_time_spant = getNumericCellValue(getCell(row, "sumTimeSpent")),
+        sum_remaining_estimate = getNumericCellValue(getCell(row, "sumRemainingEstimate")),
+        sum_original_estimate = getNumericCellValue(getCell(row, "sumOriginalEstimate"))
     )
 
     private fun setUpDates(row: Row): Dates = Dates(
-            lastViewed = getDateCellValue(getCell(row, "lastViewed")),
-            updated = getDateCellValue(getCell(row, "updated")),
-            resolved = getDateCellValue(getCell(row, "resolved")),
-            dueDate = getDateCellValue(getCell(row, "dueDate"))
+        lastViewed = getDateCellValue(getCell(row, "lastViewed")),
+        updated = getDateCellValue(getCell(row, "updated")),
+        resolved = getDateCellValue(getCell(row, "resolved")),
+        dueDate = getDateCellValue(getCell(row, "dueDate"))
     )
 
     private fun buildEmployeeOrNull(employee: String?):
@@ -236,7 +241,7 @@ class RowToEntityConverterImpl(
     @Transactional
     override fun saveAllComments(row: Row, task: Task) {
         var currentIndex = FIELDS["commentStart"]
-                ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
+            ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
         var commentString: String? = null
         var curComment: Comment?
 
@@ -253,7 +258,7 @@ class RowToEntityConverterImpl(
     @Transactional
     override fun saveAllComments(row: Row) { //todo: rename or delete method
         var currentIndex: Int = FIELDS["commentMode.commentStart"]
-                ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
+            ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
         var commentString: String? = null
         var curComment: Comment?
 

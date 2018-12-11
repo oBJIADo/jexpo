@@ -80,8 +80,10 @@ class FileCleaner {
                     cellIndex++
                     cellIndexToWrite++
                 }
-                println("Cell reading's file index: " + cellIndex + "\nCell writing's file index: "
-                        + cellIndexToWrite)
+                println(
+                    "Cell reading's file index: " + cellIndex + "\nCell writing's file index: "
+                            + cellIndexToWrite
+                )
             }
         }
     }

@@ -7,5 +7,5 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 @Repository
-class CommentDaoImpl(@PersistenceContext override val entityManager: EntityManager)
-    : GeneralDaoImpl<Comment>(), CommentDao
+class CommentDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Comment>(),
+    CommentDao

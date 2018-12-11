@@ -26,7 +26,7 @@ class TaskDaoImpl(@PersistenceContext override val entityManager: EntityManager)
         logger.info("Get Task Entity by key: $key")
         try {
             return entityManager.createQuery("from Task as task where task.keys=:curKey", Task::class.java)
-                    .setParameter("curKey", key).singleResult
+                .setParameter("curKey", key).singleResult
         } catch (noResExc: NoResultException) {
             logger.warn("No one Task Entity founded by the key: $key")
             return null

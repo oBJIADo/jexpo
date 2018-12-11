@@ -133,25 +133,28 @@ class EntityBuilderImplTest {
     @Test
     @Throws(NoShetException::class)
     fun buildComments() {
-        val actual = builder.buildComments("16.11.2017 11:07; Bochkareva, Iuliia;                 Hello Krystek, Stefanie,\n" +
-                "\n" +
-                "Could you please tell, this error code will be added in specification?  or there will be another decision?\n" +
-                "\n" +
-                "*I just need to create the test in accordance with specification.\n" +
-                "\n" +
-                "Thanks in advance,\n" +
-                "\n" +
-                "Iuliia\n" +
-                "        \n")
+        val actual = builder.buildComments(
+            "16.11.2017 11:07; Bochkareva, Iuliia;                 Hello Krystek, Stefanie,\n" +
+                    "\n" +
+                    "Could you please tell, this error code will be added in specification?  or there will be another decision?\n" +
+                    "\n" +
+                    "*I just need to create the test in accordance with specification.\n" +
+                    "\n" +
+                    "Thanks in advance,\n" +
+                    "\n" +
+                    "Iuliia\n" +
+                    "        \n"
+        )
 
-        val expected = Comment(null,
-                LocalDateTime.parse("16.11.2017 11:07", dateTimeFormatt),
-                Employee("Bochkareva", "Iuliia"),
-                "Hello Krystek, Stefanie,\n\n" +
-                        "Could you please tell, this error code will be added in specification?  or there will be another decision?\n\n" +
-                        "*I just need to create the test in accordance with specification.\n\n" +
-                        "Thanks in advance,\n\n" +
-                        "Iuliia"
+        val expected = Comment(
+            null,
+            LocalDateTime.parse("16.11.2017 11:07", dateTimeFormatt),
+            Employee("Bochkareva", "Iuliia"),
+            "Hello Krystek, Stefanie,\n\n" +
+                    "Could you please tell, this error code will be added in specification?  or there will be another decision?\n\n" +
+                    "*I just need to create the test in accordance with specification.\n\n" +
+                    "Thanks in advance,\n\n" +
+                    "Iuliia"
         )
 
 

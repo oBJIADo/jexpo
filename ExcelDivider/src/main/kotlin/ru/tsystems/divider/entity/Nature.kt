@@ -5,6 +5,6 @@ import javax.persistence.Entity
 
 @Entity(name = "nature")
 data class Nature(
-        @Column(name = "title")
-        var title: String? = null
+    @Column(name = "title")
+    var title: String? = null
 ) : GeneralEntity()

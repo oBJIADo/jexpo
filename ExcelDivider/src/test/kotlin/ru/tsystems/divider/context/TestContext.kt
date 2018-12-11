@@ -72,7 +72,8 @@ object TestContext {
         featureService = FeatureServiceImpl(InMemoryFeature, natureService)
 
         fieldBuilder = FieldBuilderImpl(MessageSimulator)
-        entityBuilder = EntityBuilderImpl(MessageSimulator, fieldBuilder, featureService, InMemoryEmployee, InMemoryTask)
+        entityBuilder =
+                EntityBuilderImpl(MessageSimulator, fieldBuilder, featureService, InMemoryEmployee, InMemoryTask)
 
         rteConv = RowToEntityConverterImpl(MessageSimulator, entityBuilder, fieldBuilder, InMemoryTask, InMemoryComment)
     }

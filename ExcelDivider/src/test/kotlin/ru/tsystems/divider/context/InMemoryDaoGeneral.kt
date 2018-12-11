@@ -4,7 +4,8 @@ import ru.tsystems.divider.dao.api.GeneralDao
 import ru.tsystems.divider.entity.GeneralEntity
 import java.util.*
 
-abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor() : GeneralDao<Entity>, ContextSimmulator<Entity> {
+abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor() : GeneralDao<Entity>,
+    ContextSimmulator<Entity> {
     protected var database: MutableList<Entity>
 
     init {

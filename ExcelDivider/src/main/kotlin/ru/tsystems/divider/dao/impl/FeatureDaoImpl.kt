@@ -9,7 +9,8 @@ import javax.persistence.NoResultException
 import javax.persistence.PersistenceContext
 
 @Repository
-class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Feature>(), FeatureDao {
+class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManager) : GeneralDaoImpl<Feature>(),
+    FeatureDao {
 
     companion object {
         private val logger = Logger.getLogger(FeatureDaoImpl::class.java)
@@ -24,9 +25,12 @@ class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManag
     override fun getByParam(param: String, nature: String): Feature? {
         logger.info("Get Feature by param, nature: $param, $nature")
         try {
-            return entityManager.createQuery("select ent from Feature as ent where ent.title=:param AND ent.nature.title = :title", Feature::class.java)
-                    .setParameter("param", param)
-                    .singleResult
+            return entityManager.createQuery(
+                "select ent from Feature as ent where ent.title=:param AND ent.nature.title = :title",
+                Feature::class.java
+            )
+                .setParameter("param", param)
+                .singleResult
         } catch (noResExc: NoResultException) {
             logger.warn("No result founded. Entity: Feature, param, nature: $param, $nature")
             return null

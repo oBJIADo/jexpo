@@ -8,10 +8,10 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "feature")
 data class Feature(
-        @Column(name = "title")
-        var title: String? = null,
+    @Column(name = "title")
+    var title: String? = null,
 
-        @ManyToOne(cascade = [CascadeType.ALL])
-        @JoinColumn(name = "nature")
-        var nature: Nature? = null
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "nature")
+    var nature: Nature? = null
 ) : GeneralEntity()

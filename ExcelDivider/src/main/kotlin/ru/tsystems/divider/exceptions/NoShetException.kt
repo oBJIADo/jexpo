@@ -9,4 +9,4 @@ class NoShetException
  * @param message the detail message. The detail message is saved for
  * later retrieval by the [.getMessage] method.
  */
-(message: String) : Exception(message)
+    (message: String) : Exception(message)

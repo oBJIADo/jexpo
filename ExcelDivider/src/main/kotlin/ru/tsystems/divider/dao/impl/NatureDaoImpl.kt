@@ -19,7 +19,7 @@ class NatureDaoImpl(@Autowired override val entityManager: EntityManager) : Gene
         logger.info("Get Nature by title: $title")
         try {
             return entityManager.createQuery("select nat from Nature as nat where nat.title=:title", Nature::class.java)
-                    .setParameter("title", title).singleResult
+                .setParameter("title", title).singleResult
         } catch (noResExc: NoResultException) {
             logger.warn("Get Nature by title: $title")
         }

@@ -1,5 +1,5 @@
 package ru.tsystems.divider.service.api.functional
 
-interface CommentBuilder{
+interface CommentBuilder {
     fun buildComment(comment: String)
 }
