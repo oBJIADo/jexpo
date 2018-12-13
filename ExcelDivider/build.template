@@ -1,0 +1,83 @@
+buildscript {
+    ext {
+        ktVersion = "1.3.11"
+        hibernateVersion = "5.2.15.Final"
+        h2Version = "1.4.197"
+        springVersion = "5.1.3.RELEASE"
+        springBootVersion = "2.1.1.RELEASE"
+        poiVersion = "3.9"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$ktVersion")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:$ktVersion")
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+
+double javaVersion = 1.8
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'ExcelDivider'
+    version = '2.0'
+    manifest {
+        attributes 'Main-Class': 'ru.tsystems.divider.DivideRunner'
+    }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter:$springBootVersion") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    compile "org.springframework.boot:spring-boot-starter-log4j2"
+
+    compile "org.apache.poi:poi:$poiVersion"
+    compile "org.apache.poi:poi-ooxml:$poiVersion"
+
+    compile "org.springframework.data:spring-data-jpa:$springBootVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+
+    compile "org.slf4j:slf4j-log4j12:1.7.25"
+
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework:spring-orm:$springVersion"
+
+    compile "com.h2database:h2:$h2Version"
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: ktVersion
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$ktVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$ktVersion"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = javaVersion
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = javaVersion
+    }
+}
+
+//java -jar ExceDivider-1.0.jar "C:\\Users\\Vtroynik\\Idea\\jExpo\\ExcelDivider\\src\\main\\resources\\JiraExport.xlsx" "Jira_Export-with-Comments-Reada" 1
