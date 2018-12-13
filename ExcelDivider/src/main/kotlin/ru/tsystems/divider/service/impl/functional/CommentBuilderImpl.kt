@@ -2,17 +2,32 @@ package ru.tsystems.divider.service.impl.functional
 
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
+import ru.tsystems.divider.entity.Employee
+import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.service.api.functional.CommentBuilder
+import ru.tsystems.divider.service.api.functional.EmployeeBuilder
 import ru.tsystems.divider.utils.api.MessageWorker
 import ru.tsystems.divider.utils.constants.COMMENT_PATTERN_AUTHOR
 import ru.tsystems.divider.utils.constants.COMMENT_PATTERN_DATE
 import ru.tsystems.divider.utils.constants.COMMENT_PATTERN_ID
 import ru.tsystems.divider.utils.constants.FORMAT_READ_FILL
 import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_COMMENT
+import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_DATE
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_COMMENTS
+import java.text.ParseException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.xml.bind.PropertyException
 
-class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuilder {
+@Service
+class CommentBuilderImpl(
+    @Autowired messageWorker: MessageWorker,
+    @Autowired val taskDao: TaskDao,
+    @Autowired val employeeBuilder: EmployeeBuilder
+) : CommentBuilder {
 
     companion object {
         private val logger = Logger.getLogger(CommentBuilderImpl::class.java)
@@ -23,8 +38,6 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
     private val NAME_AUTHOR = "author"
 
     private val NAME_DATE = "date"
-
-//    private val NAME_NOTHING = "not"
 
     private val INDEX_ID: Int
 
@@ -41,6 +54,8 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
     private val idPattern: String?
 
     private val datePattern: String?
+    private val DIVIDER: String
+    private val FORMAT_DATE: String
 
     init {
         var id = -1
@@ -65,13 +80,14 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
                     NAME_ID -> id = i
                     NAME_AUTHOR -> author = i
                     NAME_DATE -> date = i
-//                    NAME_NOTHING -> { }
                     else -> throw PropertyException("format.read.comment", "Wrong keyword at index: $i")
                 }
             }
 
             comment = formats.size
         }
+        DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_COMMENTS)
+        FORMAT_DATE = messageWorker.getSourceValue(PROPS_FORMAT_READ_DATE) ?: "dd.MM.yyyy HH:mm"
 
         INDEX_ID = id
         INDEX_AUTHOR = author
@@ -81,11 +97,61 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
 
     }
 
-    override fun buildComment(comment: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun buildComment(comment: String): Comment {
+        var keyStr: String? = null
+        var dateStr: String? = null
+        var authorStr: String? = null
+
+        var index = 0
+        for (i in 0 until INDEX_COMMENT) { //todo
+            index = comment.indexOf(DIVIDER, index + 1)
+        }
+        val commentText = comment.substring(index + 1).trim { it <= ' ' }
+
+        try {
+            val dividedComment =
+                comment.substring(0, index).split(DIVIDER.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            keyStr = findPart(dividedComment, INDEX_ID)
+            dateStr = findPart(dividedComment, INDEX_DATE)
+            authorStr = findPart(dividedComment, INDEX_AUTHOR)
+        } catch (indexExc: IndexOutOfBoundsException) {
+            logger.warn("Wrong comment, returned as text.")
+        }
+
+        val task = if (keyStr != null) taskDao.getBykey(keyStr) else null
+        val date = if (dateStr != null) dateFromString(dateStr) else null
+        val author = if (authorStr != null) employeeBuilder.buildEmployee(authorStr) else null
+
+        return Comment(task, date, author, commentText)
     }
 
-//    private fun buildByPatterns(comment: String): Comment {
-//        TODO("not implemented")
-//    }
+    fun findPart(str: Array<String>, partIndex: Int): String? {
+        return when {
+            partIndex == -1 -> null
+            partIndex >= str.size -> null
+            else -> str[partIndex].trim { it <= ' ' }
+        }
+    }
+
+    /**
+     * Convert String with special format (dd.MM.yyyy HH:mm) into Date.
+     *
+     * @param date String with date.
+     * @return Date
+     */
+    private fun dateFromString(date: String): LocalDateTime? {
+        try {
+            val dateTimeFormatt = DateTimeFormatter.ofPattern(FORMAT_DATE)
+            return LocalDateTime.parse(date, dateTimeFormatt)
+        } catch (dateExc: ParseException) {
+            logger.warn("Can't to convert String to Date: $date")
+            return null
+        } catch (dateExc: NullPointerException) {
+            logger.warn("Can't to convert String to Date: $date")
+            return null
+        }
+
+    }
+
+
 }

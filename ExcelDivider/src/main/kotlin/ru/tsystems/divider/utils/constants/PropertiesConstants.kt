@@ -12,7 +12,7 @@ const val PROPS_MODIFICATOR_KEYS_PRE = "modificator.keys.pre"
 const val PROPS_FORMAT_READ_DATE = "format.read.date"
 const val PROPS_FORMAT_READ_COMMENT = "format.read.comment"
 
-const val PROPS_COLUMN_INDEX_SOURCE = "column.index." //todo?
+const val PROPS_COLUMN_INDEX_SOURCE = "column.index."
 
 const val COMMENT_PATTERN_ID = "comment.pattern.id"
 const val COMMENT_PATTERN_AUTHOR = "comment.pattern.author"

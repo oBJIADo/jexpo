@@ -263,7 +263,7 @@ class RowToEntityConverterImpl(
         var curComment: Comment?
 
         while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
-            curComment = builder.buildCommentsWithTask(commentString!!) //todo
+            curComment = builder.buildComments(commentString!!) //todo
             if (curComment != null) {
                 commentDao.persist(curComment)
             }

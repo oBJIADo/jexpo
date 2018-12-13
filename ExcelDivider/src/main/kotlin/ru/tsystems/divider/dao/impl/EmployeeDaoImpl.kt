@@ -25,11 +25,14 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
      * second name
      * @return [Employee]
      */
-    override fun getByNames(firstName: String, secondName: String): Employee? {
+    override fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee? {
         logger.info("Get Employee by names: $firstName $secondName")
         try {
             return entityManager.createQuery(
-                "from Employee as emp where emp.firstname=:firstName AND emp.secondname=:secondName",
+                """from Employee as emp
+                                where
+                                    lower(emp.firstname)=lower(:firstName) AND
+                                    lower(emp.secondname)=lower(:secondName)""",
                 Employee::class.java
             )
                 .setParameter("firstName", firstName)

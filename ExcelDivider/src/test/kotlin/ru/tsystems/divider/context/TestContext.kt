@@ -1,13 +1,15 @@
 package ru.tsystems.divider.context
 
-import ru.tsystems.divider.service.api.entity.FeatureService
-import ru.tsystems.divider.service.api.entity.NatureService
+import ru.tsystems.divider.service.api.functional.CommentBuilder
+import ru.tsystems.divider.service.api.functional.EmployeeBuilder
 import ru.tsystems.divider.service.api.functional.EntityBuilder
+import ru.tsystems.divider.service.api.functional.FeatureBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 import ru.tsystems.divider.service.api.functional.RowToEntityConverter
-import ru.tsystems.divider.service.impl.entity.FeatureServiceImpl
-import ru.tsystems.divider.service.impl.entity.NatureServiceImpl
+import ru.tsystems.divider.service.impl.functional.CommentBuilderImpl
+import ru.tsystems.divider.service.impl.functional.EmployeeBuilderImpl
 import ru.tsystems.divider.service.impl.functional.EntityBuilderImpl
+import ru.tsystems.divider.service.impl.functional.FeatureBuilderImpl
 import ru.tsystems.divider.service.impl.functional.FieldBuilderImpl
 import ru.tsystems.divider.service.impl.functional.RowToEntityConverterImpl
 import ru.tsystems.divider.utils.api.MessageWorker
@@ -22,10 +24,17 @@ object TestContext {
     private val employeeDao: InMemoryEmployee
     private val commentDao: InMemoryComment
 
-    private val natureService: NatureService
-    private val featureService: FeatureService
 
     var entityBuilder: EntityBuilder
+        private set
+
+    var featureBuilder: FeatureBuilder
+        private set
+
+    var employeeBuilder: EmployeeBuilder
+        private set
+
+    var commentBuilder: CommentBuilder
         private set
 
     var fieldBuilder: FieldBuilder
@@ -42,8 +51,22 @@ object TestContext {
         InMemoryComment.reset()
         InMemoryTask.reset()
 
-        fieldBuilder = FieldBuilderImpl(messageWorker)
-        entityBuilder = EntityBuilderImpl(messageWorker, fieldBuilder, featureService, employeeDao, taskDao)
+        featureBuilder =
+                FeatureBuilderImpl(messageWorker = messageWorker, featureDao = featureDao, natureDao = natureDao)
+        employeeBuilder = EmployeeBuilderImpl(messageWorker = messageWorker, dao = employeeDao)
+        commentBuilder =
+                CommentBuilderImpl(messageWorker = messageWorker, employeeBuilder = employeeBuilder, taskDao = taskDao)
+
+
+        entityBuilder =
+                EntityBuilderImpl(
+                    MessageSimulator,
+                    fieldBuilder,
+                    featureBuilder,
+                    employeeBuilder,
+                    InMemoryTask,
+                    commentBuilder
+                )
 
         rteConv = RowToEntityConverterImpl(messageWorker, entityBuilder, fieldBuilder, taskDao, commentDao)
     }
@@ -53,8 +76,16 @@ object TestContext {
      * In real use case properties do not changes.
      */
     fun rebuildServices() {
-        fieldBuilder = FieldBuilderImpl(messageWorker)
-        entityBuilder = EntityBuilderImpl(messageWorker, fieldBuilder, featureService, employeeDao, taskDao)
+        fieldBuilder = FieldBuilderImpl()
+        entityBuilder =
+                EntityBuilderImpl(
+                    MessageSimulator,
+                    fieldBuilder,
+                    featureBuilder,
+                    employeeBuilder,
+                    InMemoryTask,
+                    commentBuilder
+                )
 
         rteConv = RowToEntityConverterImpl(messageWorker, entityBuilder, fieldBuilder, taskDao, commentDao)
     }
@@ -68,12 +99,22 @@ object TestContext {
         employeeDao = InMemoryEmployee
         commentDao = InMemoryComment
 
-        natureService = NatureServiceImpl(InMemoryNature)
-        featureService = FeatureServiceImpl(InMemoryFeature, natureService)
+        featureBuilder =
+                FeatureBuilderImpl(messageWorker = messageWorker, featureDao = featureDao, natureDao = natureDao)
+        employeeBuilder = EmployeeBuilderImpl(messageWorker = messageWorker, dao = employeeDao)
+        commentBuilder =
+                CommentBuilderImpl(messageWorker = messageWorker, employeeBuilder = employeeBuilder, taskDao = taskDao)
 
-        fieldBuilder = FieldBuilderImpl(MessageSimulator)
+        fieldBuilder = FieldBuilderImpl()
         entityBuilder =
-                EntityBuilderImpl(MessageSimulator, fieldBuilder, featureService, InMemoryEmployee, InMemoryTask)
+                EntityBuilderImpl(
+                    MessageSimulator,
+                    fieldBuilder,
+                    featureBuilder,
+                    employeeBuilder,
+                    InMemoryTask,
+                    commentBuilder
+                )
 
         rteConv = RowToEntityConverterImpl(MessageSimulator, entityBuilder, fieldBuilder, InMemoryTask, InMemoryComment)
     }

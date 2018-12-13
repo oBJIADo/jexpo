@@ -16,16 +16,6 @@ interface FieldBuilder {
     fun rebuildString(string: String, symbol: String): Array<String>
 
     /**
-     * Rebuild comment. Result of rebuild is a three Strings Which contains: date, author, comment.
-     *
-     * @param comment
-     * String with unrebuilded comment.
-     *
-     * @return Rebuilded comment.
-     */
-    fun rebuildComment(comment: String, divideSymbols: String): Array<String?>
-
-    /**
      * Rebuild jira fields.
      *
      * @param jiraField

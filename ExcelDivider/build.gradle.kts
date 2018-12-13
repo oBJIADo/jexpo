@@ -43,38 +43,38 @@ tasks.jar {
     baseName = "ExcelDivider"
     version = "2.0"
     manifest {
-        attributes (Pair("Main-Class", "ru.tsystems.divider.DivideRunnerStart"))
+        attributes(Pair("Main-Class", "ru.tsystems.divider.DivideRunnerStart"))
     }
 }
 
 dependencies {
 
-    compile("org.springframework.boot:spring-boot-starter:$springBootVersion") {
+    compile(group = "org.springframework.boot", name = "spring-boot-starter", version = springBootVersion) {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
     }
-    compile ("org.springframework.boot:spring-boot-starter-log4j2")
+    compile(group = "org.springframework.boot", name = "spring-boot-starter-log4j2")
 
-    compile ("org.apache.poi:poi:$poiVersion")
-    compile ("org.apache.poi:poi-ooxml:$poiVersion")
+    compile(group = "org.apache.poi", name = "poi", version = poiVersion)
+    compile(group = "org.apache.poi", name = "poi-ooxml", version = poiVersion)
 
-    compile ("org.springframework.data:spring-data-jpa:$springBootVersion")
-    compile ("org.springframework:spring-context:$springVersion")
-    compile ("org.springframework:spring-context-support:$springVersion")
-    compile ("org.springframework:spring-beans:$springVersion")
+    compile(group = "org.springframework.data", name = "spring-data-jpa", version = springBootVersion)
+    compile(group = "org.springframework", name = "spring-context", version = springVersion)
+    compile(group = "org.springframework", name = "spring-context-support", version = springVersion)
+    compile(group = "org.springframework", name = "spring-beans", version = springVersion)
 
-    compile ("org.slf4j:slf4j-log4j12:1.7.25")
+    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.25")
 
-    compile ("org.springframework:spring-tx:$springVersion")
-    compile ("org.springframework:spring-orm:$springVersion")
+    compile(group = "org.springframework", name = "spring-tx", version = springVersion)
+    compile(group = "org.springframework", name = "spring-orm", version = springVersion)
 
-    compile ("com.h2database:h2:$h2Version")
-    compile ("org.hibernate:hibernate-entitymanager:$hibernateVersion")
-    compile ("org.hibernate:hibernate-core:$hibernateVersion")
+    compile(group = "com.h2database", name = "h2", version = h2Version)
+    compile(group = "org.hibernate", name = "hibernate-entitymanager", version = hibernateVersion)
+    compile(group = "org.hibernate", name = "hibernate-core", version = hibernateVersion)
 
-    testCompile (group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version = ktVersion)
+    testCompile(group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version = ktVersion)
 
-    compile ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$ktVersion")
-    compile ("org.jetbrains.kotlin:kotlin-reflect:$ktVersion")
+    compile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = ktVersion)
+    compile(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = ktVersion)
 }
 
 //

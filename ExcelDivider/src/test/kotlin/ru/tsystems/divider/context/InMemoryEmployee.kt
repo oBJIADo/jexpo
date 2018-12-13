@@ -16,9 +16,10 @@ object InMemoryEmployee : InMemoryDaoGeneral<Employee>(), EmployeeDao, ContextSi
      * @param secondName second name
      * @return [Employee]
      */
-    override fun getByNames(firstName: String, secondName: String): Employee? {
+    override fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee? {
         for (employee in database) {
-            if (firstName == employee.firstname && secondName == employee.secondname) {
+            if (firstName.toLowerCase() == employee.firstname?.toLowerCase() &&
+                secondName.toLowerCase() == employee.secondname?.toLowerCase()) {
                 return employee
             }
         }

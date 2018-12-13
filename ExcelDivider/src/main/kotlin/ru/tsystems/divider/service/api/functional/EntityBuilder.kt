@@ -49,5 +49,4 @@ interface EntityBuilder {
      */
     fun buildConnectionToAnotherTasks(subTasks: String): Set<Task>
 
-    fun buildCommentsWithTask(comment: String): Comment?
 }
