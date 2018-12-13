@@ -28,7 +28,7 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
     override fun getByNames(firstName: String, secondName: String): Employee? {
         logger.info("Get Employee by names: $firstName $secondName")
         try {
-            return entityManager!!.createQuery(
+            return entityManager.createQuery(
                 "from Employee as emp where emp.firstname=:firstName AND emp.secondname=:secondName",
                 Employee::class.java
             )

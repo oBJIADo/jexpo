@@ -17,6 +17,7 @@ buildscript {
 }
 
 plugins {
+    application
     idea
     kotlin("jvm") version "1.3.11"
 }
@@ -33,11 +34,16 @@ repositories {
     mavenCentral()
 }
 
+application {
+    applicationName = "ExcelDivider"
+    mainClassName = "ru.tsystems.divider.DivideRunnerStart"
+}
+
 tasks.jar {
     baseName = "ExcelDivider"
     version = "2.0"
     manifest {
-        attributes (Pair("Main-Class", "ru.tsystems.divider.DivideRunner"))
+        attributes (Pair("Main-Class", "ru.tsystems.divider.DivideRunnerStart"))
     }
 }
 

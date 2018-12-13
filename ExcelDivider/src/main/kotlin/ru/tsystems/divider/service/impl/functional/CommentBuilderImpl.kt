@@ -85,7 +85,7 @@ class CommentBuilderImpl(@Autowired messageWorker: MessageWorker) : CommentBuild
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun buildByPatterns(comment: String): Comment {
-        TODO("not implemented")
-    }
+//    private fun buildByPatterns(comment: String): Comment {
+//        TODO("not implemented")
+//    }
 }

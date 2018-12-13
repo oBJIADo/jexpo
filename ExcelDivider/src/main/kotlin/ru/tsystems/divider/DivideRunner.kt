@@ -1,3 +1,4 @@
+@file:JvmName(name = "DivideRunnerStart")
 package ru.tsystems.divider
 
 import org.springframework.boot.SpringApplication
@@ -15,105 +16,108 @@ import java.io.IOException
 @ImportResource("classpath:spring.xml")
 class DivideRunner {
 
-    private val EXCEL_OLD_FORMAT = "xls"
-    private val EXCEL_FORMAT = "xlsx"
+}
 
-    fun main(args: Array<String>) {
-        val fileName: String
-        val sheetName: String
-        val startRowIndex: Int
-        val convertingParam: Int
+private val EXCEL_OLD_FORMAT = "xls"
+private val EXCEL_FORMAT = "xlsx"
 
-        try {
-            convertingParam = Integer.valueOf(args[0])
-            fileName = args[1]
-            sheetName = args[2]
-            startRowIndex = Integer.valueOf(args[3])
+fun main(args: Array<String>) {
+    println("Hello World!")
 
-            // Start spring boot app and get Beam from context
-            val configurableApplicationContext = SpringApplication.run(DivideRunner::class.java)
-            val transfer = configurableApplicationContext.getBean(JiraToDBConverter::class.java)
+    val fileName: String
+    val sheetName: String
+    val startRowIndex: Int
+    val convertingParam: Int
 
-            if (convertingParam == 1)
-                startTasksReader(fileName, sheetName, startRowIndex, transfer)
-            else if (convertingParam == 2)
-                startCommentReader(fileName, sheetName, startRowIndex, transfer)
-            else
-                throw IllegalArgumentException("Converting param is wrong: $convertingParam")
+    try {
+        convertingParam = Integer.valueOf(args[0])
+        fileName = args[1]
+        sheetName = args[2]
+        startRowIndex = Integer.valueOf(args[3])
 
-        } catch (indexexc: IndexOutOfBoundsException) {
-            println(indexexc.message)
-            println("Need 4 arguments:\n  1) Read mode.\n  2) File name with path.\n  3) Sheet name in excel file.\n  4) Index of the first readable row.")
-        } catch (nsexc: NoShetException) {
-            println(nsexc.message)
-            println("Wrong sheet name.")
-        } catch (excelExc: ExcelFormatException) {
-            println(excelExc.message)
-        } catch (fnfexc: FileNotFoundException) {
-            println(fnfexc.message)
-            println("Wrong file name")
-        } catch (ioexc: IOException) {
-            println(ioexc.message)
-            println("Can't to read file.")
-        }
+        // Start spring boot app and get Beam from context
+        val configurableApplicationContext = SpringApplication.run(DivideRunner::class.java)
+        val transfer = configurableApplicationContext.getBean(JiraToDBConverter::class.java)
 
+        if (convertingParam == 1)
+            startTasksReader(fileName, sheetName, startRowIndex, transfer)
+        else if (convertingParam == 2)
+            startCommentReader(fileName, sheetName, startRowIndex, transfer)
+        else
+            throw IllegalArgumentException("Converting param is wrong: $convertingParam")
+
+    } catch (indexexc: IndexOutOfBoundsException) {
+        println(indexexc.message)
+        println("Need 4 arguments:\n  1) Read mode.\n  2) File name with path.\n  3) Sheet name in excel file.\n  4) Index of the first readable row.")
+    } catch (nsexc: NoShetException) {
+        println(nsexc.message)
+        println("Wrong sheet name.")
+    } catch (excelExc: ExcelFormatException) {
+        println(excelExc.message)
+    } catch (fnfexc: FileNotFoundException) {
+        println(fnfexc.message)
+        println("Wrong file name")
+    } catch (ioexc: IOException) {
+        println(ioexc.message)
+        println("Can't to read file.")
     }
 
-    private fun startTasksReader(
-        fileName: String,
-        sheetName: String,
-        startRowIndex: Int,
-        converter: JiraToDBConverter
-    ) {
-        val fileFormat = getFormat(fileName)
-        when {
-            EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsxFileReader(fileName, sheetName).use { excelReader ->
-                    converter.transferAll(
-                        excelReader,
-                        startRowIndex
-                    )
-                }
-            EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsFileReader(fileName, sheetName).use { excelReader ->
-                    converter.transferAll(
-                        excelReader,
-                        startRowIndex
-                    )
-                }
-            else -> throw ExcelFormatException(fileFormat, fileName)
-        }
+}
+
+private fun startTasksReader(
+    fileName: String,
+    sheetName: String,
+    startRowIndex: Int,
+    converter: JiraToDBConverter
+) {
+    val fileFormat = getFormat(fileName)
+    when {
+        EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
+            XlsxFileReader(fileName, sheetName).use { excelReader ->
+                converter.transferAll(
+                    excelReader,
+                    startRowIndex
+                )
+            }
+        EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
+            XlsFileReader(fileName, sheetName).use { excelReader ->
+                converter.transferAll(
+                    excelReader,
+                    startRowIndex
+                )
+            }
+        else -> throw ExcelFormatException(fileFormat, fileName)
     }
+}
 
 
-    private fun startCommentReader(
-        fileName: String,
-        sheetName: String,
-        startRowIndex: Int,
-        converter: JiraToDBConverter
-    ) {
-        val fileFormat = getFormat(fileName)
-        when {
-            EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsxFileReader(fileName, sheetName).use { excelReader ->
-                    converter.transferAllComments(
-                        excelReader,
-                        startRowIndex
-                    )
-                }
-            EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
-                XlsFileReader(fileName, sheetName).use { excelReader ->
-                    converter.transferAllComments(
-                        excelReader,
-                        startRowIndex
-                    )
-                }
-            else -> throw ExcelFormatException(fileFormat, fileName)
-        }
+private fun startCommentReader(
+    fileName: String,
+    sheetName: String,
+    startRowIndex: Int,
+    converter: JiraToDBConverter
+) {
+    val fileFormat = getFormat(fileName)
+    when {
+        EXCEL_FORMAT.equals(fileFormat, ignoreCase = true) ->
+            XlsxFileReader(fileName, sheetName).use { excelReader ->
+                converter.transferAllComments(
+                    excelReader,
+                    startRowIndex
+                )
+            }
+        EXCEL_OLD_FORMAT.equals(fileFormat, ignoreCase = true) ->
+            XlsFileReader(fileName, sheetName).use { excelReader ->
+                converter.transferAllComments(
+                    excelReader,
+                    startRowIndex
+                )
+            }
+        else -> throw ExcelFormatException(fileFormat, fileName)
     }
+}
 
-    private fun getFormat(fileName: String): String {
-        val dotIndex = fileName.lastIndexOf('.')
-        return fileName.substring(dotIndex + 1)
-    }
+private fun getFormat(fileName: String): String {
+    val dotIndex = fileName.lastIndexOf('.')
+    return fileName.substring(dotIndex + 1)
 }
