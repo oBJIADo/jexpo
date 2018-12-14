@@ -33,7 +33,7 @@ class FeatureBuilderImpl(
 
     override fun buildFeatureSet(features: String, nature: String): Set<Feature> {
         val components = HashSet<Feature>()
-        val params = fieldBuilder.rebuildJiraField(features, DIVIDER)
+        val params = fieldBuilder.rebuildString(features, DIVIDER)
 
         var feature: Feature
         for (param in params) {

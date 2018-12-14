@@ -57,7 +57,7 @@ class FieldBuilderImplTest {
 
     @Test
     fun rebuildComment() {//todo
-//        val comment = ("22.11.2017 08:57; Scholle, Julia; Hi, \n\n"
+//        val comment = ("22.11.2017 08:57; Scho    lle, Julia; Hi, \n\n"
 //                + "there was a wrong Translation in CS, we Change that, so the new value is \"Adresse\".\n\n"
 //                + "The issue is fixed with the next update of the user profiles.\n\n" + "Regards,\n\n"
 //                + "Julia\n\n\n\n\n\n\n\n")
@@ -86,7 +86,7 @@ class FieldBuilderImplTest {
 
         val actuals: Array<String>
 
-        actuals = fieldBuilder.rebuildJiraField(subTasks)
+        actuals = fieldBuilder.rebuildString(subTasks, ",")
         assertArrayEquals(expectedFields, actuals)
     }
 
@@ -96,7 +96,7 @@ class FieldBuilderImplTest {
         val actuals: Array<String>
 
         cellValue = reader.getCell(1, 0)?.stringCellValue ?: throw NullPointerException()
-        actuals = fieldBuilder.rebuildJiraField(cellValue)
+        actuals = fieldBuilder.rebuildString(cellValue, ",")
 
         assertArrayEquals(expectedFields, actuals)
     }

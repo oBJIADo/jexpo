@@ -112,7 +112,7 @@ class EntityBuilderImpl(
             return HashSet()
         val tasks = HashSet<Task>()
 
-        val keys = fieldBuilder.rebuildJiraField(subTasks, ANOTHER_TASKS_DIVIDER)
+        val keys = fieldBuilder.rebuildString(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
             try {
                 tasks.add(buildSubTask(fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR)))

@@ -21,22 +21,7 @@ import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 import ru.tsystems.divider.utils.api.MessageWorker
-import ru.tsystems.divider.utils.constants.DEFAULT_KEY
-import ru.tsystems.divider.utils.constants.NATURE_COMPONENT
-import ru.tsystems.divider.utils.constants.NATURE_DEFAULT
-import ru.tsystems.divider.utils.constants.NATURE_EPIC_COLOR
-import ru.tsystems.divider.utils.constants.NATURE_EPIC_STATUS
-import ru.tsystems.divider.utils.constants.NATURE_ISSUE_TYPE
-import ru.tsystems.divider.utils.constants.NATURE_KEYWORD
-import ru.tsystems.divider.utils.constants.NATURE_LABEL
-import ru.tsystems.divider.utils.constants.NATURE_PRIORITY
-import ru.tsystems.divider.utils.constants.NATURE_RESOLUTION
-import ru.tsystems.divider.utils.constants.NATURE_SPRINT
-import ru.tsystems.divider.utils.constants.NATURE_STATUS
-import ru.tsystems.divider.utils.constants.NATURE_TEAM
-import ru.tsystems.divider.utils.constants.NATURE_VERSION
-import ru.tsystems.divider.utils.constants.PROPS_COLUMN_INDEX_SOURCE
-import ru.tsystems.divider.utils.constants.PROPS_MODIFICATOR_KEYS_PRE
+import ru.tsystems.divider.utils.constants.*
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -57,6 +42,8 @@ class RowToEntityConverterImpl(
 
     private val KEY_MODIFICATOR: String?
 
+    private val commentStart: Int?
+
     init {
 
         KEY_MODIFICATOR = messageWorker.getSourceValue(PROPS_MODIFICATOR_KEYS_PRE)
@@ -67,50 +54,50 @@ class RowToEntityConverterImpl(
             }
 
         FIELDS = HashMap()
-        FIELDS["keys"] = getIndex("keys")
-        FIELDS["summary"] = getIndex("summary")
-        FIELDS["issueType"] = getIndex("issueType")
-        FIELDS["status"] = getIndex("status")
-        FIELDS["priority"] = getIndex("priority")
-        FIELDS["resolution"] = getIndex("resolution")
-        FIELDS["assignee"] = getIndex("assignee")
-        FIELDS["reporter"] = getIndex("reporter")
-        FIELDS["creater"] = getIndex("creater")
-        FIELDS["created"] = getIndex("created")
-        FIELDS["lastViewed"] = getIndex("lastViewed")
-        FIELDS["updated"] = getIndex("updated")
-        FIELDS["resolved"] = getIndex("resolved")
-        FIELDS["affectsVersion"] = getIndex("affectsVersion")
-        FIELDS["fixVersion"] = getIndex("fixVersion")
-        FIELDS["components"] = getIndex("components")
-        FIELDS["dueDate"] = getIndex("dueDate")
-        FIELDS["originalEstimate"] = getIndex("originalEstimate")
-        FIELDS["remainingEstimate"] = getIndex("remainingEstimate")
-        FIELDS["timeSpent"] = getIndex("timeSpent")
-        FIELDS["workRatio"] = getIndex("workRatio")
-        FIELDS["description"] = getIndex("description")
-        FIELDS["progress"] = getIndex("progress")
-        FIELDS["sumProgress"] = getIndex("sumProgress")
-        FIELDS["sumTimeSpent"] = getIndex("sumTimeSpent")
-        FIELDS["sumRemainingEstimate"] = getIndex("sumRemainingEstimate")
-        FIELDS["sumOriginalEstimate"] = getIndex("sumOriginalEstimate")
-        FIELDS["labels"] = getIndex("labels")
-        FIELDS["teams"] = getIndex("teams")
-        FIELDS["epicName"] = getIndex("epicName")
-        FIELDS["epicStatus"] = getIndex("epicStatus")
-        FIELDS["epicColor"] = getIndex("epicColor")
-        FIELDS["sprint"] = getIndex("sprint")
-        FIELDS["epicLink"] = getIndex("epicLink")
-        FIELDS["orderNumber"] = getIndex("orderNumber")
-        FIELDS["deliveredVersion"] = getIndex("deliveredVersion")
-        FIELDS["drcNumber"] = getIndex("drcNumber")
-        FIELDS["keyword"] = getIndex("keyword")
-        FIELDS["fixPriority"] = getIndex("fixPriority")
-        FIELDS["commentStart"] = getIndex("commentStart")
-        FIELDS["subTasks"] = getIndex("subTasks")
-        FIELDS["relationTasks"] = getIndex("relationTasks")
-        FIELDS["duplicateTasks"] = getIndex("duplicateTasks")
-        FIELDS["commentMode.commentStart"] = getIndex("commentMode.commentStart")
+        FIELDS[COLUMN_KEYS] = getIndex(COLUMN_KEYS)
+        FIELDS[COLUMN_SUMMARY] = getIndex(COLUMN_SUMMARY)
+        FIELDS[COLUMN_ISSUETYPE] = getIndex(COLUMN_ISSUETYPE)
+        FIELDS[COLUMN_STATUS] = getIndex(COLUMN_STATUS)
+        FIELDS[COLUMN_PRIORITY] = getIndex(COLUMN_PRIORITY)
+        FIELDS[COLUMN_RESOLUTION] = getIndex(COLUMN_RESOLUTION)
+        FIELDS[COLUMN_ASSIGNEE] = getIndex(COLUMN_ASSIGNEE)
+        FIELDS[COLUMN_REPORTER] = getIndex(COLUMN_REPORTER)
+        FIELDS[COLUMN_CREATER] = getIndex(COLUMN_CREATER)
+        FIELDS[COLUMN_CREATED] = getIndex(COLUMN_CREATED)
+        FIELDS[COLUMN_LASTVIEWED] = getIndex(COLUMN_LASTVIEWED)
+        FIELDS[COLUMN_UPDATED] = getIndex(COLUMN_UPDATED)
+        FIELDS[COLUMN_RESOLVED] = getIndex(COLUMN_RESOLVED)
+        FIELDS[COLUMN_AFFECTSVERSION] = getIndex(COLUMN_AFFECTSVERSION)
+        FIELDS[COLUMN_FIXVERSION] = getIndex(COLUMN_FIXVERSION)
+        FIELDS[COLUMN_COMPONENTS] = getIndex(COLUMN_COMPONENTS)
+        FIELDS[COLUMN_DUEDATE] = getIndex(COLUMN_DUEDATE)
+        FIELDS[COLUMN_ORIGINALESTIMATE] = getIndex(COLUMN_ORIGINALESTIMATE)
+        FIELDS[COLUMN_REMAININGESTIMATE] = getIndex(COLUMN_REMAININGESTIMATE)
+        FIELDS[COLUMN_TIMESPENT] = getIndex(COLUMN_TIMESPENT)
+        FIELDS[COLUMN_WORKRATIO] = getIndex(COLUMN_WORKRATIO)
+        FIELDS[COLUMN_DESCRIPTION] = getIndex(COLUMN_DESCRIPTION)
+        FIELDS[COLUMN_PROGRESS] = getIndex(COLUMN_PROGRESS)
+        FIELDS[COLUMN_SUMPROGRESS] = getIndex(COLUMN_SUMPROGRESS)
+        FIELDS[COLUMN_SUMTIMESPENT] = getIndex(COLUMN_SUMTIMESPENT)
+        FIELDS[COLUMN_SUMREMAININGESTIMATE] = getIndex(COLUMN_SUMREMAININGESTIMATE)
+        FIELDS[COLUMN_SUMORIGINALESTIMATE] = getIndex(COLUMN_SUMORIGINALESTIMATE)
+        FIELDS[COLUMN_LABELS] = getIndex(COLUMN_LABELS)
+        FIELDS[COLUMN_TEAMS] = getIndex(COLUMN_TEAMS)
+        FIELDS[COLUMN_EPICNAME] = getIndex(COLUMN_EPICNAME)
+        FIELDS[COLUMN_EPICSTATUS] = getIndex(COLUMN_EPICSTATUS)
+        FIELDS[COLUMN_EPICCOLOR] = getIndex(COLUMN_EPICCOLOR)
+        FIELDS[COLUMN_SPRINT] = getIndex(COLUMN_SPRINT)
+        FIELDS[COLUMN_EPICLINK] = getIndex(COLUMN_EPICLINK)
+        FIELDS[COLUMN_ORDERNUMBER] = getIndex(COLUMN_ORDERNUMBER)
+        FIELDS[COLUMN_DELIVEREDVERSION] = getIndex(COLUMN_DELIVEREDVERSION)
+        FIELDS[COLUMN_DRCNUMBER] = getIndex(COLUMN_DRCNUMBER)
+        FIELDS[COLUMN_KEYWORD] = getIndex(COLUMN_KEYWORD)
+        FIELDS[COLUMN_FIXPRIORITY] = getIndex(COLUMN_FIXPRIORITY)
+        FIELDS[COLUMN_COMMENTSTART] = getIndex(COLUMN_COMMENTSTART)
+        FIELDS[COLUMN_SUBTASKS] = getIndex(COLUMN_SUBTASKS)
+        FIELDS[COLUMN_RELATIONTASKS] = getIndex(COLUMN_RELATIONTASKS)
+        FIELDS[COLUMN_DUPLICATETASKS] = getIndex(COLUMN_DUPLICATETASKS)
+        commentStart = getIndex("commentMode.commentStart")
     }
 
 
@@ -257,7 +244,7 @@ class RowToEntityConverterImpl(
 
     @Transactional
     override fun saveAllComments(row: Row) { //todo: rename or delete method
-        var currentIndex: Int = FIELDS["commentMode.commentStart"]
+        var currentIndex: Int = commentStart
             ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
         var commentString: String? = null
         var curComment: Comment?

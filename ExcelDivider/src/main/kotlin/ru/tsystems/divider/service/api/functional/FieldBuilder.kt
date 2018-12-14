@@ -15,26 +15,6 @@ interface FieldBuilder {
      */
     fun rebuildString(string: String, symbol: String): Array<String>
 
-    /**
-     * Rebuild jira fields.
-     *
-     * @param jiraField
-     * String with jira field.
-     *
-     * @return Rebuilded field.
-     */
-    fun rebuildJiraField(jiraField: String): Array<String>
-
-    /**
-     * Rebuild jira fields.
-     *
-     * @param jiraField
-     * String with jira field.
-     *
-     * @return Rebuilded field.
-     */
-    fun rebuildJiraField(jiraField: String, symbols: String): Array<String>
-
 
     fun buildTaskKey(key: String, modificator: String): String
 }

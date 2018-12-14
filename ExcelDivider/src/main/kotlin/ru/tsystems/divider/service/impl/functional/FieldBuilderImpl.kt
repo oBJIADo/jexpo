@@ -56,28 +56,6 @@ class FieldBuilderImpl() : FieldBuilder {
         return result.toString()
     }
 
-    /**
-     * Rebuild jira fields.
-     *
-     * @param jiraField
-     * String with jira field.
-     * @return Rebuilded field.
-     */
-    override fun rebuildJiraField(jiraField: String): Array<String> {
-        return rebuildString(jiraField, ",")
-    }
-
-    /**
-     * Rebuild jira fields.
-     *
-     * @param jiraField
-     * String with jira field.
-     * @return Rebuilded field.
-     */
-    override fun rebuildJiraField(jiraField: String, symbols: String): Array<String> {
-        return rebuildString(jiraField, symbols)
-    }
-
     override fun buildTaskKey(key: String, modificator: String): String {
         if (key.isEmpty()) {
             throw IllegalArgumentException("Key cannot be empty") //todo
