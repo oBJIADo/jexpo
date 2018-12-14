@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
-import ru.tsystems.divider.entity.Employee
-import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.service.api.functional.CommentBuilder
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder
 import ru.tsystems.divider.utils.api.MessageWorker

@@ -19,7 +19,8 @@ object InMemoryEmployee : InMemoryDaoGeneral<Employee>(), EmployeeDao, ContextSi
     override fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee? {
         for (employee in database) {
             if (firstName.toLowerCase() == employee.firstname?.toLowerCase() &&
-                secondName.toLowerCase() == employee.secondname?.toLowerCase()) {
+                secondName.toLowerCase() == employee.secondname?.toLowerCase()
+            ) {
                 return employee
             }
         }

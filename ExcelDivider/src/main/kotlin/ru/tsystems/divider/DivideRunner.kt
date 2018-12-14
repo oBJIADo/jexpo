@@ -1,4 +1,5 @@
 @file:JvmName(name = "DivideRunnerStart")
+
 package ru.tsystems.divider
 
 import org.springframework.boot.SpringApplication
