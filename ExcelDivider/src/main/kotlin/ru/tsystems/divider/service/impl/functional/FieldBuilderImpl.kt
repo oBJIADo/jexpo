@@ -52,7 +52,7 @@ class FieldBuilderImpl() : FieldBuilder {
 
     override fun buildTaskKey(key: String, modificator: String): String {
         if (key.isEmpty()) {
-            throw IllegalArgumentException("Key cannot be empty") //todo
+            throw IllegalArgumentException("Key cannot be empty")
         }
         val numericPart = getNumPart(key)
 
@@ -69,7 +69,7 @@ class FieldBuilderImpl() : FieldBuilder {
         }
 
         if (i == key.length) {
-            throw IllegalArgumentException("No numeric part in task's key") //todo
+            throw IllegalArgumentException("No numeric part in task's key")
         } else {
             firstIndex = i
             i = key.length - 1
