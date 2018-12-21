@@ -1,6 +1,5 @@
 package ru.tsystems.divider.utils.impl
 
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.NoSuchMessageException
@@ -13,7 +12,7 @@ import java.util.*
 class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSource) : MessageWorker {
 
     companion object {
-        private val logger = Logger.getLogger(MessageWorker::class.java)
+        //private val logger = //logger.getLogger(MessageWorker::class.java)
     }
 
     override fun getSourceValue(sourceName: String, default: String): String {
@@ -21,7 +20,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
             val message = getMessage(sourceName)
             return if (message.isEmpty()) default else message
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return default
     }
@@ -31,7 +30,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
             val message = getMessage(sourceName)
             return if (message.isEmpty()) null else message
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return null
     }
@@ -40,7 +39,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             return getIntMessage(sourceName)
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return null
     }
@@ -49,7 +48,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             return getIntMessage(sourceName) ?: default
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return default
     }
@@ -58,7 +57,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             return getBoolMessage(sourceName)
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return null
     }
@@ -67,7 +66,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             return getBoolMessage(sourceName) ?: default
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
         }
         return default
     }
@@ -76,7 +75,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             return getMessage(sourceName)
         } catch (mesExc: NoSuchMessageException) {
-            logger.warn("No message by source: $sourceName")
+            //logger.warn("No message by source: $sourceName")
             throw PropertiesException(sourceName)
         }
     }
@@ -88,7 +87,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
         try {
             Integer.valueOf(messageSource.getMessage(sourceName, null, Locale.getDefault()))
         } catch (nfexc: NumberFormatException) {
-            logger.warn("Wrong number: $sourceName; Returned -1")
+            //logger.warn("Wrong number: $sourceName; Returned -1")
             -1
         }
 
@@ -100,7 +99,7 @@ class MessageWorkerImpl(@param:Autowired private val messageSource: MessageSourc
             true
         } else {
             val logMessage = "Value not boolean: $sourceName"
-            logger.warn(logMessage)
+            //logger.warn(logMessage)
             throw IllegalArgumentException(logMessage)
         }
     }

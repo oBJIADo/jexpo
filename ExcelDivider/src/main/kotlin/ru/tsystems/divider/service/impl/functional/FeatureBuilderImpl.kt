@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.FeatureDao
@@ -41,7 +40,7 @@ class FeatureBuilderImpl(
                 feature = buildFeature(param, nature)
                 components.add(feature)
             } else {
-                logger.warn("Empty feature when try to build feature Set. nature: $nature, feature: $features")
+                //logger.warn("Empty feature when try to build feature Set. nature: $nature, feature: $features")
             }
         }
         return components
@@ -68,6 +67,6 @@ class FeatureBuilderImpl(
     }
 
     companion object {
-        private val logger = Logger.getLogger(FeatureBuilderImpl::class.java)
+        //private val logger = //logger.getLogger(FeatureBuilderImpl::class.java)
     }
 }

@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,7 +10,7 @@ import ru.tsystems.divider.service.api.functional.RowToEntityConverter
 @Service
 class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEntityConverter) : JiraToDBConverter {
     companion object {
-        private val logger = Logger.getLogger(JiraToDBConverterImpl::class.java)
+        //private val logger = //logger.getLogger(JiraToDBConverterImpl::class.java)
     }
 
     /**

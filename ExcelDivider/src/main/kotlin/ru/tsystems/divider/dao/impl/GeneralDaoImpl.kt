@@ -1,6 +1,5 @@
 package ru.tsystems.divider.dao.impl
 
-import org.apache.log4j.Logger
 import org.springframework.stereotype.Repository
 import ru.tsystems.divider.dao.api.GeneralDao
 import ru.tsystems.divider.entity.GeneralEntity
@@ -10,7 +9,7 @@ import javax.persistence.EntityManager
 abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
 
     companion object {
-        private val logger = Logger.getLogger(GeneralDaoImpl::class.java)
+        //private val logger = //logger.getLogger(GeneralDaoImpl::class.java)
     }
 
     abstract val entityManager: EntityManager
@@ -22,7 +21,7 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
      * Entity which should be added.
      */
     override fun persist(entity: Entity) {
-        logger.info("New Entity(" + entity.javaClass.simpleName + ") added into db: " + entity.id)
+        //logger.info("New Entity(" + entity.javaClass.simpleName + ") added into db: " + entity.id)
         this.entityManager.persist(entity)
     }
 
@@ -67,7 +66,7 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
      * @return Entities.
      */
     override fun getAll(className: Class<Entity>): List<Entity> {
-        logger.info("Get all entities (" + className.simpleName + ") from db")
+        //logger.info("Get all entities (" + className.simpleName + ") from db")
         return this.entityManager.createQuery("from " + className.simpleName, className).resultList
     }
 

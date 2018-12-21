@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
@@ -93,7 +92,7 @@ class RowToEntityConverterImpl(
 ) : RowToEntityConverter {
 
     companion object {
-        private val logger = Logger.getLogger(RowToEntityConverterImpl::class.java)
+        //private val logger = //logger.getLogger(RowToEntityConverterImpl::class.java)
     }
 
     private val FIELDS: MutableMap<String, Int> //todo: to map
@@ -270,7 +269,7 @@ class RowToEntityConverterImpl(
         val stringKey = getStringCellValue(getCell(row, "keys"))
         var task: Task
         if (stringKey == null) {
-            logger.error("Task key is null! Row: ${row.rowNum}; Column: ${FIELDS["keys"]}")
+            //logger.error("Task key is null! Row: ${row.rowNum}; Column: ${FIELDS["keys"]}")
             throw java.lang.IllegalArgumentException("Task key is null")
         } else {
             val key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
@@ -290,12 +289,14 @@ class RowToEntityConverterImpl(
         var commentString: String? = null
         var curComment: Comment?
 
-        while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
-            curComment = builder.buildComments(commentString!!) //todo
+        commentString = getStringCellValue(row.getCell(currentIndex++))
+        while (commentString != null) {
+            curComment = builder.buildComments(commentString)
             if (curComment != null) {
                 curComment.task = task
                 commentDao.persist(curComment)
             }
+            commentString = getStringCellValue(row.getCell(currentIndex++))
         }
     }
 

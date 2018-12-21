@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.TaskDao
@@ -28,7 +27,7 @@ class CommentBuilderImpl(
 ) : CommentBuilder {
 
     companion object {
-        private val logger = Logger.getLogger(CommentBuilderImpl::class.java)
+        //private val logger = //logger.getLogger(CommentBuilderImpl::class.java)
     }
 
     private val NAME_ID = "id"
@@ -69,7 +68,7 @@ class CommentBuilderImpl(
 
         val format = messageWorker.getSourceValue(PROPS_FORMAT_READ_COMMENT)
         if (format == null) {
-            logger.warn("No keywords, return all cell as comment text")
+            //logger.warn("No keywords, return all cell as comment text")
             comment = 0
         } else {
             val formats = format.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -113,7 +112,7 @@ class CommentBuilderImpl(
             dateStr = findPart(dividedComment, INDEX_DATE)
             authorStr = findPart(dividedComment, INDEX_AUTHOR)
         } catch (indexExc: IndexOutOfBoundsException) {
-            logger.warn("Wrong comment, returned as text.")
+            //logger.warn("Wrong comment, returned as text.")
         }
 
         val task = if (keyStr != null) taskDao.getBykey(keyStr) else null
@@ -142,10 +141,10 @@ class CommentBuilderImpl(
             val dateTimeFormatt = DateTimeFormatter.ofPattern(FORMAT_DATE)
             return LocalDateTime.parse(date, dateTimeFormatt)
         } catch (dateExc: ParseException) {
-            logger.warn("Can't to convert String to Date: $date")
+            //logger.warn("Can't to convert String to Date: $date")
             return null
         } catch (dateExc: NullPointerException) {
-            logger.warn("Can't to convert String to Date: $date")
+            //logger.warn("Can't to convert String to Date: $date")
             return null
         }
 

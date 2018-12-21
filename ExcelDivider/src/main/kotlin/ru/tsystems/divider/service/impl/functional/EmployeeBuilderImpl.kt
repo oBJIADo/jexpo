@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.EmployeeDao
@@ -65,6 +64,6 @@ class EmployeeBuilderImpl(@Autowired messageWorker: MessageWorker, @Autowired va
     }
 
     companion object {
-        private val logger = Logger.getLogger(EmployeeBuilderImpl::class.java)
+        //private val logger = //logger.getLogger(EmployeeBuilderImpl::class.java)
     }
 }

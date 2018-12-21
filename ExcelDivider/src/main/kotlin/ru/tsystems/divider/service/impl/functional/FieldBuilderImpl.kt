@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 
@@ -8,7 +7,7 @@ import ru.tsystems.divider.service.api.functional.FieldBuilder
 class FieldBuilderImpl() : FieldBuilder {
 
     companion object {
-        private val logger = Logger.getLogger(FieldBuilderImpl::class.java)
+        //private val logger = //logger.getLogger(FieldBuilderImpl::class.java)
     }
 
     /**

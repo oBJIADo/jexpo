@@ -1,6 +1,5 @@
 package ru.tsystems.divider.service.impl.functional
 
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.TaskDao
@@ -29,7 +28,7 @@ class EntityBuilderImpl(
 ) : EntityBuilder {
 
     companion object {
-        private val logger = Logger.getLogger(EntityBuilderImpl::class.java)
+        //private val logger = //logger.getLogger(EntityBuilderImpl::class.java)
     }
 
     private val ANOTHER_TASKS_DIVIDER: String
@@ -117,7 +116,7 @@ class EntityBuilderImpl(
             try {
                 tasks.add(buildSubTask(fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR)))
             } catch (ilStExc: IllegalStateException) {
-                logger.error(ilStExc.message + "; This task not added to dependencies!")
+                //logger.error(ilStExc.message + "; This task not added to dependencies!")
             }
         }
         return tasks

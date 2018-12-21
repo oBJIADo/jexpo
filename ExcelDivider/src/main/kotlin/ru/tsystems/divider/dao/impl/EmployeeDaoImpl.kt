@@ -1,6 +1,5 @@
 package ru.tsystems.divider.dao.impl
 
-import org.apache.log4j.Logger
 import org.springframework.stereotype.Repository
 import ru.tsystems.divider.dao.api.EmployeeDao
 import ru.tsystems.divider.entity.Employee
@@ -13,7 +12,7 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
     EmployeeDao {
 
     companion object {
-        private val logger = Logger.getLogger(EmployeeDaoImpl::class.java)
+        //private val logger = //logger.Logger(EmployeeDaoImpl::class)
     }
 
     /**
@@ -26,7 +25,7 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
      * @return [Employee]
      */
     override fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee? {
-        logger.info("Get Employee by names: $firstName $secondName")
+        //logger.info("Get Employee by names: $firstName $secondName")
         try {
             return entityManager.createQuery(
                 """from Employee as emp
@@ -39,7 +38,7 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
                 .setParameter("secondName", secondName)
                 .singleResult
         } catch (noResExc: NoResultException) {
-            logger.warn("No results founded. Names :$firstName $secondName")
+            //logger.warn("No results founded. Names :$firstName $secondName")
             return null
         }
 

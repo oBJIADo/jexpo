@@ -49,10 +49,8 @@ tasks.jar {
 
 dependencies {
 
-    compile(group = "org.springframework.boot", name = "spring-boot-starter", version = springBootVersion) {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-    }
-    compile(group = "org.springframework.boot", name = "spring-boot-starter-log4j2")
+    compile(group = "org.springframework.boot", name = "spring-boot-starter", version = springBootVersion)
+    compile(group = "org.springframework.boot", name = "spring-boot-starter-log4j2", version = springBootVersion)
 
     compile(group = "org.apache.poi", name = "poi", version = poiVersion)
     compile(group = "org.apache.poi", name = "poi-ooxml", version = poiVersion)
@@ -61,8 +59,6 @@ dependencies {
     compile(group = "org.springframework", name = "spring-context", version = springVersion)
     compile(group = "org.springframework", name = "spring-context-support", version = springVersion)
     compile(group = "org.springframework", name = "spring-beans", version = springVersion)
-
-    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.25")
 
     compile(group = "org.springframework", name = "spring-tx", version = springVersion)
     compile(group = "org.springframework", name = "spring-orm", version = springVersion)
@@ -76,16 +72,3 @@ dependencies {
     compile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = ktVersion)
     compile(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = ktVersion)
 }
-
-//
-//tasks.compileKotlin {
-//    kotlinOptions {
-//        jvmTarget = JavaVersion.VERSION_1_8
-//    }
-//}
-//
-//tasks.compileTestKotlin {
-//    kotlinOptions {
-//        jvmTarget = JavaVersion.VERSION_1_8
-//    }
-//}
