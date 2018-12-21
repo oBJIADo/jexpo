@@ -23,7 +23,6 @@ class EmployeeBuilderImpl(@Autowired messageWorker: MessageWorker, @Autowired va
     override fun buildEmployee(employee: String): Employee {
         val divededStrs: Array<String> = fieldBuilder.rebuildString(employee, DIVIDER)
         return when {
-            divededStrs.isEmpty() -> throw IllegalArgumentException("todo")
             divededStrs.size == 1 -> findOrPersistEmployee(divededStrs[0])
             else -> findOrPersistEmployee(divededStrs[0], divededStrs[1])
         }

@@ -12,5 +12,5 @@ interface EmployeeDao : GeneralDao<Employee> {
      * second name
      * @return [Employee]
      */
-    fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee? //todo to lower case
+    fun getByNamesIgnoreCase(firstName: String, secondName: String): Employee?
 }

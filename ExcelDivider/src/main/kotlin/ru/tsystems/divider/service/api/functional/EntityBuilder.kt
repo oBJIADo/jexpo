@@ -24,7 +24,6 @@ interface EntityBuilder {
     fun buildEmployee(employee: String): Employee?
 
     /**
-     * todo
      *
      * @param title
      * @param nature
@@ -33,7 +32,6 @@ interface EntityBuilder {
     fun buildFeatureSet(title: String, nature: String): Set<Feature>
 
     /**
-     * todo
      *
      * @param title
      * @param nature

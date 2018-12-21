@@ -307,12 +307,13 @@ class RowToEntityConverterImpl(
             ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
         var commentString: String? = null
         var curComment: Comment?
-
-        while ({ commentString = getStringCellValue(row.getCell(currentIndex++)); commentString }() != null) {
-            curComment = builder.buildComments(commentString!!) //todo
+        commentString = getStringCellValue(row.getCell(currentIndex++))
+        while (commentString != null) {
+            curComment = builder.buildComments(commentString)
             if (curComment != null) {
                 commentDao.persist(curComment)
             }
+            commentString = getStringCellValue(row.getCell(currentIndex++))
         }
     }
 

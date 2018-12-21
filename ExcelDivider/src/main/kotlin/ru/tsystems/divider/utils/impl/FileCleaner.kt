@@ -65,8 +65,9 @@ class FileCleaner {
                 var cellIndex = 1
                 var cellIndexToWrite = 1
                 var value: String
-                while ({ cell = reader.getCell(0, cellIndex); cell }() != null) {
-                    value = cell!!.stringCellValue //todo
+                cell = reader.getCell(0, cellIndex)
+                while (cell != null) {
+                    value = cell.stringCellValue
                     println("Read cell: $value")
 
                     value = formatLine(value)
@@ -79,6 +80,7 @@ class FileCleaner {
                     }
                     cellIndex++
                     cellIndexToWrite++
+                    cell = reader.getCell(0, cellIndex)
                 }
                 println(
                     "Cell reading's file index: " + cellIndex + "\nCell writing's file index: "
@@ -104,9 +106,10 @@ class FileCleaner {
         var result = line
         result = removeTags(result)
         for (del in REPLACES_ONE_WORD_TAGS.keys)
-            result = result.replace(del, REPLACES_ONE_WORD_TAGS[del]!!) //todo
+            result =
+                    result.replace(del, REPLACES_ONE_WORD_TAGS[del] ?: throw IllegalArgumentException("No tag in map!"))
         for (del in REPLACES.keys)
-            result = result.replace(del, REPLACES[del]!!)  //todo
+            result = result.replace(del, REPLACES[del] ?: throw IllegalArgumentException("No tag in map!"))
 
         return result
     }
@@ -117,12 +120,14 @@ class FileCleaner {
         var indexEnd: Int
 
         for (tag in REPLACES_TAGS.keys) {
-            while ({ indexStart = searchTags(result, tag); indexStart }() != -1) { //todo
+            indexStart = searchTags(result, tag)
+            while (indexStart != -1) {
                 indexEnd = result.indexOf(">", indexStart)
                 if (indexEnd == result.length - 1)
                     result = result.substring(0, indexStart) + REPLACES_TAGS[tag]
                 else
                     result = result.substring(0, indexStart) + REPLACES_TAGS[tag] + result.substring(indexEnd + 1)
+                indexStart = searchTags(result, tag)
             }
         }
         return result
