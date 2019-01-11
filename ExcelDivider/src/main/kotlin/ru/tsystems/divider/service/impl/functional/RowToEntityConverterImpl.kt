@@ -286,7 +286,7 @@ class RowToEntityConverterImpl(
     override fun saveAllComments(row: Row, task: Task) {
         var currentIndex = FIELDS["commentStart"]
             ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
-        var commentString: String? = null
+        var commentString: String?
         var curComment: Comment?
 
         commentString = getStringCellValue(row.getCell(currentIndex++))
@@ -305,7 +305,7 @@ class RowToEntityConverterImpl(
     override fun saveAllComments(row: Row) { //todo: rename or delete method
         var currentIndex: Int = commentStart
             ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
-        var commentString: String? = null
+        var commentString: String?
         var curComment: Comment?
         commentString = getStringCellValue(row.getCell(currentIndex++))
         while (commentString != null) {

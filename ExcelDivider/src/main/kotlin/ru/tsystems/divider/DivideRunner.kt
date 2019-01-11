@@ -1,4 +1,4 @@
-@file:JvmName(name = "DivideRunnerStart")
+@file:JvmName(name = "DivideRunnerMain")
 
 package ru.tsystems.divider
 
@@ -15,9 +15,7 @@ import java.io.IOException
 
 @SpringBootApplication
 @ImportResource("classpath:spring.xml")
-class DivideRunner {
-
-}
+class DivideRunner
 
 private val EXCEL_OLD_FORMAT = "xls"
 private val EXCEL_FORMAT = "xlsx"

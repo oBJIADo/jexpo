@@ -1,14 +1,14 @@
 create table nature(
   id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   title varchar(30) unique
-)
+);
 
 CREATE TABLE feature(
   id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   title varchar (30) not null,
-  nature int references nature(id) not null,
+  nature int not null references nature(id),
   UNIQUE (title, nature)
-)
+);
 
 CREATE TABLE employee (
   id         INT AUTO_INCREMENT PRIMARY KEY NOT NULL,

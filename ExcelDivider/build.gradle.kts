@@ -1,8 +1,8 @@
 val ktVersion = "1.3.11"
 val hibernateVersion = "5.2.15.Final"
 val h2Version = "1.4.197"
-val springVersion = "5.1.3.RELEASE"
-val springBootVersion = "2.1.1.RELEASE"
+val springVersion = "5.0.12.RELEASE"
+val springBootVersion = "2.0.7.RELEASE"
 val poiVersion = "3.9"
 
 buildscript {
@@ -10,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.1.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.7.RELEASE")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.11")
         classpath("org.jetbrains.kotlin:kotlin-allopen:1.3.11")
     }
@@ -36,21 +36,19 @@ repositories {
 
 application {
     applicationName = "ExcelDivider"
-    mainClassName = "ru.tsystems.divider.DivideRunnerStart"
+    mainClassName = "ru.tsystems.divider.DivideRunnerMain"
 }
 
 tasks.jar {
     baseName = "ExcelDivider"
     version = "2.0"
     manifest {
-        attributes(Pair("Main-Class", "ru.tsystems.divider.DivideRunnerStart"))
+        attributes(Pair("Main-Class", "ru.tsystems.divider.DivideRunnerMain"))
     }
 }
 
 dependencies {
-
     compile(group = "org.springframework.boot", name = "spring-boot-starter", version = springBootVersion)
-    compile(group = "org.springframework.boot", name = "spring-boot-starter-log4j2", version = springBootVersion)
 
     compile(group = "org.apache.poi", name = "poi", version = poiVersion)
     compile(group = "org.apache.poi", name = "poi-ooxml", version = poiVersion)

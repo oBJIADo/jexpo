@@ -25,10 +25,11 @@ class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManag
         //logger.info("Get Feature by param, nature: $param, $nature")
         try {
             return entityManager.createQuery(
-                "select ent from Feature as ent where ent.title=:param AND ent.nature.title = :title",
+                "select ent from Feature as ent where ent.title = :param AND ent.nature.title = :title",
                 Feature::class.java
             )
                 .setParameter("param", param)
+                .setParameter("title", nature)
                 .singleResult
         } catch (noResExc: NoResultException) {
             //logger.warn("No result founded. Entity: Feature, param, nature: $param, $nature")

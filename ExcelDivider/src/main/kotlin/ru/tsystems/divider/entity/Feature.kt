@@ -6,7 +6,7 @@ import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
-@Entity(name = "feature")
+@Entity(name = "Feature")
 data class Feature(
     @Column(name = "title")
     var title: String? = null,

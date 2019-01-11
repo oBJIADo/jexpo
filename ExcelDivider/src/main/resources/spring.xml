@@ -21,7 +21,7 @@
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>file:${properties.path.excel}</value>
+                <value>file:./properties/excel</value>
             </list>
         </property>
     </bean>

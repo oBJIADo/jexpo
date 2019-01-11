@@ -45,14 +45,14 @@ data class Consumables(
     @JoinColumn(name = "dates")
     var dates: Dates? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "drc_number")
+    @Column(name = "drc_number")
     var drcNumber: String? = null,
 
     @Column(name = "order_number")
     var orderNumber: String? = null,
 
-    @Column(name = "delivered_version")
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "delivered_version")
     var deliveredVersion: Feature? = null,
 
     @ManyToOne(cascade = [CascadeType.ALL])
@@ -65,35 +65,35 @@ data class Consumables(
 
     @ManyToMany
     @JoinTable(
-        name = "sub_affects_version", joinColumns = [JoinColumn(name = "task_id")],
+        name = "sub_affects_version", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "version_id")]
     )
     var affectsVersions: Set<Feature> = HashSet(),
 
     @ManyToMany
     @JoinTable(
-        name = "task_fix_version", joinColumns = [JoinColumn(name = "task_id")],
+        name = "task_fix_version", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "version_id")]
     )
     var fixVersions: Set<Feature> = HashSet(),
 
     @ManyToMany
     @JoinTable(
-        name = "task_component", joinColumns = [JoinColumn(name = "task_id")],
+        name = "task_component", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "component_id")]
     )
     var components: Set<Feature> = HashSet(),
 
     @ManyToMany
     @JoinTable(
-        name = "task_label", joinColumns = [JoinColumn(name = "task_id")],
+        name = "task_label", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "label_id")]
     )
     var labels: Set<Feature> = HashSet(),
 
     @ManyToMany
     @JoinTable(
-        name = "task_team", joinColumns = [JoinColumn(name = "task_id")],
+        name = "task_team", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "team_id")]
     )
     var teams: Set<Feature> = HashSet()

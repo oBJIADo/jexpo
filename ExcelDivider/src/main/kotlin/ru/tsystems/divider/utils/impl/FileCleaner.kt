@@ -61,7 +61,7 @@ class FileCleaner {
     fun clearFile(readFileName: String, resultFileName: String, sheetName: String) {
         XlsxFileReader(readFileName, sheetName).use { reader ->
             XlsxFileWriter(resultFileName, sheetName).use { writer ->
-                var cell: Cell? = null
+                var cell: Cell?
                 var cellIndex = 1
                 var cellIndexToWrite = 1
                 var value: String
@@ -116,7 +116,7 @@ class FileCleaner {
 
     fun removeTags(line: String): String {
         var result = line
-        var indexStart: Int = -1
+        var indexStart: Int
         var indexEnd: Int
 
         for (tag in REPLACES_TAGS.keys) {
