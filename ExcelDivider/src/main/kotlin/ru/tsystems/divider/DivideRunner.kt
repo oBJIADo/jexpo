@@ -21,8 +21,6 @@ private val EXCEL_OLD_FORMAT = "xls"
 private val EXCEL_FORMAT = "xlsx"
 
 fun main(args: Array<String>) {
-    println("Hello World!")
-
     val fileName: String
     val sheetName: String
     val startRowIndex: Int

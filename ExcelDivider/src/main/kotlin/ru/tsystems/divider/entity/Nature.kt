@@ -6,5 +6,5 @@ import javax.persistence.Entity
 @Entity(name = "Nature")
 data class Nature(
     @Column(name = "title")
-    var title: String? = null
+    var title: String
 ) : GeneralEntity()

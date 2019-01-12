@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 
 @Service
-class FieldBuilderImpl() : FieldBuilder {
+class FieldBuilderImpl : FieldBuilder {
 
     companion object {
         //private val logger = //logger.getLogger(FieldBuilderImpl::class.java)

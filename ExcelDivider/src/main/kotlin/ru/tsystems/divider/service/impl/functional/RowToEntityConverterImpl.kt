@@ -16,6 +16,7 @@ import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Statistics
 import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.entity.Workers
+import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder
 import ru.tsystems.divider.service.api.functional.RowToEntityConverter
@@ -87,8 +88,7 @@ class RowToEntityConverterImpl(
     @Autowired messageWorker: MessageWorker,
     @Autowired private val builder: EntityBuilder,
     @Autowired private val fieldBuilder: FieldBuilder,
-    @Autowired private val taskDao: TaskDao,
-    @Autowired private val commentDao: CommentDao
+    @Autowired private val dataService: DataService
 ) : RowToEntityConverter {
 
     companion object {
@@ -164,7 +164,6 @@ class RowToEntityConverterImpl(
      * @param row
      * Row which should be converted.
      */
-    @Transactional
     override fun addTaskFromRow(row: Row) {
         var key = getStringCellValue(getCell(row, "keys"))
             ?: throw java.lang.IllegalArgumentException("Wrong key for sub-task")
@@ -173,14 +172,14 @@ class RowToEntityConverterImpl(
                 key,
                 KEY_MODIFICATOR
             )
-        if (taskDao.getBykey(key) == null) {
+        if (dataService.findTaskByKey(key) == null) {
             this.createNewTask(row)
         }
     }
 
     private fun createNewTask(row: Row) {
         val task = setUpTask(row)
-        taskDao.persist(task)
+        dataService.addTask(task)
         saveAllComments(row, task)
     }
 
@@ -264,7 +263,6 @@ class RowToEntityConverterImpl(
             Set<Task> = if (task == null) HashSet() else builder.buildConnectionToAnotherTasks(task)
 
 
-    @Transactional
     override fun addTasksConnectFromRow(row: Row) {
         val stringKey = getStringCellValue(getCell(row, "keys"))
         var task: Task
@@ -273,16 +271,15 @@ class RowToEntityConverterImpl(
             throw java.lang.IllegalArgumentException("Task key is null")
         } else {
             val key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
-            task = taskDao.getBykey(key) ?: throw IllegalArgumentException()
+            task = dataService.findTaskByKey(key) ?: throw IllegalArgumentException()
         }
         task.subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
         task.relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
         task.duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
 
-        taskDao.merge(task)
+        dataService.updateTask(task)
     }
 
-    @Transactional
     override fun saveAllComments(row: Row, task: Task) {
         var currentIndex = FIELDS["commentStart"]
             ?: throw java.lang.IllegalArgumentException("commentStart cannot to be null!")
@@ -294,14 +291,13 @@ class RowToEntityConverterImpl(
             curComment = builder.buildComments(commentString)
             if (curComment != null) {
                 curComment.task = task
-                commentDao.persist(curComment)
+                dataService.addComment(curComment)
             }
             commentString = getStringCellValue(row.getCell(currentIndex++))
         }
     }
 
 
-    @Transactional
     override fun saveAllComments(row: Row) { //todo: rename or delete method
         var currentIndex: Int = commentStart
             ?: throw java.lang.IllegalArgumentException("commentMode.commentStart cannot to be null!")
@@ -311,7 +307,7 @@ class RowToEntityConverterImpl(
         while (commentString != null) {
             curComment = builder.buildComments(commentString)
             if (curComment != null) {
-                commentDao.persist(curComment)
+                dataService.addComment (curComment)
             }
             commentString = getStringCellValue(row.getCell(currentIndex++))
         }

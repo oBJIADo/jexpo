@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.service.api.functional.CommentBuilder
+import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder
 import ru.tsystems.divider.utils.api.MessageWorker
 import ru.tsystems.divider.utils.constants.COMMENT_PATTERN_AUTHOR
@@ -22,8 +23,8 @@ import javax.xml.bind.PropertyException
 @Service
 class CommentBuilderImpl(
     @Autowired messageWorker: MessageWorker,
-    @Autowired val taskDao: TaskDao,
-    @Autowired val employeeBuilder: EmployeeBuilder
+    @Autowired val employeeBuilder: EmployeeBuilder,
+    @Autowired val dataService: DataService
 ) : CommentBuilder {
 
     companion object {
@@ -115,7 +116,7 @@ class CommentBuilderImpl(
             //logger.warn("Wrong comment, returned as text.")
         }
 
-        val task = if (keyStr != null) taskDao.getBykey(keyStr) else null
+        val task = if (keyStr != null) dataService.findTaskByKey(keyStr) else null
         val date = if (dateStr != null) dateFromString(dateStr) else null
         val author = if (authorStr != null) employeeBuilder.buildEmployee(authorStr) else null
 

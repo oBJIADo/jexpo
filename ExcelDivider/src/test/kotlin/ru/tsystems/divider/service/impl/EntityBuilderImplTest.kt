@@ -210,9 +210,10 @@ class EntityBuilderImplTest {
         assertNull(feature)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test()
     fun emptyNature() {
-        builder.buildFeature("Test", "")
+        val feature = builder.buildFeature("Test", "")
+        assertEquals(Feature("Test", Nature(NATURE_DEFAULT)), feature)
     }
 
     @Test

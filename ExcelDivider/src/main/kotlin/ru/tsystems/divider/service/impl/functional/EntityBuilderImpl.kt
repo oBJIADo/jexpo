@@ -2,12 +2,12 @@ package ru.tsystems.divider.service.impl.functional
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Employee
 import ru.tsystems.divider.entity.Feature
 import ru.tsystems.divider.entity.Task
 import ru.tsystems.divider.service.api.functional.CommentBuilder
+import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder
 import ru.tsystems.divider.service.api.functional.EntityBuilder
 import ru.tsystems.divider.service.api.functional.FeatureBuilder
@@ -23,8 +23,8 @@ class EntityBuilderImpl(
     @Autowired val fieldBuilder: FieldBuilder,
     @Autowired val featureBuilder: FeatureBuilder,
     @Autowired val employeeBuilder: EmployeeBuilder,
-    @Autowired val taskDao: TaskDao,
-    @Autowired val commentBuilder: CommentBuilder
+    @Autowired val commentBuilder: CommentBuilder,
+    @Autowired val dataService: DataService
 ) : EntityBuilder {
 
     companion object {
@@ -114,16 +114,15 @@ class EntityBuilderImpl(
         val keys = fieldBuilder.rebuildString(subTasks, ANOTHER_TASKS_DIVIDER)
         for (key in keys) {
             try {
-                tasks.add(buildSubTask(fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR)))
+                tasks.add(
+                    dataService.findTaskByKey(fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR))
+                        ?: throw IllegalArgumentException("Task with key: $key not founded!")
+                )
             } catch (ilStExc: IllegalStateException) {
                 //logger.error(ilStExc.message + "; This task not added to dependencies!")
             }
         }
         return tasks
 
-    }
-
-    private fun buildSubTask(key: String): Task {
-        return taskDao.getBykey(key) ?: throw IllegalStateException("Illegal task connection with key: $key")
     }
 }

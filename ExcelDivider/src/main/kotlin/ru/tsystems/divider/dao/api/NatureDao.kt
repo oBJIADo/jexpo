@@ -5,5 +5,6 @@ import ru.tsystems.divider.entity.Nature
 interface NatureDao : GeneralDao<Nature> {
 
     fun getByTitle(title: String): Nature?
+    fun getDefaultNature(): Nature
 
 }
