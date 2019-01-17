@@ -4,9 +4,6 @@ import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import ru.tsystems.divider.dao.api.CommentDao
-import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.entity.Comment
 import ru.tsystems.divider.entity.Consumables
 import ru.tsystems.divider.entity.Dates
@@ -265,19 +262,23 @@ class RowToEntityConverterImpl(
 
     override fun addTasksConnectFromRow(row: Row) {
         val stringKey = getStringCellValue(getCell(row, "keys"))
-        var task: Task
+        val key: String
         if (stringKey == null) {
             //logger.error("Task key is null! Row: ${row.rowNum}; Column: ${FIELDS["keys"]}")
             throw java.lang.IllegalArgumentException("Task key is null")
         } else {
-            val key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
-            task = dataService.findTaskByKey(key) ?: throw IllegalArgumentException()
+            key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
         }
-        task.subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
-        task.relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
-        task.duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
+        val subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
+        val relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
+        val duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
 
-        dataService.updateTask(task)
+        dataService.addTaskRelation(
+            subTasks = subTasks,
+            duplicateTasks = duplicateTasks,
+            relationTasks = relationTasks,
+            taskKey = key
+        )
     }
 
     override fun saveAllComments(row: Row, task: Task) {
@@ -307,7 +308,7 @@ class RowToEntityConverterImpl(
         while (commentString != null) {
             curComment = builder.buildComments(commentString)
             if (curComment != null) {
-                dataService.addComment (curComment)
+                dataService.addComment(curComment)
             }
             commentString = getStringCellValue(row.getCell(currentIndex++))
         }

@@ -16,6 +16,17 @@ class FeatureDaoImpl(@PersistenceContext override val entityManager: EntityManag
     }
 
     /**
+     * Get a record from DB.
+     * @param id            record id.
+     * @param className     Entity class.
+     * @return              Entity.
+     */
+    override fun find(id: Int): Feature? = super.find(id, Feature::class.java)
+
+    override fun getReference(primaryKey: Int): Feature? = super.getReference(Feature::class.java, primaryKey)
+
+
+    /**
      * Get entity by param if it exist, return null if not.
      *
      * @param param String with param.

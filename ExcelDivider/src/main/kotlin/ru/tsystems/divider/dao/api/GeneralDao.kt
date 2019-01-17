@@ -16,7 +16,7 @@ interface GeneralDao<Entity : GeneralEntity> {
      * @param className     Entity class.
      * @return              Entity.
      */
-    fun find(id: Int, className: Class<Entity>): Entity?
+    fun find(id: Int): Entity?
 
     /**
      * Delete record from DB.
@@ -37,4 +37,5 @@ interface GeneralDao<Entity : GeneralEntity> {
      */
     fun getAll(className: Class<Entity>): List<Entity>
 
+    fun getReference(primaryKey: Int): Entity?
 }

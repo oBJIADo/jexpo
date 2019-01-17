@@ -2,7 +2,6 @@ package ru.tsystems.divider.service.impl.functional
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import ru.tsystems.divider.dao.api.EmployeeDao
 import ru.tsystems.divider.entity.Employee
 import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder

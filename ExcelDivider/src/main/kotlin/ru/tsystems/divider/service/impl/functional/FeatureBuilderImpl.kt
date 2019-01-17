@@ -2,10 +2,7 @@ package ru.tsystems.divider.service.impl.functional
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import ru.tsystems.divider.dao.api.FeatureDao
-import ru.tsystems.divider.dao.api.NatureDao
 import ru.tsystems.divider.entity.Feature
-import ru.tsystems.divider.entity.Nature
 import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.FeatureBuilder
 import ru.tsystems.divider.service.api.functional.FieldBuilder

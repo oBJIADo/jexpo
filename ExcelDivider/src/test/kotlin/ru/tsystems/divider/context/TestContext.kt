@@ -1,5 +1,10 @@
 package ru.tsystems.divider.context
 
+import ru.tsystems.divider.dao.api.ConsumablesDao
+import ru.tsystems.divider.dao.api.DatesDao
+import ru.tsystems.divider.dao.api.EpicsDao
+import ru.tsystems.divider.dao.api.StatisticsDao
+import ru.tsystems.divider.dao.api.WorkersDao
 import ru.tsystems.divider.service.api.functional.CommentBuilder
 import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder
@@ -25,6 +30,11 @@ object TestContext {
     private val natureDao: InMemoryNature
     private val employeeDao: InMemoryEmployee
     private val commentDao: InMemoryComment
+    private val datesDao: DatesDao
+    private val consumablesDao: ConsumablesDao
+    private val epicsDao: EpicsDao
+    private val statisticsDao: StatisticsDao
+    private val workersDao: WorkersDao
 
 
     var dataService: DataService
@@ -123,12 +133,23 @@ object TestContext {
         employeeDao = InMemoryEmployee
         commentDao = InMemoryComment
 
+        consumablesDao = InMemoryConsumables
+        epicsDao = InMemoryEpics
+        workersDao = InMemoryWorkers
+        statisticsDao = InMemoryStatistics
+        datesDao = InMemoryDates
+
         dataService = DataServiceImpl(
             taskDao = taskDao,
             employeeDao = employeeDao,
             featureDao = featureDao,
             natureDao = natureDao,
-            commentDao = commentDao
+            commentDao = commentDao,
+            datesDao = datesDao,
+            consumablesDao = consumablesDao,
+            epicsDao = epicsDao,
+            statisticsDao = statisticsDao,
+            workersDao = workersDao
         )
 
         featureBuilder = FeatureBuilderImpl(

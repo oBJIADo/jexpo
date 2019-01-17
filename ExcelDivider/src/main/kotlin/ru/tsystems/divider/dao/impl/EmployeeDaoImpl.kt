@@ -16,6 +16,18 @@ class EmployeeDaoImpl(@PersistenceContext override val entityManager: EntityMana
     }
 
     /**
+     * Get a record from DB.
+     * @param id            record id.
+     * @param className     Entity class.
+     * @return              Entity.
+     */
+    override fun find(id: Int): Employee? = super.find(id, Employee::class.java)
+
+
+    override fun getReference(primaryKey: Int): Employee? = super.getReference(Employee::class.java, primaryKey)
+
+
+    /**
      * Finding employee who has specified first and second names
      *
      * @param firstName

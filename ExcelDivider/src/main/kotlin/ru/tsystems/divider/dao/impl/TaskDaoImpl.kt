@@ -15,6 +15,17 @@ class TaskDaoImpl(@PersistenceContext override val entityManager: EntityManager)
     }
 
     /**
+     * Get a record from DB.
+     * @param id            record id.
+     * @param className     Entity class.
+     * @return              Entity.
+     */
+    override fun find(id: Int): Task? = super.find(id, Task::class.java)
+
+    override fun getReference(primaryKey: Int): Task? = super.getReference(Task::class.java, primaryKey)
+
+
+    /**
      * Finding task by key
      *
      * @param key

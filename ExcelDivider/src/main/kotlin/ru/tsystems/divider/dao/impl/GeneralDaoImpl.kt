@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository
 import ru.tsystems.divider.dao.api.GeneralDao
 import ru.tsystems.divider.entity.GeneralEntity
 import javax.persistence.EntityManager
+import javax.persistence.EntityNotFoundException
 
 @Repository
 abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
@@ -13,6 +14,13 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
     }
 
     abstract val entityManager: EntityManager
+
+    protected fun getReference(className: Class<Entity>, primaryKey: Int): Entity? =
+        try {
+            entityManager.getReference(className, primaryKey)
+        } catch (exc: EntityNotFoundException) {
+            null
+        }
 
     /**
      * Add new record into DB.
@@ -34,9 +42,7 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
      * Entity class.
      * @return Entity.
      */
-    override fun find(id: Int, className: Class<Entity>): Entity? {
-        return entityManager.find(className, id)
-    }
+    protected fun find(id: Int, className: Class<Entity>): Entity? = entityManager.find(className, id)
 
     /**
      * Delete record from DB.
@@ -65,9 +71,8 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
      * Entity class.
      * @return Entities.
      */
-    override fun getAll(className: Class<Entity>): List<Entity> {
-        //logger.info("Get all entities (" + className.simpleName + ") from db")
-        return this.entityManager.createQuery("from " + className.simpleName, className).resultList
-    }
+    override fun getAll(className: Class<Entity>): List<Entity> =
+    //logger.info("Get all entities (" + className.simpleName + ") from db")
+        entityManager.createQuery("from " + className.simpleName, className).resultList
 
 }

@@ -2,7 +2,19 @@ package ru.tsystems.divider.context
 
 import ru.tsystems.divider.dao.api.NatureDao
 import ru.tsystems.divider.entity.Nature
-import ru.tsystems.divider.utils.constants.*
+import ru.tsystems.divider.utils.constants.NATURE_COMPONENT
+import ru.tsystems.divider.utils.constants.NATURE_DEFAULT
+import ru.tsystems.divider.utils.constants.NATURE_EPIC_COLOR
+import ru.tsystems.divider.utils.constants.NATURE_EPIC_STATUS
+import ru.tsystems.divider.utils.constants.NATURE_ISSUE_TYPE
+import ru.tsystems.divider.utils.constants.NATURE_KEYWORD
+import ru.tsystems.divider.utils.constants.NATURE_LABEL
+import ru.tsystems.divider.utils.constants.NATURE_PRIORITY
+import ru.tsystems.divider.utils.constants.NATURE_RESOLUTION
+import ru.tsystems.divider.utils.constants.NATURE_SPRINT
+import ru.tsystems.divider.utils.constants.NATURE_STATUS
+import ru.tsystems.divider.utils.constants.NATURE_TEAM
+import ru.tsystems.divider.utils.constants.NATURE_VERSION
 
 object InMemoryNature : InMemoryDaoGeneral<Nature>(), NatureDao, ContextSimmulator<Nature> {
 
@@ -20,7 +32,7 @@ object InMemoryNature : InMemoryDaoGeneral<Nature>(), NatureDao, ContextSimmulat
         database.add(Nature(NATURE_COMPONENT))
         database.add(Nature(NATURE_LABEL))
         database.add(Nature(NATURE_TEAM))
-        database.add(Nature(NATURE_DEFAULT))
+        database.add(Nature())
     }
 
     override fun getDefaultNature(): Nature {
@@ -29,7 +41,7 @@ object InMemoryNature : InMemoryDaoGeneral<Nature>(), NatureDao, ContextSimmulat
                 return nature
             }
         }
-        database.add(Nature(NATURE_DEFAULT))
+        database.add(Nature())
         return database[database.size - 1]
     }
 

@@ -213,7 +213,7 @@ class EntityBuilderImplTest {
     @Test()
     fun emptyNature() {
         val feature = builder.buildFeature("Test", "")
-        assertEquals(Feature("Test", Nature(NATURE_DEFAULT)), feature)
+        assertEquals(Feature("Test", Nature()), feature)
     }
 
     @Test

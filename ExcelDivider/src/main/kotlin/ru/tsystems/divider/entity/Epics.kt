@@ -12,7 +12,7 @@ data class Epics(
     var epicName: String? = null,
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "epic_status")
-    val epicStatus: Feature? = null,
+    var epicStatus: Feature? = null,
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "epic_color")
     var epicColor: Feature? = null,

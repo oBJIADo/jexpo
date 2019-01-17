@@ -11,6 +11,17 @@ import javax.persistence.NoResultException
 @Repository
 class NatureDaoImpl(@Autowired override val entityManager: EntityManager) : GeneralDaoImpl<Nature>(), NatureDao {
 
+    /**
+     * Get a record from DB.
+     * @param id            record id.
+     * @param className     Entity class.
+     * @return              Entity.
+     */
+    override fun find(id: Int): Nature? = super.find(id, Nature::class.java)
+
+    override fun getReference(primaryKey: Int): Nature? = super.getReference(Nature::class.java, primaryKey)
+
+
     override fun getDefaultNature(): Nature {
         return entityManager.createQuery(
             "select nat from Nature as nat where nat.title=:title",

@@ -35,10 +35,9 @@ abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor()
      * Get a record from DB.
      *
      * @param id        record id.
-     * @param className Entity class.
      * @return Entity.
      */
-    override fun find(id: Int, className: Class<Entity>): Entity? {
+    override fun find(id: Int): Entity? {
         for (entity in database) {
             if (entity.id == id) {
                 return entity
@@ -118,5 +117,9 @@ abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor()
             }
         }
         return null
+    }
+
+    override fun getReference(primaryKey: Int): Entity? {
+        return find(primaryKey)
     }
 }
