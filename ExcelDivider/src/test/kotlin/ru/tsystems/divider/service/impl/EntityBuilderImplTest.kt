@@ -28,7 +28,7 @@ import kotlin.test.assertTrue
 
 class EntityBuilderImplTest {
     private lateinit var builder: EntityBuilder
-    private val dateTimeFormatt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    private val dateTimeFormatt = DateTimeFormatter.ofPattern("d.M.yyyy H:m")
 
     @Before
     fun initStreams() {
@@ -134,7 +134,7 @@ class EntityBuilderImplTest {
     @Throws(NoShetException::class)
     fun buildComments() {
         val actual = builder.buildComments(
-            "16.11.2017 11:07; Bochkareva, Iuliia;                 Hello Krystek, Stefanie,\n" +
+            "6.1.2017 11:07; Bochkareva, Iuliia;                 Hello Krystek, Stefanie,\n" +
                     "\n" +
                     "Could you please tell, this error code will be added in specification?  or there will be another decision?\n" +
                     "\n" +
@@ -148,7 +148,7 @@ class EntityBuilderImplTest {
 
         val expected = Comment(
             null,
-            LocalDateTime.parse("16.11.2017 11:07", dateTimeFormatt),
+            LocalDateTime.parse("6.1.2017 11:07", dateTimeFormatt),
             Employee("Bochkareva", "Iuliia"),
             "Hello Krystek, Stefanie,\n\n" +
                     "Could you please tell, this error code will be added in specification?  or there will be another decision?\n\n" +
@@ -159,6 +159,16 @@ class EntityBuilderImplTest {
 
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun parseTest(){
+        val date: String = "3.9.2011 6:5"
+        val dateTimeFormatt = DateTimeFormatter.ofPattern("d.M.yyyy H:m")
+        val localDate = LocalDateTime.parse(date, dateTimeFormatt)
+        assertEquals(3, localDate.dayOfMonth)
+        assertEquals(9, localDate.monthValue)
+        assertEquals(2011, localDate.year)
     }
 
     @Test

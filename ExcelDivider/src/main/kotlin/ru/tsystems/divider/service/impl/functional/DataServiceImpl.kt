@@ -62,7 +62,7 @@ class DataServiceImpl(
             addConsumables(consumables)
         }
 
-        taskDao.persist(task)
+        taskDao.merge(task)
     }
 
     fun addConsumables(consumables: Consumables) {
@@ -116,11 +116,11 @@ class DataServiceImpl(
             addWorkers(workers)
         }
 
-        consumablesDao.persist(consumables)
+//        consumablesDao.merge(consumables)
     }
 
     fun addDates(dates: Dates) {
-        datesDao.persist(dates);
+//        datesDao.merge(dates)
     }
 
     fun addEpics(epics: Epics) {
@@ -133,11 +133,11 @@ class DataServiceImpl(
         if (epicStatusId != null) {
             epics.epicStatus = featureDao.getReference(epicStatusId)
         }
-        epicsDao.persist(epics)
+//        epicsDao.merge(epics)
     }
 
     fun addStatistics(statistics: Statistics) {
-        statisticsDao.persist(statistics)
+//        statisticsDao.merge(statistics)
     }
 
     fun addWorkers(workers: Workers) {
@@ -156,7 +156,7 @@ class DataServiceImpl(
             workers.reporter = employeeDao.getReference(reproterId)
         }
 
-        workersDao.persist(workers)
+//        workersDao.merge(workers)
     }
 
     override fun addTaskRelation(
@@ -211,7 +211,11 @@ class DataServiceImpl(
 
     @Transactional
     override fun addComment(comment: Comment) {
-        throw NotImplementedError()
+        val task: Task = taskDao.getBykey(comment.task?.keys ?: throw IllegalArgumentException("Comment without task!"))
+            ?: throw IllegalArgumentException("Task ot added to db yet!")
+
+        comment.task = task
+        commentDao.merge(comment)
     }
 
     @Transactional
@@ -219,7 +223,7 @@ class DataServiceImpl(
         val task: Task =
             taskDao.getBykey(taskKey) ?: throw IllegalArgumentException("Task with key: $taskKey not exist!")
         comment.task = task
-        commentDao.persist(comment)
+        commentDao.merge(comment)
     }
 
     /**

@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 
 @Entity
 data class Comment(
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REMOVE])
     @JoinColumn(name = "task_id")
     var task: Task? = null,
 

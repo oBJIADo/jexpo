@@ -17,6 +17,7 @@ import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_COMMENTS
 import java.text.ParseException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import javax.xml.bind.PropertyException
 
 @Service
@@ -84,7 +85,7 @@ class CommentBuilderImpl(
             comment = formats.size
         }
         DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_COMMENTS)
-        FORMAT_DATE = messageWorker.getSourceValue(PROPS_FORMAT_READ_DATE) ?: "dd.MM.yyyy HH:mm"
+        FORMAT_DATE = messageWorker.getSourceValue(PROPS_FORMAT_READ_DATE) ?: "d.M.yyyy H:m"
 
         INDEX_ID = id
         INDEX_AUTHOR = author
@@ -140,7 +141,7 @@ class CommentBuilderImpl(
         try {
             val dateTimeFormatt = DateTimeFormatter.ofPattern(FORMAT_DATE)
             return LocalDateTime.parse(date, dateTimeFormatt)
-        } catch (dateExc: ParseException) {
+        } catch (dateExc: DateTimeParseException) {
             //logger.warn("Can't to convert String to Date: $date")
             return null
         } catch (dateExc: NullPointerException) {
