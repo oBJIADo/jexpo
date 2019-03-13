@@ -11,23 +11,19 @@ import java.io.FileInputStream
 import java.io.IOException
 
 class XlsxFileReader @Throws(IOException::class)
-constructor(xlsxFilePath: String) : ExcelReader {
+constructor(xlsxFilePath: String, xlsxSheetName: String) : ExcelReader {
 
     private val fileInputStream: FileInputStream
 
     private val xlsxWorkbook: XSSFWorkbook
 
-    var shet: XSSFSheet? = null
+    var shet: XSSFSheet
         private set
-
-    @Throws(IOException::class)
-    constructor(xlsxFilePath: String, xlsxSheetName: String) : this(xlsxFilePath) {
-        this.shet = xlsxWorkbook.getSheet(xlsxSheetName)
-    }
 
     init {
         this.fileInputStream = FileInputStream(xlsxFilePath)
         this.xlsxWorkbook = XSSFWorkbook(fileInputStream)
+        this.shet = xlsxWorkbook.getSheet(xlsxSheetName)
     }
 
     /**
@@ -54,11 +50,8 @@ constructor(xlsxFilePath: String) : ExcelReader {
      * @return List with rows values.
      */
     @Throws(NoShetException::class)
-    override fun getRow(rowIndex: Int): Row {
-        if (shet == null)
-            throw NoShetException("Sheet not selected")
-
-        return shet!!.getRow(rowIndex)
+    override fun getRow(rowIndex: Int): Row? {
+        return shet.getRow(rowIndex)
     }
 
     /**
@@ -72,10 +65,7 @@ constructor(xlsxFilePath: String) : ExcelReader {
      */
     @Throws(NoShetException::class)
     override fun getCell(columnIndex: Int, rowIndex: Int): Cell? {
-        if (shet == null)
-            throw NoShetException("Sheet not selected")
-
-        val row = shet!!.getRow(rowIndex) ?: return null
+        val row = shet.getRow(rowIndex) ?: return null
 
         return row.getCell(columnIndex)
     }

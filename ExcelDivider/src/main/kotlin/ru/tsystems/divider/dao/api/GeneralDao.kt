@@ -38,4 +38,6 @@ interface GeneralDao<Entity : GeneralEntity> {
     fun getAll(className: Class<Entity>): List<Entity>
 
     fun getReference(primaryKey: Int): Entity?
+
+    fun refresh(entity: Entity?)
 }

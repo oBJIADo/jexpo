@@ -10,38 +10,38 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "Consumables")
 data class Consumables(
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "status")
     var status: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "priority")
     var priority: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "resolution")
     var resolution: Feature? = null,
 
     @Column(name = "description")
     var description: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "sprint")
     var sprint: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST])
     @JoinColumn(name = "workers")
     var workers: Workers? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST])
     @JoinColumn(name = "epics")
     var epics: Epics? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST])
     @JoinColumn(name = "statistics")
     var statistics: Statistics? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST])
     @JoinColumn(name = "dates")
     var dates: Dates? = null,
 
@@ -51,15 +51,15 @@ data class Consumables(
     @Column(name = "order_number")
     var orderNumber: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "delivered_version")
     var deliveredVersion: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "keyword")
     var keyword: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "fix_priority")
     var fixPriority: Feature? = null,
 

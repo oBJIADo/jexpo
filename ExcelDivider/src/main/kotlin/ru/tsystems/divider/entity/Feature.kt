@@ -11,7 +11,7 @@ data class Feature(
     @Column(name = "title")
     var title: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "nature")
     var nature: Nature? = null
 ) : GeneralEntity()

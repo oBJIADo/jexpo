@@ -33,32 +33,37 @@ class JiraToDBConverterImpl(@Autowired private val rowToEntityConverter: RowToEn
     }
 
     private fun addComments(startRowIndex: Int, reader: ExcelReader) {
-        var curRow: Row? = null
+        var curRow: Row?
         var curRowIndex = startRowIndex
 
-        while ({ curRow = reader.getRow(curRowIndex); curRow }() != null) { //THIS CRUTCH SO BRILLIANT!!!!!!
-            rowToEntityConverter.saveAllComments(curRow!!)
+        curRow = reader.getRow(curRowIndex)
+        while (curRow != null) { //THIS CRUTCH SO BRILLIANT!!!!!!
+            rowToEntityConverter.saveAllComments(curRow)
             curRowIndex++
+            curRow = reader.getRow(curRowIndex)
         }
     }
 
     private fun addTasks(startRowIndex: Int, reader: ExcelReader) {
-        var curRow: Row? = null
+        var curRow: Row?
         var curRowIndex = startRowIndex
 
-        while ({ curRow = reader.getRow(curRowIndex); curRow }() != null) {
-            rowToEntityConverter.addTaskFromRow(curRow!!)
+        curRow = reader.getRow(curRowIndex)
+        while (curRow != null) {
+            rowToEntityConverter.addTaskFromRow(curRow)
             curRowIndex++
+            curRow = reader.getRow(curRowIndex)
         }
     }
 
     private fun addSubTasks(startRowIndex: Int, reader: ExcelReader) {
-        var curRow: Row? = null
+        var curRow: Row?
         var subtaskIndex = startRowIndex
-
-        while ({ curRow = reader.getRow(subtaskIndex); curRow }() != null) {
-            rowToEntityConverter.addTasksConnectFromRow(curRow!!)
+        curRow = reader.getRow(subtaskIndex)
+        while (curRow != null) {
+            rowToEntityConverter.addTasksConnectFromRow(curRow)
             subtaskIndex++
+            curRow = reader.getRow(subtaskIndex)
         }
     }
 }

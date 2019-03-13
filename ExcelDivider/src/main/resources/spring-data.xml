@@ -7,11 +7,21 @@
             http://www.springframework.org/schema/tx
             http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.h2.Driver"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="org.h2.Driver"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+
+        <!-- these are C3P0 properties -->
+        <property name="acquireIncrement" value="2" />
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="15" />
+        <property name="checkoutTimeout" value="1000" />
+        <property name="loginTimeout" value="1000" />
+        <property name="maxIdleTime" value="1000" />
+        <property name="maxIdleTimeExcessConnections" value="1000" />
+        <property name="unreturnedConnectionTimeout" value="1000" />
     </bean>
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>

@@ -18,7 +18,7 @@ abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor()
      * @param entity Entity which should be added.
      */
     override fun persist(entity: Entity) {
-        if (entity.id == -1) {
+        if (entity.id == null) {
             entity.id = database.size
         }
 
@@ -121,5 +121,8 @@ abstract class InMemoryDaoGeneral<Entity : GeneralEntity> internal constructor()
 
     override fun getReference(primaryKey: Int): Entity? {
         return find(primaryKey)
+    }
+
+    override fun refresh(entity: Entity?) {
     }
 }

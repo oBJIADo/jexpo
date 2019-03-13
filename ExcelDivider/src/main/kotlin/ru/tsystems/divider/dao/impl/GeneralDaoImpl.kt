@@ -75,4 +75,10 @@ abstract class GeneralDaoImpl<Entity : GeneralEntity> : GeneralDao<Entity> {
     //logger.info("Get all entities (" + className.simpleName + ") from db")
         entityManager.createQuery("from " + className.simpleName, className).resultList
 
+
+    override fun refresh(entity: Entity?) {
+        if (entity != null) {
+            entityManager.refresh(entity)
+        }
+    }
 }

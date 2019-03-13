@@ -10,10 +10,10 @@ import javax.persistence.ManyToOne
 data class Epics(
     @Column(name = "epic_name")
     var epicName: String? = null,
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "epic_status")
     var epicStatus: Feature? = null,
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn(name = "epic_color")
     var epicColor: Feature? = null,
     @Column(name = "epic_link")

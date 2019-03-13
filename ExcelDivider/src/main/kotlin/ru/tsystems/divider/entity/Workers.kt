@@ -7,15 +7,15 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "Workers")
 data class Workers(
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [])
     @JoinColumn(name = "assignee")
     var assignee: Employee? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [])
     @JoinColumn(name = "reporter")
     var reporter: Employee? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [])
     @JoinColumn(name = "creater")
     var creater: Employee? = null
 ) : GeneralEntity()

@@ -20,7 +20,7 @@ data class Task(
     @Column(name = "summary")
     var summary: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [])
     @JoinColumn(name = "issue_type")
     var issueType: Feature? = null,
 
@@ -30,7 +30,7 @@ data class Task(
     @OneToMany(mappedBy = "task")
     var comments: List<Comment> = ArrayList<Comment>(),
 
-    @ManyToOne(cascade = [CascadeType.ALL])//todo: OneToOne
+    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.PERSIST])//todo: OneToOne
     @JoinColumn(name = "consumables")
     var consumables: Consumables? = null,
 

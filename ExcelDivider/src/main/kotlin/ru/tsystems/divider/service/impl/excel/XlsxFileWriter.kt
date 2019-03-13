@@ -13,7 +13,7 @@ class XlsxFileWriter(private val fileName: String, sheetName: String) : ExcelWri
 
     private val xlsxWorkbook: XSSFWorkbook
 
-    private var xlsxShet: XSSFSheet? = null
+    private var xlsxShet: XSSFSheet
 
     init {
         xlsxWorkbook = XSSFWorkbook()
@@ -30,38 +30,32 @@ class XlsxFileWriter(private val fileName: String, sheetName: String) : ExcelWri
         }
 
         val cell = getCell(lcolumnIndex, lrowIndex)
-        cell!!.cellType = Cell.CELL_TYPE_STRING
+        cell.cellType = Cell.CELL_TYPE_STRING
         cell.setCellValue(value)
 
     }
 
     override fun appendTextCellValue(value: String, columnIndex: Int, rowIndex: Int) {
         val cell = getCell(columnIndex, rowIndex)
-        cell!!.setCellValue(cell.stringCellValue + value)
+        cell.setCellValue(cell.stringCellValue + value)
     }
 
     override fun getCellTextValue(columnIndex: Int, rowIndex: Int): String {
-        return getCell(columnIndex, rowIndex)!!.stringCellValue
+        return getCell(columnIndex, rowIndex).stringCellValue
     }
 
-    private fun getCell(columnIndex: Int, rowIndex: Int): Cell? {
-        var row: Row? = xlsxShet!!.getRow(rowIndex)
-        if (row == null)
-            row = xlsxShet!!.createRow(rowIndex)
-
-        var cell: Cell? = row!!.getCell(columnIndex)
-        if (cell == null)
-            cell = row.createCell(columnIndex)
-
-        return cell
+    private fun getCell(columnIndex: Int, rowIndex: Int): Cell {
+        val row: Row = xlsxShet.getRow(rowIndex) ?: xlsxShet.createRow(rowIndex)
+        return row.getCell(columnIndex) ?: row.createCell(columnIndex)
     }
 
     override fun setSheetName(sheetName: String) {
         this.xlsxShet = xlsxWorkbook.createSheet(sheetName)
+            ?: throw IllegalArgumentException("Sheet with name $sheetName not exist!")
     }
 
     override fun getSheetName(sheetName: String) {
-        this.xlsxShet!!.sheetName
+        this.xlsxShet.sheetName
     }
 
     /**
