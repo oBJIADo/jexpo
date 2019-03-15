@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
@@ -16,7 +17,7 @@ data class Comment(
     @Column(name = "comment_date")
     var commentDate: LocalDateTime? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "author")
     var author: Employee? = null,
 

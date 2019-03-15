@@ -43,4 +43,16 @@ class TaskDaoImpl(@PersistenceContext override val entityManager: EntityManager)
         }
 
     }
+
+    override fun getMultipleReference(tasks: Set<Task>) {
+        var taskId: Int
+        for(task:Task in tasks){
+            when {
+                task.id != null -> taskId = task.id
+                task.keys != null -> taskId = getBykey(task.keys).id
+                else -> IllegalArgumentException("TaskKey is null! Cannot add depenence!")
+            }
+            getReference(taskId)
+        }
+    }
 }

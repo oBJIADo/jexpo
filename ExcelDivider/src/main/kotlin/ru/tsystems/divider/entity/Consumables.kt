@@ -3,6 +3,7 @@ package ru.tsystems.divider.entity
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
@@ -10,22 +11,22 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "Consumables")
 data class Consumables(
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "status")
     var status: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "priority")
     var priority: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "resolution")
     var resolution: Feature? = null,
 
     @Column(name = "description")
     var description: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "sprint")
     var sprint: Feature? = null,
 
@@ -51,47 +52,47 @@ data class Consumables(
     @Column(name = "order_number")
     var orderNumber: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "delivered_version")
     var deliveredVersion: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "keyword")
     var keyword: Feature? = null,
 
-    @ManyToOne(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.EAGER)
     @JoinColumn(name = "fix_priority")
     var fixPriority: Feature? = null,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "sub_affects_version", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "version_id")]
     )
     var affectsVersions: Set<Feature> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "task_fix_version", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "version_id")]
     )
     var fixVersions: Set<Feature> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "task_component", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "component_id")]
     )
     var components: Set<Feature> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "task_label", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "label_id")]
     )
     var labels: Set<Feature> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "task_team", joinColumns = [JoinColumn(name = "consumables_id")],
         inverseJoinColumns = [JoinColumn(name = "team_id")]

@@ -39,7 +39,7 @@ class DataServiceImpl(
     @Autowired private val consumablesDao: ConsumablesDao
 ) : DataService {
 
-    @Transactional()
+    @Transactional
     override fun findTaskByKey(key: String): Task? {
         return taskDao.getBykey(key)
     }
@@ -96,19 +96,9 @@ class DataServiceImpl(
             consumables.fixPriority = featureDao.getReference(fixPriorityId)
         }
 
-        val dates: Dates? = consumables.dates
-        if (dates != null) {
-            addDates(dates)
-        }
-
         val epics: Epics? = consumables.epics
         if (epics != null) {
             addEpics(epics)
-        }
-
-        val statistics: Statistics? = consumables.statistics
-        if (statistics != null) {
-            addStatistics(statistics)
         }
 
         val workers: Workers? = consumables.workers
@@ -116,11 +106,6 @@ class DataServiceImpl(
             addWorkers(workers)
         }
 
-//        consumablesDao.merge(consumables)
-    }
-
-    private fun addDates(dates: Dates) {
-//        datesDao.merge(dates)
     }
 
     private fun addEpics(epics: Epics) {
@@ -136,10 +121,7 @@ class DataServiceImpl(
 //        epicsDao.merge(epics)
     }
 
-    private fun addStatistics(statistics: Statistics) {
-//        statisticsDao.merge(statistics)
-    }
-
+    @Transactional
     fun addWorkers(workers: Workers) {
         val assigneeId = workers.assignee?.id
         if (assigneeId != null) {

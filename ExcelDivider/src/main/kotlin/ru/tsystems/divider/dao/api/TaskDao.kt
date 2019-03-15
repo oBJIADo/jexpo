@@ -12,4 +12,6 @@ interface TaskDao : GeneralDao<Task> {
      * @return [Task]
      */
     fun getBykey(key: String): Task?
+
+    fun getMultipleReference(tasks: Set<Task>)
 }

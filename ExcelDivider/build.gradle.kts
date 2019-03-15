@@ -69,4 +69,5 @@ dependencies {
 
     compile(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = ktVersion)
     compile(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = ktVersion)
+    compile(group = "c3p0", name = "c3p0", version = "0.9.1.2")
 }

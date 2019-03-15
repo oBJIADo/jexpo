@@ -4,6 +4,7 @@ import java.util.Date
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
@@ -20,7 +21,7 @@ data class Task(
     @Column(name = "summary")
     var summary: String? = null,
 
-    @ManyToOne(cascade = [])
+    @ManyToOne(cascade = [], fetch = FetchType.EAGER)
     @JoinColumn(name = "issue_type")
     var issueType: Feature? = null,
 
@@ -34,28 +35,28 @@ data class Task(
     @JoinColumn(name = "consumables")
     var consumables: Consumables? = null,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "sub_task", joinColumns = [JoinColumn(name = "task_id")],
         inverseJoinColumns = [JoinColumn(name = "subtask_id")]
     )
     var subTasks: Set<Task> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "sub_task", joinColumns = [JoinColumn(name = "subtask_id")],
         inverseJoinColumns = [JoinColumn(name = "task_id")]
     )
     var parentTasks: Set<Task> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "relation_task", joinColumns = [JoinColumn(name = "task_id")],
         inverseJoinColumns = [JoinColumn(name = "relation_task_id")]
     )
     var relationTasks: Set<Task> = HashSet(),
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "duplicate_task", joinColumns = [JoinColumn(name = "task_id")],
         inverseJoinColumns = [JoinColumn(name = "duplicate_task_id")]
