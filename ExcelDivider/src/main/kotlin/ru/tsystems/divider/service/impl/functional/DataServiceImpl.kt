@@ -13,30 +13,16 @@ import ru.tsystems.divider.dao.api.NatureDao
 import ru.tsystems.divider.dao.api.StatisticsDao
 import ru.tsystems.divider.dao.api.TaskDao
 import ru.tsystems.divider.dao.api.WorkersDao
-import ru.tsystems.divider.entity.Comment
-import ru.tsystems.divider.entity.Consumables
-import ru.tsystems.divider.entity.Dates
-import ru.tsystems.divider.entity.Employee
-import ru.tsystems.divider.entity.Epics
-import ru.tsystems.divider.entity.Feature
-import ru.tsystems.divider.entity.Nature
-import ru.tsystems.divider.entity.Statistics
-import ru.tsystems.divider.entity.Task
-import ru.tsystems.divider.entity.Workers
+import ru.tsystems.divider.entity.*
 import ru.tsystems.divider.service.api.functional.DataService
 
 @Service
 class DataServiceImpl(
-    @Autowired private val taskDao: TaskDao,
-    @Autowired private val employeeDao: EmployeeDao,
-    @Autowired private val featureDao: FeatureDao,
-    @Autowired private val natureDao: NatureDao,
-    @Autowired private val commentDao: CommentDao,
-    @Autowired private val datesDao: DatesDao,
-    @Autowired private val statisticsDao: StatisticsDao,
-    @Autowired private val workersDao: WorkersDao,
-    @Autowired private val epicsDao: EpicsDao,
-    @Autowired private val consumablesDao: ConsumablesDao
+        @Autowired private val taskDao: TaskDao,
+        @Autowired private val employeeDao: EmployeeDao,
+        @Autowired private val featureDao: FeatureDao,
+        @Autowired private val natureDao: NatureDao,
+        @Autowired private val commentDao: CommentDao
 ) : DataService {
 
     @Transactional
@@ -143,23 +129,26 @@ class DataServiceImpl(
 
     @Transactional
     override fun addTaskRelation(
-        subTasks: Set<Task>?,
-        relationTasks: Set<Task>?,
-        duplicateTasks: Set<Task>?,
-        taskKey: String
+            subTasks: Set<Task>?,
+            relationTasks: Set<Task>?,
+            duplicateTasks: Set<Task>?,
+            taskKey: String
     ) {
         var isShouldUpdate = false
         val task = taskDao.getBykey(taskKey) ?: throw IllegalArgumentException("Task with key: $taskKey not exist!")
 
         if (subTasks != null) {
+            getTaskRefernces(subTasks)
             task.subTasks = subTasks
             isShouldUpdate = true
         }
         if (relationTasks != null) {
+            getTaskRefernces(relationTasks)
             task.subTasks = relationTasks
             isShouldUpdate = true
         }
         if (duplicateTasks != null) {
+            getTaskRefernces(duplicateTasks)
             task.subTasks = duplicateTasks
             isShouldUpdate = true
         }
@@ -195,7 +184,7 @@ class DataServiceImpl(
     @Transactional
     override fun addComment(comment: Comment) {
         val task: Task = taskDao.getBykey(comment.task?.keys ?: throw IllegalArgumentException("Comment without task!"))
-            ?: throw IllegalArgumentException("Task ot added to db yet!")
+                ?: throw IllegalArgumentException("Task ot added to db yet!")
 
         comment.task = task
         commentDao.merge(comment)
@@ -204,7 +193,7 @@ class DataServiceImpl(
     @Transactional
     override fun addComment(taskKey: String, comment: Comment) {
         val task: Task =
-            taskDao.getBykey(taskKey) ?: throw IllegalArgumentException("Task with key: $taskKey not exist!")
+                taskDao.getBykey(taskKey) ?: throw IllegalArgumentException("Task with key: $taskKey not exist!")
         comment.task = task
         commentDao.merge(comment)
     }
@@ -248,5 +237,12 @@ class DataServiceImpl(
     @Transactional
     override fun addEmployee(employee: Employee) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun getTaskRefernces(tasks: Collection<Task>) {
+        for (task: Task in tasks) {
+            val taskId: Int = task.id ?: throw IllegalArgumentException("Task not yet exist!")
+            taskDao.getReference(taskId)
+        }
     }
 }

@@ -1,4 +1,4 @@
-val ktVersion = "1.3.11"
+val ktVersion = "1.3.21"
 val hibernateVersion = "5.2.15.Final"
 val h2Version = "1.4.197"
 val springVersion = "5.0.12.RELEASE"
@@ -11,15 +11,15 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.7.RELEASE")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.11")
-        classpath("org.jetbrains.kotlin:kotlin-allopen:1.3.11")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:1.3.21")
     }
 }
 
 plugins {
     application
     idea
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.21"
 }
 apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
@@ -41,7 +41,7 @@ application {
 
 tasks.jar {
     baseName = "ExcelDivider"
-    version = "2.0"
+    version = "2.1"
     manifest {
         attributes(Pair("Main-Class", "ru.tsystems.divider.DivideRunnerMain"))
     }

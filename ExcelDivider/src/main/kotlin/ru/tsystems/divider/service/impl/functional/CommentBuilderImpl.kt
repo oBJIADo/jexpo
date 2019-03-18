@@ -3,6 +3,7 @@ package ru.tsystems.divider.service.impl.functional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import ru.tsystems.divider.entity.Comment
+import ru.tsystems.divider.exceptions.PropertiesException
 import ru.tsystems.divider.service.api.functional.CommentBuilder
 import ru.tsystems.divider.service.api.functional.DataService
 import ru.tsystems.divider.service.api.functional.EmployeeBuilder
@@ -14,11 +15,9 @@ import ru.tsystems.divider.utils.constants.FORMAT_READ_FILL
 import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_COMMENT
 import ru.tsystems.divider.utils.constants.PROPS_FORMAT_READ_DATE
 import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_COMMENTS
-import java.text.ParseException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import javax.xml.bind.PropertyException
 
 @Service
 class CommentBuilderImpl(
@@ -78,7 +77,7 @@ class CommentBuilderImpl(
                     NAME_ID -> id = i
                     NAME_AUTHOR -> author = i
                     NAME_DATE -> date = i
-                    else -> throw PropertyException("format.read.comment", "Wrong keyword at index: $i")
+                    else -> throw PropertiesException("format.read.comment", "Wrong keyword at index: $i")
                 }
             }
 

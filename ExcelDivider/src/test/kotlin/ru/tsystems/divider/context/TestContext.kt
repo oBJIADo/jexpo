@@ -144,12 +144,7 @@ object TestContext {
             employeeDao = employeeDao,
             featureDao = featureDao,
             natureDao = natureDao,
-            commentDao = commentDao,
-            datesDao = datesDao,
-            consumablesDao = consumablesDao,
-            epicsDao = epicsDao,
-            statisticsDao = statisticsDao,
-            workersDao = workersDao
+            commentDao = commentDao
         )
 
         featureBuilder = FeatureBuilderImpl(
