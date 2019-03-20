@@ -19,8 +19,12 @@ class FieldBuilderImpl : FieldBuilder {
      * Symbol for dividing the String.
      * @return List with rebuilded strings.
      */
-    override fun rebuildString(string: String, symbol: String): Array<String> {
-        val result: Array<String> = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+    override fun rebuildString(string: String?, symbol: String): Array<String> {
+        if(string == null){
+            return arrayOf<String>()
+        }
+
+        val result: Array<String> = string.split(symbol.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() //todo: to List
         for (i in result.indices)
             result[i] = result[i].trim { it <= ' ' }
         return result

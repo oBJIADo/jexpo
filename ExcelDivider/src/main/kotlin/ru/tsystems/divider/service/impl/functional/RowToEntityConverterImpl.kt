@@ -77,6 +77,7 @@ import ru.tsystems.divider.utils.constants.NATURE_TEAM
 import ru.tsystems.divider.utils.constants.NATURE_VERSION
 import ru.tsystems.divider.utils.constants.PROPS_COLUMN_INDEX_SOURCE
 import ru.tsystems.divider.utils.constants.PROPS_MODIFICATOR_KEYS_PRE
+import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -95,12 +96,14 @@ class RowToEntityConverterImpl(
     private val FIELDS: MutableMap<String, Int> //todo: to map
 
     private val KEY_MODIFICATOR: String?
+    private val ANOTHER_TASKS_DIVIDER: String
 
     private val commentStart: Int?
 
     init {
 
         KEY_MODIFICATOR = messageWorker.getSourceValue(PROPS_MODIFICATOR_KEYS_PRE)
+        ANOTHER_TASKS_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS)
 
         val getIndex: (fieldName: String) -> Int =
             { fieldName ->
@@ -256,10 +259,6 @@ class RowToEntityConverterImpl(
     private fun buildFeatureSetOrNull(title: String?, nature: String = NATURE_DEFAULT):
             Set<Feature> = if (title == null) HashSet() else builder.buildFeatureSet(title, nature)
 
-    private fun buildTaskConnection(task: String?):
-            Set<Task> = if (task == null) HashSet() else builder.buildConnectionToAnotherTasks(task)
-
-
     override fun addTasksConnectFromRow(row: Row) {
         val stringKey = getStringCellValue(getCell(row, "keys"))
         val key: String
@@ -269,9 +268,9 @@ class RowToEntityConverterImpl(
         } else {
             key = fieldBuilder.buildTaskKey(stringKey, KEY_MODIFICATOR ?: DEFAULT_KEY)
         }
-        val subTasks = buildTaskConnection(getStringCellValue(getCell(row, "subTasks")))
-        val relationTasks = buildTaskConnection(getStringCellValue(getCell(row, "relationTasks")))
-        val duplicateTasks = buildTaskConnection(getStringCellValue(getCell(row, "duplicateTasks")))
+        val subTasks: Array<String> = fieldBuilder.rebuildString(getStringCellValue(getCell(row, "subTasks")), ANOTHER_TASKS_DIVIDER)
+        val relationTasks: Array<String> = fieldBuilder.rebuildString(getStringCellValue(getCell(row, "relationTasks")), ANOTHER_TASKS_DIVIDER)
+        val duplicateTasks: Array<String> = fieldBuilder.rebuildString(getStringCellValue(getCell(row, "duplicateTasks")), ANOTHER_TASKS_DIVIDER)
 
         dataService.addTaskRelation(
             subTasks = subTasks,

@@ -86,10 +86,8 @@ object TestContext {
 
         entityBuilder = EntityBuilderImpl(
             messageWorker = MessageSimulator,
-            fieldBuilder = fieldBuilder,
             featureBuilder = featureBuilder,
             employeeBuilder = employeeBuilder,
-            dataService = dataService,
             commentBuilder = commentBuilder
         )
 
@@ -109,10 +107,8 @@ object TestContext {
         fieldBuilder = FieldBuilderImpl()
         entityBuilder = EntityBuilderImpl(
             messageWorker = MessageSimulator,
-            fieldBuilder = fieldBuilder,
             featureBuilder = featureBuilder,
             employeeBuilder = employeeBuilder,
-            dataService = dataService,
             commentBuilder = commentBuilder
         )
 
@@ -166,10 +162,8 @@ object TestContext {
 
         entityBuilder = EntityBuilderImpl(
             messageWorker = MessageSimulator,
-            fieldBuilder = fieldBuilder,
             featureBuilder = featureBuilder,
             employeeBuilder = employeeBuilder,
-            dataService = dataService,
             commentBuilder = commentBuilder
         )
 

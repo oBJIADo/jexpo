@@ -20,26 +20,20 @@ import ru.tsystems.divider.utils.constants.PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS
 @Service
 class EntityBuilderImpl(
     @Autowired messageWorker: MessageWorker,
-    @Autowired val fieldBuilder: FieldBuilder,
     @Autowired val featureBuilder: FeatureBuilder,
     @Autowired val employeeBuilder: EmployeeBuilder,
-    @Autowired val commentBuilder: CommentBuilder,
-    @Autowired val dataService: DataService
+    @Autowired val commentBuilder: CommentBuilder
 ) : EntityBuilder {
 
     companion object {
         //private val logger = //logger.getLogger(EntityBuilderImpl::class.java)
     }
 
-    private val ANOTHER_TASKS_DIVIDER: String
     private val KEY_MODIFICATOR: String
     private val ANOTHER_DIVIDER: String
 
     init {
         KEY_MODIFICATOR = messageWorker.getObligatorySourceValue(PROPS_MODIFICATOR_KEYS_PRE)
-
-
-        ANOTHER_TASKS_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_ANOTHER_TASKS)
         ANOTHER_DIVIDER = messageWorker.getObligatorySourceValue(PROPS_SYMBOLS_SOURCE_ANOTHER)
     }
 
@@ -96,33 +90,6 @@ class EntityBuilderImpl(
         } else {
             return featureBuilder.buildFeature(title, nature)
         }
-
-    }
-
-
-    /**
-     * Make a subtask set and return it
-     *
-     * @param subTasks version.
-     * @return Set with version entities.
-     */
-    override fun buildConnectionToAnotherTasks(subTasks: String): Set<Task> {
-        if (subTasks.isEmpty())
-            return HashSet()
-        val tasks = HashSet<Task>()
-
-        val keys = fieldBuilder.rebuildString(subTasks, ANOTHER_TASKS_DIVIDER)
-        for (key in keys) {
-            try {
-                tasks.add(
-                    dataService.findTaskByKey(fieldBuilder.buildTaskKey(key, KEY_MODIFICATOR))
-                        ?: throw IllegalArgumentException("Task with key: $key not founded!")
-                )
-            } catch (ilStExc: IllegalStateException) {
-                //logger.error(ilStExc.message + "; This task not added to dependencies!")
-            }
-        }
-        return tasks
 
     }
 }

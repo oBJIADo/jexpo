@@ -62,4 +62,22 @@ data class Task(
         inverseJoinColumns = [JoinColumn(name = "duplicate_task_id")]
     )
     var duplicateTasks: Set<Task> = HashSet()
-) : GeneralEntity()
+) : GeneralEntity() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as Task
+
+        if (keys != other.keys) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + (keys?.hashCode() ?: 0)
+        return result
+    }
+}

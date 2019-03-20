@@ -13,9 +13,9 @@ interface DataService {
     fun updateTask(task: Task)
     fun addTask(task: Task)
     fun addTaskRelation(
-        subTasks: Set<Task>? = null,
-        relationTasks: Set<Task>? = null,
-        duplicateTasks: Set<Task>? = null,
+        subTasks: Array<String>,
+        relationTasks: Array<String>,
+        duplicateTasks: Array<String>,
         taskKey: String
     )
 

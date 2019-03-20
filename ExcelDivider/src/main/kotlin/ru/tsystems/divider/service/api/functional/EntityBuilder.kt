@@ -38,13 +38,4 @@ interface EntityBuilder {
      * @return
      */
     fun buildFeature(title: String, nature: String): Feature?
-
-    /**
-     * Make a subtask set and return it
-     *
-     * @param subTasks version.
-     * @return Set with version entities.
-     */
-    fun buildConnectionToAnotherTasks(subTasks: String): Set<Task>
-
 }

@@ -13,7 +13,7 @@ interface FieldBuilder {
      *
      * @return List with rebuilded strings.
      */
-    fun rebuildString(string: String, symbol: String): Array<String>
+    fun rebuildString(string: String?, symbol: String): Array<String>
 
 
     fun buildTaskKey(key: String, modificator: String): String
