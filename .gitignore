@@ -3,3 +3,5 @@
 ./ExcelDivider/.idea/
 ./front/.idea/
 ./jirexpo/.idea/
+*.iml
+*.properties

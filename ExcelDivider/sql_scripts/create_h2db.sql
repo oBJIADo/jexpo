@@ -1,26 +1,13 @@
-CREATE TABLE version (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
+create table nature(
+  id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  title varchar(30) unique
 );
 
-CREATE TABLE issueType (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE status (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE priority (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE resolution (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(40) unique             NOT NULL
+CREATE TABLE feature(
+  id Int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  title varchar (30) not null,
+  nature int not null references nature(id),
+  UNIQUE (title, nature)
 );
 
 CREATE TABLE employee (
@@ -28,21 +15,6 @@ CREATE TABLE employee (
   firstname  varchar(30)                    NOT NULL,
   secondname varchar(30)                    NOT NULL,
   unique (firstname, secondname)
-);
-
-CREATE TABLE epicColor (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
-CREATE TABLE sprint (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(60) unique             NOT NULL
-);
-
-CREATE TABLE keyword (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(60) unique             NOT NULL
 );
 
 create table workers (
@@ -55,8 +27,8 @@ create table workers (
 create table epics (
   id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   epic_name   varchar(150),
-  epic_status int references status (id),
-  epic_color   int references epicColor (id),
+  epic_status int references feature (id),
+  epic_color   int references feature (id),
   epic_link   varchar(100)
 );
 
@@ -84,16 +56,16 @@ create table dates (
 
 create table consumables (
   id                INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  status            int references status (id),
-  priority          int references priority (id),
-  resolution        int references resolution (id),
+  status            int references feature (id),
+  priority          int references feature (id),
+  resolution        int references feature(id),
   description       varchar(32500),
-  sprint            int references sprint (id),
+  sprint            int references feature (id),
   order_number      varchar(100),
-  delivered_version varchar(100),
+  delivered_version int references feature(id),
   drc_number        varchar(20),
-  keyword           int references keyword (id),
-  fix_priority      int references priority (id),
+  keyword           int references feature (id),
+  fix_priority      int references feature (id),
   workers           int references workers (id),
   epics             int references epics (id),
   statistics        int references statistics (id),
@@ -104,7 +76,7 @@ CREATE TABLE task (
   id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   keys        varchar(9)                     NOT NULL UNIQUE,
   summary     varchar(300)                   NOT NULL,
-  issue_type  int references issueType (id),
+  issue_type  int references feature (id),
   created     timestamp,
   consumables int references consumables (id)
 );
@@ -147,7 +119,7 @@ CREATE TABLE comment (
 CREATE TABLE sub_affects_version (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  version_id     int REFERENCES version (id)
+  version_id     int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, version_id),
   UNIQUE (consumables_id, version_id)
@@ -156,50 +128,51 @@ CREATE TABLE sub_affects_version (
 CREATE TABLE task_fix_version (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  version_id     int REFERENCES version (id)
+  version_id     int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, version_id),
   UNIQUE (consumables_id, version_id)
 );
 
-CREATE TABLE component (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
-
 CREATE TABLE task_component (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  component_id   int REFERENCES component (id)
+  component_id   int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, component_id),
   UNIQUE (consumables_id, component_id)
 );
 
-CREATE TABLE label (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(50) unique             NOT NULL
-);
 
 CREATE TABLE task_label (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  label_id       int REFERENCES label (id)
+  label_id       int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, label_id),
   UNIQUE (consumables_id, label_id)
 );
 
-CREATE TABLE team (
-  id    INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  param varchar(30) unique             NOT NULL
-);
 
 CREATE TABLE task_team (
   consumables_id int REFERENCES consumables (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  team_id        int REFERENCES team (id)
+  team_id        int REFERENCES feature (id)
   ON UPDATE CASCADE ON DELETE CASCADE,
   primary key (consumables_id, team_id),
   UNIQUE (consumables_id, team_id)
 );
+
+INSERT IntO nature(title) values ('version');
+INSERT IntO nature(title) values ('epicStatus');
+INSERT IntO nature(title) values ('epicColor');
+INSERT IntO nature(title) values ('status');
+INSERT IntO nature(title) values ('priority');
+INSERT IntO nature(title) values ('resolution');
+INSERT IntO nature(title) values ('sprint');
+INSERT IntO nature(title) values ('keyword');
+INSERT IntO nature(title) values ('fixPriority');
+INSERT IntO nature(title) values ('issueType');
+INSERT IntO nature(title) values ('component');
+INSERT IntO nature(title) values ('label');
+INSERT IntO nature(title) values ('team');

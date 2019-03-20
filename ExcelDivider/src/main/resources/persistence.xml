@@ -6,22 +6,23 @@
     <persistence-unit name="persistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>ru.tsystems.divider.entity.Comment</class>
-        <class>ru.tsystems.divider.entity.Component</class>
-        <class>ru.tsystems.divider.entity.Employee</class>
-        <class>ru.tsystems.divider.entity.EpicColor</class>
-        <class>ru.tsystems.divider.entity.IssueType</class>
-        <class>ru.tsystems.divider.entity.Keyword</class>
-        <class>ru.tsystems.divider.entity.Label</class>
-        <class>ru.tsystems.divider.entity.Priority</class>
-        <class>ru.tsystems.divider.entity.Resolution</class>
-        <class>ru.tsystems.divider.entity.Sprint</class>
-        <class>ru.tsystems.divider.entity.Status</class>
         <class>ru.tsystems.divider.entity.Task</class>
-        <class>ru.tsystems.divider.entity.Team</class>
-        <class>ru.tsystems.divider.entity.Version</class>
+
+        <class>ru.tsystems.divider.entity.Comment</class>
+        <class>ru.tsystems.divider.entity.Consumables</class>
+
+        <class>ru.tsystems.divider.entity.Dates</class>
+        <class>ru.tsystems.divider.entity.Epics</class>
+        <class>ru.tsystems.divider.entity.Statistics</class>
+        <class>ru.tsystems.divider.entity.Workers</class>
+
+        <class>ru.tsystems.divider.entity.Employee</class>
+        <class>ru.tsystems.divider.entity.Feature</class>
+
+        <class>ru.tsystems.divider.entity.Nature</class>
+
         <properties>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
         </properties>
 
     </persistence-unit>
