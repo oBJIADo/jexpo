@@ -100,7 +100,7 @@ public class ServiceTest {
      */
     @Test
     public void getByKeysOnly(){
-        String[] indexes = {"0"};
+        String indexes = "0";
         int actual = taskService.getPagesCount(1, "ad-999", indexes,true);
         assertEquals(10, actual);
     }
