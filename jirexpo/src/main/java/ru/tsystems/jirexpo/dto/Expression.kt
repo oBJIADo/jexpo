@@ -29,14 +29,16 @@ open class Expression(
     }
 
     override fun toString(): String {
-        var expression: String = ""
+        var expression = StringBuilder()
         var exp: Expression? = this
         while (exp != null) {
-            expression += "${exp.fieldName}${exp.equalitySign.operationSymbol}${exp.fieldValue}${exp.logicalSign?.logicalSymbol
-                ?: ""}"
+            expression.append(Expression.hideSyms(exp.fieldName))
+            expression.append(exp.equalitySign.operationSymbol)
+            expression.append(Expression.hideSyms(exp.fieldValue))
+            expression.append(exp.logicalSign?.logicalSymbol ?: "")
             exp = exp.next
         }
-        return expression
+        return expression.toString()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -91,12 +93,15 @@ open class Expression(
          *                              /!| => !|
          */
         protected val HIDEN_SYM = '/'
+        protected val SPECIAL_SYMBOLS: List<Char> =
+            LogicalSign.values().map { it.logicalSymbol }.plus(EqualitySign.values().map { it.operationSymbol })
 
+        //todo: simplyfi
         fun build(expression: String): Expression {
             var firstIndex = 0
             var lastIndex = findWordEnd(expression, firstIndex)
 
-            val fieldName: String = expression.substring(firstIndex, lastIndex + 1)
+            val fieldName: String = unhideSyms(expression.substring(firstIndex, lastIndex + 1))
 
             val equalitySign: EqualitySign = EqualitySign.getBySymbol(expression[lastIndex + 1])
                 ?: throw IllegalExpressionException("Cannot build expression from the String: $expression. Equality sign at index ${lastIndex + 1} not founded!")
@@ -104,13 +109,17 @@ open class Expression(
             firstIndex = lastIndex + 2
             lastIndex = findWordEnd(expression, firstIndex)
 
-            if(lastIndex == expression.length){ //todo: remove crutch
+            if (lastIndex == expression.length) { //todo: remove crutch
                 lastIndex--
             }
 
-            val fieldValue: String = expression.substring(firstIndex, lastIndex + 1)
+            val fieldValue: String = unhideSyms(expression.substring(firstIndex, lastIndex + 1))
 
-            val logicalSign: LogicalSign? = LogicalSign.getBySymbol(expression, lastIndex + 1)
+            val logicalSign: LogicalSign? = if (lastIndex + 1 == expression.length) {
+                null
+            } else {
+                LogicalSign.getBySymbol(expression[lastIndex + 1])
+            }
 
             return if (logicalSign == null) {
                 Expression(fieldName, equalitySign, fieldValue, logicalSign, null)
@@ -120,15 +129,47 @@ open class Expression(
                     equalitySign,
                     fieldValue,
                     logicalSign,
-                    Expression.build(expression.substring(lastIndex + 3))
+                    Expression.build(expression.substring(lastIndex + 2))
                 )
             }
         }
 
+        protected fun unhideSyms(str: String): String {
+            val newStr: StringBuilder = StringBuilder()
+            var index: Int = 0
+            while (index < str.length) {
+                if (index != str.length - 1 && str[index] == HIDEN_SYM && (isSpecialSymbol(str[index + 1]) || str[index + 1] == HIDEN_SYM)) {
+                    newStr.append(str[index + 1])
+                    index += 2
+                } else {
+                    newStr.append(str[index])
+                    index++
+                }
+            }
+            return newStr.toString()
+        }
+
+        protected fun hideSyms(str: String): String {
+            val newStr = StringBuilder()
+            var index = 0
+            while (index < str.length) {
+                if (isSpecialSymbol(str[index]) || str[index] == HIDEN_SYM) {
+                    newStr.append(HIDEN_SYM)
+                    newStr.append(str[index])
+                } else {
+                    newStr.append(str[index])
+                }
+                index++
+            }
+            return newStr.toString()
+        }
+
+        protected fun isSpecialSymbol(char: Char) = SPECIAL_SYMBOLS.contains(char)
+
         protected fun findWordEnd(str: String, startIndex: Int): Int {
             var index = startIndex + 1
             while (index < str.length) {
-                if (isSpecialSymbol(str, index)) {
+                if (isOperation(str, index)) {
                     return index - 1
                 }
                 index++
@@ -136,18 +177,18 @@ open class Expression(
             return index
         }
 
-        protected fun isSpecialSymbol(str: String, startIndex: Int): Boolean {
+        protected fun isOperation(str: String, startIndex: Int): Boolean {
             if (str.isEmpty() || startIndex >= str.length) {
                 return false
             }
 
             var countOfHSym: Int = 0
             var i = startIndex - 1
-            while (i >= 0 && str[i] == '/') {
+            while (i >= 0 && str[i] == HIDEN_SYM) {
                 countOfHSym++
                 i--
             }
-            return (EqualitySign.oneOf(str[startIndex]) || LogicalSign.oneOf(str, startIndex)) && countOfHSym % 2 == 0
+            return isSpecialSymbol(str[startIndex]) && countOfHSym % 2 == 0
         }
     }
 }
@@ -158,17 +199,6 @@ enum class EqualitySign(val operationSymbol: Char, val operationWord: String) {
     Like('~', "LIKE");
 
     companion object {
-        //todo: oneOf and getBySymbol should be one function
-        fun oneOf(symbol: Char): Boolean {
-            for (sign in EqualitySign.values()) {
-                if (symbol == sign.operationSymbol) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        //todo: oneOf and getBySymbol should be one function
         fun getBySymbol(symbol: Char): EqualitySign? {
             for (sign in EqualitySign.values()) {
                 if (sign.operationSymbol == symbol) {
@@ -180,39 +210,16 @@ enum class EqualitySign(val operationSymbol: Char, val operationWord: String) {
     }
 }
 
-enum class LogicalSign(val logicalSymbol: String, val logicalWord: String) {
-    And("&&", "AND"),
-    Or("||", "OR"),
-    NotOr("!|", "NOR"),
-    NotAnd("!&", "NAND");
-
-    private fun isSign(str: String, startIndex: Int): Boolean {
-        return str[startIndex] == this.logicalSymbol[0] && str[startIndex + 1] == this.logicalSymbol[1]
-    }
+enum class LogicalSign(val logicalSymbol: Char, val logicalWord: String) {
+    And('&', "AND"),
+    Or('|', "OR"),
+    NotOr('+', "NOR"),
+    NotAnd('*', "NAND");
 
     companion object {
-        //todo: oneOf and getBySymbol should be one function
-        fun oneOf(str: String, startIndex: Int): Boolean {
-            if (str.isEmpty() || str.length <= startIndex + 1) {
-                return false
-            }
-
+        fun getBySymbol(symbol: Char): LogicalSign? {
             for (sign in LogicalSign.values()) {
-                if (sign.isSign(str, startIndex)) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        //todo: oneOf and getBySymbol should be one function
-        fun getBySymbol(symbols: String, startIndex: Int): LogicalSign? {
-            if (symbols.isEmpty() || symbols.length <= startIndex + 1) {
-                return null
-            }
-
-            for (sign in LogicalSign.values()) {
-                if (sign.isSign(symbols, startIndex)) {
+                if (symbol == sign.logicalSymbol) {
                     return sign
                 }
             }
