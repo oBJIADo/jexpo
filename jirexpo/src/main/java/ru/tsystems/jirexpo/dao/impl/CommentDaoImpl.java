@@ -1,15 +1,13 @@
 package ru.tsystems.jirexpo.dao.impl;
 
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import ru.tsystems.jirexpo.dao.api.CommentDao;
+import ru.tsystems.jirexpo.entity.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-
-import ru.tsystems.jirexpo.dao.api.CommentDao;
-import ru.tsystems.jirexpo.entity.Comment;
+import java.util.List;
 
 @Repository
 public class CommentDaoImpl extends GeneralDaoImpl<Comment> implements CommentDao {
@@ -23,8 +21,7 @@ public class CommentDaoImpl extends GeneralDaoImpl<Comment> implements CommentDa
     /**
      * Get by task's key all comments.
      *
-     * @param taskKey
-     *            Task's key.
+     * @param taskKey Task's key.
      * @return List with comments.
      */
     @Override

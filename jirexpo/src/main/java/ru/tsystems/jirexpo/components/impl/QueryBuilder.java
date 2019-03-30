@@ -1,9 +1,9 @@
 package ru.tsystems.jirexpo.components.impl;
 
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class convert indexes, which maped on fields, to build a query.
@@ -58,7 +58,7 @@ public class QueryBuilder {
     /**
      * Contains indexes of the fields for default search.
      */
-    public static int[] DEFAULT_INDEXES = { 0, 1, 2, 8, 9, 10, 22, 31, 32, 33, 34, 35, 36, 37, 38, 42, 43, 44 };
+    public static int[] DEFAULT_INDEXES = {0, 1, 2, 8, 9, 10, 22, 31, 32, 33, 34, 35, 36, 37, 38, 42, 43, 44};
 
     /**
      * Map which contains links between indexes and field's names
@@ -194,13 +194,10 @@ public class QueryBuilder {
 
     /**
      * Read array with indexes and add to query string conditions with text fields.
-     * 
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     *
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeTextParamsPart(int[] array, int index, StringBuilder builder, boolean caseIgnore) {
@@ -230,12 +227,9 @@ public class QueryBuilder {
     /**
      * Read array with indexes and add to query string conditions with num fields.
      *
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeNumParamsPart(int[] array, int index, StringBuilder builder) {
@@ -257,12 +251,9 @@ public class QueryBuilder {
     /**
      * Read array with indexes and add to query string conditions with simple-fields.
      *
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeSimpleParamsPart(int[] array, int index, StringBuilder builder, boolean caseIgnore) {
@@ -288,12 +279,9 @@ public class QueryBuilder {
     /**
      * Read array with indexes and add to query string conditions with employees fields.
      *
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeEmployeesParamsPart(int[] array, int index, StringBuilder builder, boolean caseIgnore) {
@@ -319,12 +307,9 @@ public class QueryBuilder {
     /**
      * Read array with indexes and add to query string conditions with comment fields.
      *
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeCommentParamsPart(int[] array, int index, StringBuilder builder, boolean caseIgnore) {
@@ -364,12 +349,9 @@ public class QueryBuilder {
     /**
      * Read array with indexes and add to query string conditions with mtm fields.
      *
-     * @param array
-     *            Indexes which keys for a map.
-     * @param index
-     *            Array index for start reading.
-     * @param builder
-     *            {@link StringBuilder} for a building query
+     * @param array   Indexes which keys for a map.
+     * @param index   Array index for start reading.
+     * @param builder {@link StringBuilder} for a building query
      * @return Index of element which after last index for reading.
      */
     private static int makeMTMSimpleParamsPart(int[] array, int index, StringBuilder builder, boolean caseIgnore) {
@@ -402,8 +384,8 @@ public class QueryBuilder {
             if (index != 0)
                 builder.append("or\n");
             builder.append("tsk.id in (select distinct(mtm.TASK_ID)\n" + "from " + CONVERT_TABLES.get(array[index])
-                           + " as mtm\n" + "where mtm." + CONVERT_FIELDS.get(array[index])
-                           + "_ID in (select id from TASK as tbl where ");
+                    + " as mtm\n" + "where mtm." + CONVERT_FIELDS.get(array[index])
+                    + "_ID in (select id from TASK as tbl where ");
             builder.append(caseIgnore ? "lower(tbl.KEYS)" : "tbl.KEYS");
             builder.append(" like :param)) ");
             index++;
@@ -415,8 +397,7 @@ public class QueryBuilder {
     /**
      * Build condition of query.
      *
-     * @param paramsIndexes
-     *            Sorted key for a map.
+     * @param paramsIndexes Sorted key for a map.
      * @return String with condition.
      */
     public static String makeQueryCondition(int[] paramsIndexes, boolean caseIgnore) {
@@ -435,10 +416,8 @@ public class QueryBuilder {
     /**
      * Build main part of a query (without 'order by' and 'select #')
      *
-     * @param builder
-     *            {@link StringBuilder} with a first part of query.
-     * @param params
-     *            Sorted key for a map.
+     * @param builder {@link StringBuilder} with a first part of query.
+     * @param params  Sorted key for a map.
      * @return {@link StringBuilder} with a query.
      */
     private static StringBuilder makeQuery(StringBuilder builder, int[] params, boolean caseIgnore) {
@@ -464,8 +443,7 @@ public class QueryBuilder {
     /**
      * Make sql query for a searching.
      *
-     * @param indexes
-     *            Sorted key for a map.
+     * @param indexes Sorted key for a map.
      * @return String with a query
      */
     public static String makeNativeQuery(int[] indexes, boolean caseIgnore) {
@@ -480,8 +458,7 @@ public class QueryBuilder {
     /**
      * Make sql query for a searching which get count of elements.
      *
-     * @param indexes
-     *            Sorted key for a map.
+     * @param indexes Sorted key for a map.
      * @return String with a query
      */
     public static String makeCountsNativeQuery(int[] indexes, boolean caseIgnore) {

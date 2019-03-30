@@ -1,19 +1,18 @@
 package ru.tsystems.jirexpo.service.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
 import ru.tsystems.jirexpo.components.api.MessageWorker;
 import ru.tsystems.jirexpo.service.api.FileService;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -21,17 +20,16 @@ public class FileServiceImpl implements FileService {
 
     private final String ATTACH_PATH;
 
-    public FileServiceImpl(@Autowired MessageWorker messageWorker){
+    public FileServiceImpl(@Autowired MessageWorker messageWorker) {
         ATTACH_PATH = messageWorker.getSourceValue("files.folder.attachments");
-        if(ATTACH_PATH == null) throw new NullPointerException("No attach folder");
+        if (ATTACH_PATH == null) throw new NullPointerException("No attach folder");
     }
 
 
     /**
      * Get a file from attachments
      *
-     * @param key
-     *            Task's key
+     * @param key Task's key
      * @return File {@link InputStreamResource}
      */
     public Resource getFile(String key, String fileName) {
@@ -48,8 +46,7 @@ public class FileServiceImpl implements FileService {
     /**
      * Get all files names in folder which name like key.
      *
-     * @param key
-     *            Task's key
+     * @param key Task's key
      * @return List with files names
      */
     public List<String> getFilesNames(String key) {

@@ -1,17 +1,15 @@
 package ru.tsystems.jirexpo.dao.impl;
 
-import java.math.BigInteger;
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import ru.tsystems.jirexpo.dao.api.TaskDao;
+import ru.tsystems.jirexpo.entity.Task;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-
-import ru.tsystems.jirexpo.dao.api.TaskDao;
-import ru.tsystems.jirexpo.entity.Task;
+import java.math.BigInteger;
+import java.util.List;
 
 @Repository
 public class TaskDaoImpl extends GeneralDaoImpl<Task> implements TaskDao {
@@ -23,8 +21,7 @@ public class TaskDaoImpl extends GeneralDaoImpl<Task> implements TaskDao {
     /**
      * Finding task by key
      *
-     * @param key
-     *            Key
+     * @param key Key
      * @return {@link Task}
      */
     @Override
@@ -53,10 +50,8 @@ public class TaskDaoImpl extends GeneralDaoImpl<Task> implements TaskDao {
     /**
      * Get some Tasks from starting count.
      *
-     * @param from
-     *            Starting count
-     * @param count
-     *            Count of tasks
+     * @param from  Starting count
+     * @param count Count of tasks
      * @return List with {@link Task}
      */
     @Override
@@ -69,14 +64,10 @@ public class TaskDaoImpl extends GeneralDaoImpl<Task> implements TaskDao {
     /**
      * Get some Tasks from starting count.
      *
-     * @param from
-     *            Starting count
-     * @param count
-     *            Count of tasks
-     * @param param
-     *            Param for searching
-     * @param query
-     *            Native query
+     * @param from  Starting count
+     * @param count Count of tasks
+     * @param param Param for searching
+     * @param query Native query
      * @return List with {@link Task}
      */
     @Override
@@ -89,10 +80,8 @@ public class TaskDaoImpl extends GeneralDaoImpl<Task> implements TaskDao {
     /**
      * Get count of the tasks
      *
-     * @param query
-     *            Query for giving task's count
-     * @param param
-     *            Param for searching
+     * @param query Query for giving task's count
+     * @param param Param for searching
      * @return Count of the tasks
      */
     @Override

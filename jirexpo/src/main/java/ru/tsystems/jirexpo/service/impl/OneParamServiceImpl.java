@@ -3,7 +3,6 @@ package ru.tsystems.jirexpo.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.tsystems.jirexpo.dao.api.OneParamDao;
 import ru.tsystems.jirexpo.entity.OneParamEntity;
 import ru.tsystems.jirexpo.service.api.OneParamService;
@@ -17,10 +16,8 @@ public class OneParamServiceImpl<Entity extends OneParamEntity> implements OnePa
     /**
      * Find One param entity by this param.
      *
-     * @param param
-     *            param for searching.
-     * @param className
-     *            Class of the current entity.
+     * @param param     param for searching.
+     * @param className Class of the current entity.
      * @return Entity if it exist, either null.
      */
     @Override
@@ -32,8 +29,7 @@ public class OneParamServiceImpl<Entity extends OneParamEntity> implements OnePa
     /**
      * Persist into db OneParamEntity.
      *
-     * @param entity
-     *            One param Entity.
+     * @param entity One param Entity.
      */
     @Override
     @Transactional

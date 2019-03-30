@@ -1,15 +1,14 @@
 package ru.tsystems.jirexpo.dao.impl;
 
 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import ru.tsystems.jirexpo.dao.api.OneParamDao;
+import ru.tsystems.jirexpo.entity.OneParamEntity;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-
-import ru.tsystems.jirexpo.dao.api.OneParamDao;
-import ru.tsystems.jirexpo.entity.OneParamEntity;
 
 @Repository
 public class OneParamDaoImpl<Entity extends OneParamEntity> extends GeneralDaoImpl<Entity>

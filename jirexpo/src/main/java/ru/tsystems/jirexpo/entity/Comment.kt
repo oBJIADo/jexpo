@@ -1,25 +1,28 @@
 package ru.tsystems.jirexpo.entity
 
-import java.util.*
-import javax.persistence.CascadeType
+import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-class Comment(
-        @ManyToOne(cascade = [CascadeType.ALL])
+data class Comment(
         @JoinColumn(name = "task_id")
         var task: Task? = null,
 
         @Column(name = "comment_date")
-        var commentDate: Date? = null,
+        var commentDate: LocalDateTime? = null,
 
-        @ManyToOne(cascade = [CascadeType.ALL])
+        @ManyToOne
         @JoinColumn(name = "author")
         var author: Employee? = null,
 
         @Column(name = "comment")
         var comment: String? = null
-) : GeneralEntity()
+) : GeneralEntity() {
+
+    override fun toString():
+            String = "Author: ${author.toString()}\nDate: ${commentDate.toString()}\n-----------\n$comment"
+
+}
