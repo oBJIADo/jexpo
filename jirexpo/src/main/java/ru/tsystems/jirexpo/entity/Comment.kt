@@ -6,7 +6,7 @@ import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
-@Entity
+@Entity(name = "Comment")
 data class Comment(
         @JoinColumn(name = "task_id")
         var task: Task? = null,
