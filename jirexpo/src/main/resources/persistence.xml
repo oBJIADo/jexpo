@@ -7,19 +7,16 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>ru.tsystems.jirexpo.entity.Comment</class>
-        <class>ru.tsystems.jirexpo.entity.Component</class>
         <class>ru.tsystems.jirexpo.entity.Employee</class>
-        <class>ru.tsystems.jirexpo.entity.EpicColor</class>
-        <class>ru.tsystems.jirexpo.entity.IssueType</class>
-        <class>ru.tsystems.jirexpo.entity.Keyword</class>
-        <class>ru.tsystems.jirexpo.entity.Label</class>
-        <class>ru.tsystems.jirexpo.entity.Priority</class>
-        <class>ru.tsystems.jirexpo.entity.Resolution</class>
-        <class>ru.tsystems.jirexpo.entity.Sprint</class>
-        <class>ru.tsystems.jirexpo.entity.Status</class>
         <class>ru.tsystems.jirexpo.entity.Task</class>
-        <class>ru.tsystems.jirexpo.entity.Team</class>
-        <class>ru.tsystems.jirexpo.entity.Version</class>
+        <class>ru.tsystems.jirexpo.entity.Consumables</class>
+        <class>ru.tsystems.jirexpo.entity.Dates</class>
+        <class>ru.tsystems.jirexpo.entity.Employee</class>
+        <class>ru.tsystems.jirexpo.entity.Epics</class>
+        <class>ru.tsystems.jirexpo.entity.Feature</class>
+        <class>ru.tsystems.jirexpo.entity.Nature</class>
+        <class>ru.tsystems.jirexpo.entity.Statistics</class>
+        <class>ru.tsystems.jirexpo.entity.Workers</class>
 
     </persistence-unit>
 </persistence>

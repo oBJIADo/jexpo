@@ -1,14 +1,13 @@
 package ru.tsystems.jirexpo.dao.impl;
 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import ru.tsystems.jirexpo.dao.api.EmployeeDao;
+import ru.tsystems.jirexpo.entity.Employee;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-
-import ru.tsystems.jirexpo.dao.api.EmployeeDao;
-import ru.tsystems.jirexpo.entity.Employee;
 
 @Repository
 public class EmployeeDaoImpl extends GeneralDaoImpl<Employee> implements EmployeeDao {
@@ -20,10 +19,8 @@ public class EmployeeDaoImpl extends GeneralDaoImpl<Employee> implements Employe
     /**
      * Finding employee who has specified first and second names
      *
-     * @param firstName
-     *            first name
-     * @param secondName
-     *            second name
+     * @param firstName  first name
+     * @param secondName second name
      * @return {@link Employee}
      */
     @Override
@@ -35,9 +32,8 @@ public class EmployeeDaoImpl extends GeneralDaoImpl<Employee> implements Employe
                     .setParameter("firstName", firstName)
                     .setParameter("secondName", secondName)
                     .getSingleResult();
-        }
-        catch (NoResultException noResExc){
-            logger.error("No results founded. Names :"  + firstName + " " + secondName);
+        } catch (NoResultException noResExc) {
+            logger.error("No results founded. Names :" + firstName + " " + secondName);
             return null;
         }
     }

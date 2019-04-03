@@ -46,15 +46,15 @@ data class TaskDto(
 
         var comments: kotlin.collections.List<CommentDto>? = null,
 
-        var affectsVersions: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var fixVersions: kotlin.collections.List<String?> = ArrayList<String?>(),
+        var affectsVersions: kotlin.collections.List<String> = ArrayList<String>(),
+        var fixVersions: kotlin.collections.List<String> = ArrayList<String>(),
 
-        var components: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var labels: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var teams: kotlin.collections.List<String?> = ArrayList<String?>(),
+        var components: kotlin.collections.List<String> = ArrayList<String>(),
+        var labels: kotlin.collections.List<String> = ArrayList<String>(),
+        var teams: kotlin.collections.List<String> = ArrayList<String>(),
 
-        var subTasks: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var parentTasks: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var relationTasks: kotlin.collections.List<String?> = ArrayList<String?>(),
-        var duplicateTasks: kotlin.collections.List<String?> = ArrayList<String?>()
+        var subTasks: kotlin.collections.List<String> = ArrayList<String>(),
+        var parentTasks: kotlin.collections.List<String> = ArrayList<String>(),
+        var relationTasks: kotlin.collections.List<String> = ArrayList<String>(),
+        var duplicateTasks: kotlin.collections.List<String> = ArrayList<String>()
 )

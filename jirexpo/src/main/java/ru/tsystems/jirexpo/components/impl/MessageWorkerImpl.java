@@ -1,14 +1,13 @@
 package ru.tsystems.jirexpo.components.impl;
 
-import java.util.Locale;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
-
 import ru.tsystems.jirexpo.components.api.MessageWorker;
+
+import java.util.Locale;
 
 @Component
 public class MessageWorkerImpl implements MessageWorker {

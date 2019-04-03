@@ -1,11 +1,11 @@
 package ru.tsystems.jirexpo.dto
 
 open class Expression(
-    val fieldName: String,
-    val equalitySign: EqualitySign,
-    val fieldValue: String,
-    val logicalSign: LogicalSign? = null,
-    val next: Expression? = null
+        val fieldName: String,
+        val equalitySign: EqualitySign,
+        val fieldValue: String,
+        val logicalSign: LogicalSign? = null,
+        val next: Expression? = null
 //) : Iterator<Expression> {
 ) {
     init {
@@ -94,7 +94,7 @@ open class Expression(
          */
         protected val HIDEN_SYM = '/'
         protected val SPECIAL_SYMBOLS: List<Char> =
-            LogicalSign.values().map { it.logicalSymbol }.plus(EqualitySign.values().map { it.operationSymbol })
+                LogicalSign.values().map { it.logicalSymbol }.plus(EqualitySign.values().map { it.operationSymbol })
 
         //todo: simplyfi
         fun build(expression: String): Expression {
@@ -104,7 +104,7 @@ open class Expression(
             val fieldName: String = unhideSyms(expression.substring(firstIndex, lastIndex + 1))
 
             val equalitySign: EqualitySign = EqualitySign.getBySymbol(expression[lastIndex + 1])
-                ?: throw IllegalExpressionException("Cannot build expression from the String: $expression. Equality sign at index ${lastIndex + 1} not founded!")
+                    ?: throw IllegalExpressionException("Cannot build expression from the String: $expression. Equality sign at index ${lastIndex + 1} not founded!")
 
             firstIndex = lastIndex + 2
             lastIndex = findWordEnd(expression, firstIndex)
@@ -125,11 +125,11 @@ open class Expression(
                 Expression(fieldName, equalitySign, fieldValue, logicalSign, null)
             } else {
                 Expression(
-                    fieldName,
-                    equalitySign,
-                    fieldValue,
-                    logicalSign,
-                    Expression.build(expression.substring(lastIndex + 2))
+                        fieldName,
+                        equalitySign,
+                        fieldValue,
+                        logicalSign,
+                        Expression.build(expression.substring(lastIndex + 2))
                 )
             }
         }

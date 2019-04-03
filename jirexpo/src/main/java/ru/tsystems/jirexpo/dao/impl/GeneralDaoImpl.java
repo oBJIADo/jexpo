@@ -2,17 +2,15 @@ package ru.tsystems.jirexpo.dao.impl;
 
 //import org.apache.log4j.Logger;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.tsystems.jirexpo.dao.api.GeneralDao;
 import ru.tsystems.jirexpo.entity.GeneralEntity;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public abstract class GeneralDaoImpl<Entity extends GeneralEntity> implements GeneralDao<Entity> {
@@ -29,7 +27,7 @@ public abstract class GeneralDaoImpl<Entity extends GeneralEntity> implements Ge
     @Override
     @Transactional
     public void persist(final Entity entity) {
-        logger.info("New Entity(" +entity.getClass().getSimpleName()+ ") added into db: " + entity.getId());
+        logger.info("New Entity(" + entity.getClass().getSimpleName() + ") added into db: " + entity.getId());
         this.entityManager.persist(entity);
     }
 
@@ -74,9 +72,9 @@ public abstract class GeneralDaoImpl<Entity extends GeneralEntity> implements Ge
      */
     @Override
     public List<Entity> getAll(Class<Entity> className) {
-        logger.info("Get all entities (" +className.getSimpleName()+ ") from db");
+        logger.info("Get all entities (" + className.getSimpleName() + ") from db");
         return this.entityManager.
-                createQuery("from "+className.getSimpleName(), className).
+                createQuery("from " + className.getSimpleName(), className).
                 getResultList();
     }
 }

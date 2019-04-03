@@ -25,16 +25,16 @@ fun expressionToNativeQuery(expression: Expression): String {
 }
 
 private fun getSqlFromEqSign(equalitySign: EqualitySign) =
-    when (equalitySign) {
-        EqualitySign.Equal -> "="
-        EqualitySign.NotEqual -> "<>"
-        EqualitySign.Like -> "LIKE"
-    }
+        when (equalitySign) {
+            EqualitySign.Equal -> "="
+            EqualitySign.NotEqual -> "<>"
+            EqualitySign.Like -> "LIKE"
+        }
 
 private fun getSqlFromLgSign(logicalSign: LogicalSign) =
-    when (logicalSign) {
-        LogicalSign.And -> "AND"
-        LogicalSign.Or -> "OR"
-        LogicalSign.OrNot -> "OR NOT"
-        LogicalSign.AndNot -> "AND NOT"
-    }
+        when (logicalSign) {
+            LogicalSign.And -> "AND"
+            LogicalSign.Or -> "OR"
+            LogicalSign.OrNot -> "OR NOT"
+            LogicalSign.AndNot -> "AND NOT"
+        }

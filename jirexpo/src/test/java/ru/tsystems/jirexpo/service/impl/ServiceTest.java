@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tsystems.jirexpo.components.impl.Converter;
+import ru.tsystems.jirexpo.components.impl.Mapper;
 import ru.tsystems.jirexpo.dao.api.TaskDao;
 import ru.tsystems.jirexpo.dto.CommentDto;
 import ru.tsystems.jirexpo.dto.TaskDto;
@@ -35,7 +35,7 @@ public class ServiceTest {
         testTaskDto = new TaskDto[10];
 
         for (int i = 0; i < count; i++) {
-            testTaskDto[i] = Converter.convertToDto(taskDao.find(i + startPosition, Task.class));
+            testTaskDto[i] = Mapper.convertToDto(taskDao.find(i + startPosition, Task.class));
         }
     }
 
