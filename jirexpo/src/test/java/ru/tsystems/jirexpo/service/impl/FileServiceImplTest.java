@@ -11,18 +11,18 @@ import ru.tsystems.jirexpo.service.api.FileService;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ContextConfiguration(locations = { "classpath:spring.xml" })
+@ContextConfiguration(locations = {"classpath:spring.xml"})
 public class FileServiceImplTest {
 
     @Autowired
     private FileService fileService;
 
     @Test
-    public void getFiles(){
+    public void getFiles() {
         List<String> actuals = fileService.getFilesNames("AD-1986");
         List<String> expected = new LinkedList<>();
         expected.add("Оnderung_Q00011808000_LD_LK_20061006_081214.doc");
@@ -32,7 +32,7 @@ public class FileServiceImplTest {
     }
 
     @Test
-    public void getFiles2(){
+    public void getFiles2() {
         List<String> actuals = fileService.getFilesNames("AD-3241");
         List<String> expected = new LinkedList<>();
         expected.add("Error_SmartSlices.zip");

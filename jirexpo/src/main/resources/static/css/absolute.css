@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Varela+Round");
+
 body,
-html{
+html {
     background: #1c1d22;
     color: #777;
     height: 100%;
@@ -9,7 +10,7 @@ html{
     box-sizing: border-box;
 }
 
-li{
+li {
     list-style-type: none;
 }
 

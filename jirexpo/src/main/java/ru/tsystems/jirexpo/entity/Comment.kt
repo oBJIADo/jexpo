@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "Comment")
 data class Comment(
+
+        @ManyToOne
         @JoinColumn(name = "task_id")
         var task: Task? = null,
 

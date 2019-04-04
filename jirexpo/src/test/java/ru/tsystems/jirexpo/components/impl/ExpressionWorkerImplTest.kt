@@ -1,7 +1,7 @@
 package ru.tsystems.jirexpo.components.impl
 
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.tsystems.jirexpo.structure.EqualitySign
 import ru.tsystems.jirexpo.structure.Expression
@@ -22,33 +22,33 @@ class ExpressionWorkerImplTest {
     @Test
     fun expressionToNativeQuery() {
         val expression: Expression = Expression(
-            "f1",
-            EQ,
-            "v1",
-            OR,
-            Expression(
-                "f2",
-                NEQ,
-                "v2",
-                AND,
+                "f1",
+                EQ,
+                "v1",
+                OR,
                 Expression(
-                    "f3",
-                    LIKE,
-                    "v3",
-                    NOR,
-                    Expression(
-                        "f4",
-                        EQ,
-                        "v4",
-                        NAND,
+                        "f2",
+                        NEQ,
+                        "v2",
+                        AND,
                         Expression(
-                            "f5",
-                            EQ,
-                            "v5"
+                                "f3",
+                                LIKE,
+                                "v3",
+                                NOR,
+                                Expression(
+                                        "f4",
+                                        EQ,
+                                        "v4",
+                                        NAND,
+                                        Expression(
+                                                "f5",
+                                                EQ,
+                                                "v5"
+                                        )
+                                )
                         )
-                    )
                 )
-            )
         )
 
         val actualQuery = expressionToNativeQuery(expression)

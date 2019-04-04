@@ -1,6 +1,6 @@
 package ru.tsystems.jirexpo.dto
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.tsystems.jirexpo.structure.EqualitySign
 import ru.tsystems.jirexpo.structure.Expression

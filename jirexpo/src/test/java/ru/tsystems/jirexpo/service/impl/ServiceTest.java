@@ -18,10 +18,11 @@ import ru.tsystems.jirexpo.service.api.TaskService;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring.xml" })
+@ContextConfiguration(locations = {"classpath:spring.xml"})
 @SpringBootTest
 @Transactional
 public class ServiceTest {
@@ -90,7 +91,7 @@ public class ServiceTest {
      * Sql script for test in /sql_scripts/test/SCRIPT_1
      */
     @Test
-    public void getDefaultPages(){
+    public void getDefaultPages() {
         int actual = taskService.getPagesCount(1, "ad-999");
         assertEquals(16, actual);
     }
@@ -99,14 +100,14 @@ public class ServiceTest {
      * Sql script for test in /sql_scripts/test/SCRIPT_2
      */
     @Test
-    public void getByKeysOnly(){
+    public void getByKeysOnly() {
         String indexes = "0";
-        int actual = taskService.getPagesCount(1, "ad-999", indexes,true);
+        int actual = taskService.getPagesCount(1, "ad-999", indexes, true);
         assertEquals(10, actual);
     }
 
     @Test
-    public void getCommentsByTaskKey(){
+    public void getCommentsByTaskKey() {
         int taskIndex = 5;
         List<CommentDto> actual = commentService.findCommentByTask(testTaskDto[taskIndex].getKeys());
         List<CommentDto> expected = testTaskDto[taskIndex].getComments();

@@ -1,6 +1,6 @@
 package ru.tsystems.jirexpo.structure
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ExpressionTest {
@@ -19,7 +19,7 @@ class ExpressionTest {
     }
 
     @Test
-    fun toStringTest(){
+    fun toStringTest() {
         val expression: Expression = initExpressionWithSize(5)
         val expectedString: String = "fieldName0=fieldValue0&" +
                 "fieldName1=fieldValue1&" +
@@ -30,7 +30,7 @@ class ExpressionTest {
     }
 
     @Test
-    fun buildSimpleTest(){
+    fun buildSimpleTest() {
         val expectedString: String = "fieldName0=fieldValue0&" +
                 "fieldName1=fieldValue1&" +
                 "fieldName2=fieldValue2&" +
@@ -43,7 +43,7 @@ class ExpressionTest {
     }
 
     @Test
-    fun buildSimpleTest2(){
+    fun buildSimpleTest2() {
         val expected = initExpressionWithSize(5)
         val actual: Expression = Expression.build(expected.toString())
         assertEquals(expected, actual)
@@ -52,7 +52,7 @@ class ExpressionTest {
 
 
     @Test
-    fun buildWithSpecSymbols(){
+    fun buildWithSpecSymbols() {
         val fieldName = "fieldName/=0//"
         val expectedFieldName = "fieldName=0/"
         val fieldValue = "fieldV/!alue/~0"
@@ -66,7 +66,7 @@ class ExpressionTest {
     }
 
     @Test
-    fun buildWithSpecSymbols2(){
+    fun buildWithSpecSymbols2() {
         val fieldName = "/s/d/f/g//////"
         val expectedFieldName = "/s/d/f/g///"
         val fieldValue = "/a/v/b/z/a/w/e/r/%/#/@/-/_///="
@@ -94,20 +94,20 @@ class ExpressionTest {
     }
 
     fun makeSimpleExpression(
-        num: Int,
-        equalitySign: EqualitySign,
-        logicalSign: LogicalSign? = null,
-        expression: Expression? = null
+            num: Int,
+            equalitySign: EqualitySign,
+            logicalSign: LogicalSign? = null,
+            expression: Expression? = null
     ): Expression {
         return if (logicalSign == null || expression == null) {
             Expression("fieldName$num", equalitySign, "fieldValue$num")
         } else {
             Expression(
-                "fieldName$num",
-                equalitySign,
-                "fieldValue$num",
-                logicalSign,
-                expression
+                    "fieldName$num",
+                    equalitySign,
+                    "fieldValue$num",
+                    logicalSign,
+                    expression
             )
         }
     }
