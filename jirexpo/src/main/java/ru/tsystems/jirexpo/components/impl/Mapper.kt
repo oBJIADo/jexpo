@@ -11,8 +11,9 @@ import ru.tsystems.jirexpo.entity.Task
 import java.util.*
 import kotlin.streams.toList
 
-class Mapper {
+private val UN_EMP = Employee(firstname = "unassigned", secondname = "unassigned")
 
+class Mapper {
     companion object {
         @JvmStatic
         fun convertToView(entity: Task?) = if (entity == null) null else TaskView(
@@ -32,65 +33,65 @@ class Mapper {
          * @see TaskDto
          */
         @JvmStatic
-        fun convertToDto(entity: Task?) = if (entity == null) null else TaskDto(
+        fun convertToDto(entity: Task) = TaskDto(
                 //main fields
-                entity.keys, // 1
-                entity.summary,
+                keys = entity.keys, // 1
+                summary = entity.summary,
 
 
-                getOrNull(entity.issueType),
-                getOrNull(entity.consumables?.status),
-                getOrNull(entity.consumables?.priority),// 5
-                getOrNull(entity.consumables?.resolution),
+                issueType = getOrNull(entity.issueType),
+                status = getOrNull(entity.consumables?.status),
+                priority = getOrNull(entity.consumables?.priority),// 5
+                resolution = getOrNull(entity.consumables?.resolution),
                 //Employees
-                convertToDto(entity.consumables?.workers?.assignee),
-                convertToDto(entity.consumables?.workers?.reporter),
-                convertToDto(entity.consumables?.workers?.creater),
+                assignee = convertToDto(entity.consumables?.workers?.assignee ?: UN_EMP),
+                reporter = convertToDto(entity.consumables?.workers?.reporter ?: UN_EMP),
+                creater = convertToDto(entity.consumables?.workers?.creater ?: UN_EMP),
                 //Times
-                convertTo(entity.created),// 10
-                convertTo(entity.consumables?.dates?.lastViewed),
-                convertTo(entity.consumables?.dates?.updated),// 11
-                convertTo(entity.consumables?.dates?.resolved),
-                convertTo(entity.consumables?.dates?.dueDate),
+                created = convertTo(entity.created),// 10
+                lastViewed = convertTo(entity.consumables?.dates?.lastViewed),
+                updated = convertTo(entity.consumables?.dates?.updated),// 11
+                resolved = convertTo(entity.consumables?.dates?.resolved),
+                dueDate = convertTo(entity.consumables?.dates?.dueDate),
                 //Characteristics
-                entity.consumables?.statistics?.originalEstimate,
-                entity.consumables?.statistics?.remainingEstimate,
-                entity.consumables?.statistics?.timeSpent,// 20
-                entity.consumables?.statistics?.workRation,
-                entity.consumables?.statistics?.progress,
+                originalEstimate = entity.consumables?.statistics?.originalEstimate,
+                remainingEstimate = entity.consumables?.statistics?.remainingEstimate,
+                timeSpent = entity.consumables?.statistics?.timeSpent,// 20
+                workRation = entity.consumables?.statistics?.workRation,
+                progress = entity.consumables?.statistics?.progress,
                 //Description
-                entity.consumables?.description,
+                description = entity.consumables?.description,
                 //Sum Characteristics
-                entity.consumables?.statistics?.sumProgress,// 25
-                entity.consumables?.statistics?.sumTimeSpant,
-                entity.consumables?.statistics?.sumRemainingEstimate,
-                entity.consumables?.statistics?.sumOriginalEstimate,
+                sumProgress = entity.consumables?.statistics?.sumProgress,// 25
+                sumTimeSpant = entity.consumables?.statistics?.sumTimeSpant,
+                sumRemainingEstimate = entity.consumables?.statistics?.sumRemainingEstimate,
+                sumOriginalEstimate = entity.consumables?.statistics?.sumOriginalEstimate,
                 //Epics
-                entity.consumables?.epics?.epicName,
-                getOrNull(entity.consumables?.epics?.epicStatus),
-                getOrNull(entity.consumables?.epics?.epicColor),
-                entity.consumables?.epics?.epicLink,// 35
+                epicName = entity.consumables?.epics?.epicName,
+                epicStatus = getOrNull(entity.consumables?.epics?.epicStatus),
+                epicColor = getOrNull(entity.consumables?.epics?.epicColor),
+                epicLink = entity.consumables?.epics?.epicLink,// 35
 
-                getOrNull(entity.consumables?.sprint),
-                entity.consumables?.orderNumber,
-                entity.consumables?.deliveredVersion?.title,
-                entity.consumables?.drcNumber,
-                getOrNull(entity.consumables?.keyword),
-                getOrNull(entity.consumables?.fixPriority),// 40
+                sprint = getOrNull(entity.consumables?.sprint),
+                orderNumber = entity.consumables?.orderNumber,
+                deliveredVersion = entity.consumables?.deliveredVersion?.title,
+                drcNumber = entity.consumables?.drcNumber,
+                keyword = getOrNull(entity.consumables?.keyword),
+                fixPriority = getOrNull(entity.consumables?.fixPriority),// 40
                 //Comments
-                entity.comments.stream().map { convertToDto(it) }.toList(),
+                comments = entity.comments.stream().map { convertToDto(it) }.toList(),
                 //Versions
-                featureSetToList(entity.consumables?.affectsVersions),
-                featureSetToList(entity.consumables?.fixVersions),// 15
+                affectsVersions = featureSetToList(entity.consumables?.affectsVersions),
+                fixVersions = featureSetToList(entity.consumables?.fixVersions),// 15
                 //MTM components
-                featureSetToList(entity.consumables?.components),// 16
-                featureSetToList(entity.consumables?.labels),
-                featureSetToList(entity.consumables?.teams),// 30
+                components = featureSetToList(entity.consumables?.components),// 16
+                labels = featureSetToList(entity.consumables?.labels),
+                teams = featureSetToList(entity.consumables?.teams),// 30
                 //Links to another tasks
-                subTaskSetToList(entity.subTasks),
-                subTaskSetToList(entity.parentTasks),
-                subTaskSetToList(entity.relationTasks),
-                subTaskSetToList(entity.duplicateTasks)
+                subTasks = subTaskSetToList(entity.subTasks),
+                parentTasks = subTaskSetToList(entity.parentTasks),
+                relationTasks = subTaskSetToList(entity.relationTasks),
+                duplicateTasks = subTaskSetToList(entity.duplicateTasks)
 
         )
 
@@ -104,7 +105,7 @@ class Mapper {
          * @see EmployeeDto
          */
         @JvmStatic
-        fun convertToDto(entity: Employee?) = if (entity == null) null else EmployeeDto(
+        fun convertToDto(entity: Employee) = EmployeeDto(
                 entity.firstname,
                 entity.secondname
         )
@@ -120,10 +121,10 @@ class Mapper {
          */
         @JvmStatic
         fun convertToDto(entity: Comment) = CommentDto(
-                entity.task?.keys,
-                entity.commentDate.toString(),
-                convertToDto(entity.author),
-                entity.comment
+                task = entity.task?.keys,
+                commentDate = entity.commentDate.toString(),
+                author = convertToDto(entity.author ?: UN_EMP),
+                comment = entity.comment
         )
 
 
