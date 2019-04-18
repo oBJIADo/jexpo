@@ -6,7 +6,7 @@ open class Expression(
         val fieldValue: String,
         val logicalSign: LogicalSign? = null,
         val next: Expression? = null
-//) : Iterator<Expression> {
+//) : Iterator<ExpressionImpl> {
 ) {
     init {
         if ((logicalSign == null && next != null) || (logicalSign != null && next == null)) {
@@ -76,8 +76,8 @@ open class Expression(
 //    /**
 //     * Returns the next element in the iteration.
 //     */
-//    override fun next(): Expression {
-//        return next ?: throw IndexOutOfBoundsException("Next element of the Expression not exist.")
+//    override fun next(): ExpressionImpl {
+//        return next ?: throw IndexOutOfBoundsException("Next element of the ExpressionImpl not exist.")
 //    }
 
     companion object {

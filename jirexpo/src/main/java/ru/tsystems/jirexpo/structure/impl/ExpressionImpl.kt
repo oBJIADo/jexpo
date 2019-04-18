@@ -1,11 +1,13 @@
-package ru.tsystems.jirexpo.structure
+package ru.tsystems.jirexpo.structure.impl
 
-open class Expression(
+import ru.tsystems.jirexpo.structure.exception.IllegalExpressionException
+
+open class ExpressionImpl(
         val fieldName: String,
         val equalitySign: EqualitySign,
         val fieldValue: String,
         val logicalSign: LogicalSign? = null,
-        val next: Expression? = null
+        val next: ExpressionImpl? = null
 ) {
     init {
         if ((logicalSign == null && next != null) || (logicalSign != null && next == null)) {
@@ -17,7 +19,7 @@ open class Expression(
     }
 
     fun size(): Int {
-        var exp: Expression? = this
+        var exp: ExpressionImpl? = this
         var size = 0
         while (exp != null) {
             exp = exp.next
@@ -29,7 +31,7 @@ open class Expression(
 
     override fun toString(): String {
         val expression = StringBuilder()
-        var exp: Expression? = this
+        var exp: ExpressionImpl? = this
         var ls: LogicalSign?
         while (exp != null) {
             expression.append("[${exp.fieldName}]")
@@ -54,7 +56,7 @@ open class Expression(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Expression
+        other as ExpressionImpl
 
         if (fieldName != other.fieldName) return false
         if (equalitySign != other.equalitySign) return false
@@ -80,7 +82,7 @@ open class Expression(
         protected val SPECIAL_SYMBOLS: List<Char> =
                 LogicalSign.values().map { it.logicalSymbol }.plus(EqualitySign.values().map { it.operationSymbol })
 
-        fun build(expression: String): Expression {
+        fun build(expression: String): ExpressionImpl {
             var openBraceIndex = findNextPartIndex(expression, 0)
             throwBuilderException(CAUSE_OPEN_BRACE, expression[openBraceIndex] != OPEN_BRACE)
 
@@ -102,17 +104,18 @@ open class Expression(
 
             signIndex = findNextPartIndex(expression, closeBraceIndex + 1)
             return if (signIndex == -1) {
-                Expression(fieldName, eqSign ?: throw IllegalExpressionException("Never calls"), fieldValue)
+                ExpressionImpl(fieldName, eqSign
+                        ?: throw mapException(), fieldValue)
             } else {
                 val logicalSign: LogicalSign? = LogicalSign.getBySymbol(expression[signIndex])
                 throwBuilderException(CAUSE_LOGIC_SIGN, logicalSign == null)
                 throwBuilderException("", signIndex + 1 == expression.length)
-                Expression(
+                ExpressionImpl(
                         fieldName,
-                        eqSign ?: throw IllegalExpressionException("Never calls"),
+                        eqSign ?: throw mapException(),
                         fieldValue,
                         logicalSign,
-                        Expression.build(expression.substring(signIndex + 1))
+                        build(expression.substring(signIndex + 1))
                 )
             }
 
@@ -142,64 +145,32 @@ open class Expression(
             return -1
         }
 
+        private val NEVER_CALLS = "never-calls"
         private val CAUSE_OPEN_BRACE = "open-brace"
         private val CAUSE_CLOSE_BRACE = "close-brace"
         private val CAUSE_EQ_SIGN = "eq-sign"
         private val CAUSE_LOGIC_SIGN = "logic-sign"
-        private fun throwBuilderException(cause: String = "", isThrown: Boolean = true) {
+        private fun throwBuilderException(cause: String, isThrown: Boolean = true) {
             if (isThrown) {
-                throw when (cause) {
-                    CAUSE_OPEN_BRACE -> IllegalExpressionException("Invalid expression string. Missed open brace '$OPEN_BRACE'.")
-                    CAUSE_CLOSE_BRACE -> IllegalExpressionException("Invalid expression string. Missed close brace '$CLOSE_BRACE'.")
-                    CAUSE_EQ_SIGN -> IllegalExpressionException("Invalid expression string. No Equality sign. Should be one of ${EqualitySign.operationSymbolsAsString()}")
-                    CAUSE_LOGIC_SIGN -> IllegalExpressionException("Invalid expression string. No Logical sign. Should be one of ${LogicalSign.logicalSymbolsAsString()}")
-                    else -> IllegalExpressionException("Invalid expression string.")
-                }
+                throw mapException(cause)
+            }
+        }
+
+        private fun mapException(cause: String = NEVER_CALLS): IllegalExpressionException {
+            return when (cause) {
+                CAUSE_OPEN_BRACE -> IllegalExpressionException("Invalid expression string. Missed open brace '$OPEN_BRACE'.")
+                CAUSE_CLOSE_BRACE -> IllegalExpressionException("Invalid expression string. Missed close brace '$CLOSE_BRACE'.")
+                CAUSE_EQ_SIGN -> IllegalExpressionException("Invalid expression string. No Equality sign. Should be one of ${EqualitySign.operationSymbolsAsString()}")
+                CAUSE_LOGIC_SIGN -> IllegalExpressionException("Invalid expression string. No Logical sign. Should be one of ${LogicalSign.logicalSymbolsAsString()}")
+                NEVER_CALLS -> throw IllegalExpressionException("Never calls")
+                else -> IllegalExpressionException("Invalid expression string.")
             }
         }
 
     }
 }
 
-enum class EqualitySign(val operationSymbol: Char, val operationWord: String) {
-    NotEqual('!', "NTEQ"),
-    Equal('=', "EQ"),
-    Like('~', "LIKE");
 
-    companion object {
-        fun operationSymbolsAsString(): String = EqualitySign.values().joinToString { it.operationSymbol.toString() }
 
-        fun getBySymbol(symbol: Char): EqualitySign? {
-            for (sign in EqualitySign.values()) {
-                if (sign.operationSymbol == symbol) {
-                    return sign
-                }
-            }
-            return null
-        }
-    }
-}
 
-enum class LogicalSign(val logicalSymbol: Char, val logicalWord: String) {
-    And('&', "AND"),
-    Or('|', "OR"),
-    OrNot('+', "NOR"),
-    AndNot('*', "NAND");
 
-    companion object {
-        fun logicalSymbolsAsString(): String = LogicalSign.values().joinToString { it.logicalSymbol.toString() }
-
-        fun getBySymbol(symbol: Char): LogicalSign? {
-            for (sign in LogicalSign.values()) {
-                if (symbol == sign.logicalSymbol) {
-                    return sign
-                }
-            }
-            return null
-        }
-    }
-}
-
-class IllegalExpressionException(message: String) : Exception("Cannot build expression! $message") {
-    constructor() : this("Unknown reason.")
-}

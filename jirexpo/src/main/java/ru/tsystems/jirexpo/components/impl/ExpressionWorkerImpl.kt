@@ -1,27 +1,15 @@
 package ru.tsystems.jirexpo.components.impl
 
-import ru.tsystems.jirexpo.structure.EqualitySign
-import ru.tsystems.jirexpo.structure.Expression
-import ru.tsystems.jirexpo.structure.LogicalSign
+import ru.tsystems.jirexpo.structure.impl.EqualitySign
+import ru.tsystems.jirexpo.structure.impl.ExpressionImpl
+import ru.tsystems.jirexpo.structure.impl.LogicalSign
 
-fun buildExpression(string: String): Expression {
-    return Expression.build(string)
+fun buildExpression(string: String): ExpressionImpl {
+    return ExpressionImpl.build(string)
 }
 
-fun expressionToNativeQuery(expression: Expression): String {
-    val nativeQuery = StringBuilder()
-    nativeQuery.append(expression.fieldName)
-    nativeQuery.append(' ')
-    nativeQuery.append(getSqlFromEqSign(expression.equalitySign))
-    nativeQuery.append(' ')
-    nativeQuery.append(expression.fieldValue)
-    if (expression.logicalSign != null && expression.next != null) {
-        nativeQuery.append(' ')
-        nativeQuery.append(getSqlFromLgSign(expression.logicalSign))
-        nativeQuery.append(' ')
-        nativeQuery.append(expressionToNativeQuery(expression.next))
-    }
-    return nativeQuery.toString()
+fun expressionToNativeQuery(expressionImpl: ExpressionImpl): String {
+    return buildSqlQuery(expressionImpl)
 }
 
 private fun getSqlFromEqSign(equalitySign: EqualitySign) =
@@ -38,3 +26,20 @@ private fun getSqlFromLgSign(logicalSign: LogicalSign) =
             LogicalSign.OrNot -> "OR NOT"
             LogicalSign.AndNot -> "AND NOT"
         }
+
+private fun buildSqlQuery(expressionImpl: ExpressionImpl): String{
+
+    return ""
+}
+
+private fun selectWorkers(parameters: Map<String, String>): String{
+    val name = parameters.get()
+}
+
+private fun selectFeature(titleValue: String, natureType: String) =
+        """
+select f.id
+    from FEATURE as f
+    where f.TITLE like $titleValue
+    and f.NATURE = (select n.id from NATURE as n where n.TITLE = $natureType)
+        """

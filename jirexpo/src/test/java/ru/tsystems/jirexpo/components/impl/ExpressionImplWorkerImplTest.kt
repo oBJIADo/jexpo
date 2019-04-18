@@ -3,12 +3,12 @@ package ru.tsystems.jirexpo.components.impl
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import ru.tsystems.jirexpo.structure.EqualitySign
-import ru.tsystems.jirexpo.structure.Expression
-import ru.tsystems.jirexpo.structure.LogicalSign
+import ru.tsystems.jirexpo.structure.impl.EqualitySign
+import ru.tsystems.jirexpo.structure.impl.ExpressionImpl
+import ru.tsystems.jirexpo.structure.impl.LogicalSign
 
 
-class ExpressionWorkerImplTest {
+class ExpressionImplWorkerImplTest {
 
     private val EQ = EqualitySign.Equal
     private val NEQ = EqualitySign.NotEqual
@@ -21,27 +21,27 @@ class ExpressionWorkerImplTest {
 
     @Test
     fun expressionToNativeQuery() {
-        val expression: Expression = Expression(
+        val expressionImpl: ExpressionImpl = ExpressionImpl(
                 "f1",
                 EQ,
                 "v1",
                 OR,
-                Expression(
+                ExpressionImpl(
                         "f2",
                         NEQ,
                         "v2",
                         AND,
-                        Expression(
+                        ExpressionImpl(
                                 "f3",
                                 LIKE,
                                 "v3",
                                 NOR,
-                                Expression(
+                                ExpressionImpl(
                                         "f4",
                                         EQ,
                                         "v4",
                                         NAND,
-                                        Expression(
+                                        ExpressionImpl(
                                                 "f5",
                                                 EQ,
                                                 "v5"
@@ -51,7 +51,7 @@ class ExpressionWorkerImplTest {
                 )
         )
 
-        val actualQuery = expressionToNativeQuery(expression)
+        val actualQuery = expressionToNativeQuery(expressionImpl)
         val expectedQuery = "f1 = v1 OR f2 <> v2 AND f3 LIKE v3 OR NOT f4 = v4 AND NOT f5 = v5"
         assertEquals(expectedQuery, actualQuery)
     }
